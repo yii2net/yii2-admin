@@ -76,14 +76,14 @@ $gridDataProvider = new ArrayDataProvider([
         'pageSize' => 20,
     ],
 ]);
-//,'onclick'=>'plugin_action(this,"setup")'
+//,'onclick'=>'module_action(this,"setup")'
 //$gridDataProvider->setTotalItemCount(isset($result['total']) ? $result['total'] :0);
 //$gridDataProvider->getPagination()->pageSize = isset($result['pageSize']) ? $result['pageSize'] :0;
 echo GridView::widget([
     'dataProvider' => $gridDataProvider,
     'layout' => "{items}{summary}{pager}",
     'columns' => array(
-        array('attribute'=>'id', 'header'=>'ID','options'=>array('style'=>'width:15%','class'=>'pluginid')),
+        array('attribute'=>'id', 'header'=>'ID','options'=>array('style'=>'width:15%','class'=>'moduleid')),
         array('attribute'=>'name', 'header'=>'名称','options'=>array('style'=>'width:15%')),
         array('attribute'=>'type', 'header'=>'类型','options'=>array('style'=>'width:5%')),
         array('attribute'=>'version', 'header'=>'版本','options'=>array('style'=>'width:5%')),
@@ -96,8 +96,8 @@ echo GridView::widget([
 
 </div>
 <script>
-//setup a plugin
-function plugin_action(o,action)
+//setup a module
+function module_action(o,action)
 {
 	if('delete'==action){
         yii.confirm("确定要删除吗？",function () {
@@ -128,7 +128,7 @@ function doAction(o,action){
     var id = tr.find("td:first").text();
 
     //使用iframe
-    submitForm('/admin/module-manager/ajax',{pluginid:id,action:action,'_csrf':'<?=Yii::$app->request->csrfToken?>'});
+    submitForm('/admin/module-manager/ajax',{moduleid:id,action:action,'_csrf':'<?=Yii::$app->request->csrfToken?>'});
 }
 
 window.onmessage = function (msg,boxId) {
@@ -165,16 +165,16 @@ function submitForm(url,data)
 <?php
 $js = <<<JS
     $(document).on('click', '.setup', function () {
-        plugin_action(this,'setup');
+        module_action(this,'setup');
         return false;
     });
     
     $(document).on('click', '.unsetup', function () {
-        plugin_action(this,'unsetup');
+        module_action(this,'unsetup');
         return false;
     });
     $(document).on('click', '.delete', function () {
-        plugin_action(this,'delete');
+        module_action(this,'delete');
         return false;
     });
     $('#install-modal').on('hidden.bs.modal', function (e) {

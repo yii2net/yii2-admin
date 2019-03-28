@@ -17,7 +17,7 @@ class m161219_020410_openadm_init extends Migration
             'cfg_order' => $this->integer(11)->defaultValue(0)->comment('排序'),
             'cfg_pid' => $this->integer(11)->defaultValue(0)->comment('父ID'),
             'ctime' => $this->integer(11)->defaultValue(0)->comment('创建时间'),
-            'cfg_type' => "set('SYSTEM','USER','ROUTE','PLUGIN') NOT NULL DEFAULT 'USER' COMMENT 'SYSTEM:系统配置,USER:用户配置,ROUTE:路由,PLUGIN:模块'",
+            'cfg_type' => "set('SYSTEM','USER','ROUTE','MODULE') NOT NULL DEFAULT 'USER' COMMENT 'SYSTEM:系统配置,USER:用户配置,ROUTE:路由,MODULE:模块'",
             'cfg_status' => "tinyint(4) NOT NULL DEFAULT '1' COMMENT '1显示 0 不显示'",
             'cfg_comment' => $this->string(255)->comment('配置说明'),
         ], $tableOptions);
@@ -40,7 +40,7 @@ class m161219_020410_openadm_init extends Migration
             [8,'MENU', '{"url":"/rbac/role"}', 0, 3, $ctime, 'USER', 1, '角色列表'],
             [9,'MENU', '{"url":"/rbac/route"}', 0, 3, $ctime, 'USER', 1, '路由列表'],
             //第12条路由很重要,删除后不能正确访问模块管理功能
-            [10,'PLUGINMANAGER_ROUTE', $route, 0, 0, $ctime, 'ROUTE', 1, '模块管理路由']
+            [10,'MODULEMANAGER_ROUTE', $route, 0, 0, $ctime, 'ROUTE', 1, '模块管理路由']
         ]);
 
     }

@@ -209,7 +209,7 @@ class ModuleManager
         //获取数据源
         $setupedmodules = static::GetSetupedModules();
         if("setuped"==$type){
-            $fileArray = array_map('strtolower',array_keys($setupedmodules));
+            $modules = array_map('strtolower',array_keys($setupedmodules));
         }else{
             $moduleDir = Yii::getAlias('@modules');
             $modules = static::GetModulesWithNamespace($moduleDir);
