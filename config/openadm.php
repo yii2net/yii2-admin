@@ -2,9 +2,20 @@
 
 return [
     'components' => [
-
         'cache' => [
             'class' => 'yii\caching\FileCache',
+        ],
+        'view' => [
+            'theme' => [
+                'basePath' => '@openadm/themes/adminlte2',
+            ],
+        ],
+        'assetManager' => [
+            'class' => 'yii\web\AssetManager',
+            'basePath' => '@webroot/static/assets',
+            'baseUrl'  => '@web/static/assets',
+            'linkAssets'=>true,
+            'bundles' => require(__DIR__ . '/' . (YII_ENV_PROD ? 'assets-prod.php' : 'assets-dev.php')),
         ],
         'i18n' => [
             'translations' => [
@@ -25,15 +36,8 @@ return [
                 ],
             ],
         ],
-        'assetManager' => [
-            'class' => 'yii\web\AssetManager',
-            'basePath' => '@webroot/static/assets',
-            'baseUrl'  => '@web/static/assets',
-            'linkAssets'=>true,
-            'bundles' => require(__DIR__ . '/' . (YII_ENV_PROD ? 'assets-prod.php' : 'assets-dev.php')),
-        ],
         'errorHandler' => [
-            'class' =>'app\modules\admin\components\ErrorHandler',
+            'class' =>'yikaikeji\openadm\web\ErrorHandler',
             'errorAction' => 'site/error',
         ],
         'urlManager' => [
@@ -43,7 +47,6 @@ return [
             'rules'=>[
             ],
         ],
-
         'authManager' => [
             'class' => 'yii\rbac\DbManager',
             'cache' => 'cache',
@@ -58,16 +61,6 @@ return [
                 [
                     'class' => 'yii\log\FileTarget',
                     'levels' => ['error', 'warning'],
-                ],
-            ],
-        ],
-        'view' => [
-            'theme' => [
-                'pathMap' => [
-                    '@app/views' => '@app/themes/adminlte2/views',
-                    '@app/modules/admin/views' => '@app/themes/adminlte2/modules/admin/views',
-                    '@vendor/yii2mod/yii2-rbac/views' => '@app/themes/adminlte2/modules/rbac/views',
-                    '@vendor/amnah/yii2-user/views' => '@app/themes/adminlte2/modules/user/views',
                 ],
             ],
         ],
@@ -89,7 +82,7 @@ return [
     ],
     'modules' => [
         'admin' => [
-            'class' => 'app\modules\admin\Module',
+            'class' => 'yikaikeji\openadm\modules\admin\Module',
             'as access' => [
                 'class' => yii2mod\rbac\filters\AccessControl::class,
             ],
@@ -108,17 +101,15 @@ return [
             'requireUsername' => true,
             'controllerMap' => [
                 'admin' => [
-                    'class' => 'app\modules\user\controllers\AdminController',
+                    'class' => 'yikaikeji\openadm\modules\user\controllers\AdminController',
                     'protected_uids' => [1],
                     'superadmin_uid' => 1,//超级管理员
                 ],
                 'default' => [
-                    'class' => 'app\modules\user\controllers\DefaultController',
+                    'class' => 'yikaikeji\openadm\modules\user\controllers\DefaultController',
                 ]
-            ]
-        ],
-        'plugin' => [
-            'class' => 'app\modules\plugin\Module',
+            ],
+            'viewPath' => '@openadm/modules/user/views',
         ],
         'rbac' => [
             'class' => 'yii2mod\rbac\Module',
@@ -130,12 +121,13 @@ return [
                     'class' => 'yii2mod\rbac\controllers\AssignmentController',
                 ],
                 'role' => [
-                    'class' => 'app\modules\rbac\controllers\RoleController',
+                    'class' => 'yikaikeji\openadm\modules\rbac\controllers\RoleController',
                 ],
                 'route' => [
-                    'class' => 'app\modules\rbac\controllers\RouteController',
+                    'class' => 'yikaikeji\openadm\modules\rbac\controllers\RouteController',
                 ],
             ],
+            'viewPath' => '@openadm/modules/rbac/views',
         ],
     ],
 ];

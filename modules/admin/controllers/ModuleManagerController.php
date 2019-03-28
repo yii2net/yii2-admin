@@ -4,15 +4,16 @@ namespace yikaikeji\openadm\modules\admin\controllers;
 use Yii;
 use yikaikeji\openadm\controllers\Controller;
 use yikaikeji\openadm\web\SystemConfig;
-use yikaikeji\openadm\modules\admin\models\PluginManager;
+use yikaikeji\openadm\modules\admin\models\ModuleManager;
 
-class PluginManagerController extends Controller
+class ModuleManagerController extends Controller
 {
+
     public $defaultAction = 'local';
 
-    private $plugin_center_url = "http://api.openadm.com";
+    private $module_center_url = "http://api.openadm.com";
 
-	//plugin list
+	//module list
 	public function actionIndex()
 	{
 		$this->redirect("local");
@@ -23,13 +24,13 @@ class PluginManagerController extends Controller
 		$tab = in_array($tab,array('all','setuped','new')) ? $tab : 'all';
 		//获取插件
 		$pageSize = 20;
-		$result = PluginManager::GetPlugins($tab,$page,$pageSize);
+		$result = ModuleManager::GetModules($tab,$page,$pageSize);
 		return $this->render("local",['tab'=>$tab,'result'=>$result]);
 	}
 	
 	public function actionShop()
 	{
-		$url = $this->plugin_center_url.'/plugins/token/'.Yii::app()->params['token'];
+		$url = $this->module_center_url.'/modules/token/'.Yii::app()->params['token'];
 		$this->render("shop",array('url'=>$url));
 	}
 
@@ -38,11 +39,11 @@ class PluginManagerController extends Controller
 	{
         if(Yii::$app->request->isPost){
             $action   = Yii::$app->request->post('action','');
-            $pluginid = Yii::$app->request->post('pluginid','');
-            if($pluginid && $action && in_array($action,['setup','unsetup','delete'])){
-                PluginManager::setShowMsg(1);
-                $result = PluginManager::$action($pluginid);
-                PluginManager::setShowMsg(0);
+            $moduleid = Yii::$app->request->post('moduleid','');
+            if($moduleid && $action && in_array($action,['setup','unsetup','delete'])){
+                ModuleManager::setShowMsg(1);
+                $result = ModuleManager::$action($moduleid);
+                ModuleManager::setShowMsg(0);
                 //update  systemconfig
                 SystemConfig::cache_flush();
             }

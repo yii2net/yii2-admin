@@ -1,0 +1,85 @@
+html,body{
+    font-weight: 300;
+}
+th,.label,.btn,.dropdown-menu>li>a{
+    font-weight: 300;
+}
+.navbar-nav>.user-menu>.dropdown-menu{
+    width: auto;
+    min-width: 100px;
+}
+#openadm_content .nav-tabs > li{
+    height:38px;
+    margin-right:0;
+}
+#openadm_content .nav-tabs > li > a{
+    border-radius: 0;
+    border-top: none;
+    border-bottom: none;
+    font-size: 13px;
+    line-height: 38px;
+    padding: 0 15px;
+    margin-right:0;
+}
+.nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus{
+    border-radius: 0;
+    border-top: none;
+}
+/*菜单排序*/
+ul.sortable{
+    padding-left: 0;
+}
+
+ul.sortable,ul.sortable ul {
+    list-style-type: none;
+}
+
+.sortable li div {
+    border: 1px solid #d4d4d4;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    cursor: move;
+    border-color: #D4D4D4 #D4D4D4 #BCBCBC;
+    margin: 5px 0;
+    padding: 5px;
+}
+
+.sortable li div i.btn-edit,.sortable li div i.btn-delete{
+    font-size: 12px;
+    float: right;
+    margin-left:2px;
+    margin-top: -1px;
+    padding: 5px;
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+.sortable li div i.disclose{
+    cursor: pointer
+}
+li.mjs-nestedSortable-collapsed.mjs-nestedSortable-hovering div {
+    border-color: #999;
+}
+
+
+.sortable li.mjs-nestedSortable-collapsed > ul {
+    display: none;
+}
+
+.sortable li.mjs-nestedSortable-branch > div > .disclose {
+    display: inline-block;
+}
+
+li.upload-kit-item.done.image img{
+    max-width: 300px;
+    max-height: 200px;
+}
+
+/**select2**/
+.select2-container--default .select2-selection--single, .select2-selection .select2-selection--single{
+    padding:4px;
+}
+.select2-container--default .select2-selection--single{
+    border-radius:0;
+}

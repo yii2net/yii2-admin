@@ -9,11 +9,6 @@ use yikaikeji\openadm\web\SystemEvent;
 class DashboardController extends Controller
 {
     public $defaultAction = 'index';
-	public function init()
-	{
-		parent::init();
-		
-	}
 	
     public function actionMain()
     {

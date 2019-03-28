@@ -1,6 +1,7 @@
 <?php
 namespace yikaikeji\openadm\modules\admin;
 
+use Yii;
 /**
  * admin module definition class
  */

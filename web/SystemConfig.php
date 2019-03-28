@@ -19,7 +19,7 @@ class SystemConfig
     const CONFIG_TYPE_USER     = "USER";
     const CONFIG_TYPE_SYSTEM   = "SYSTEM";
     const CONFIG_TYPE_ROUTE    = "ROUTE";
-    const CONFIG_TYPE_PLUGIN   = "PLUGIN";
+    const CONFIG_TYPE_MODULE   = "MODULE";
 
     const CACHE_5MINS           = 300;
     const CACHE_30MINS          = 1800;
