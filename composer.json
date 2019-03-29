@@ -25,32 +25,21 @@
         "kartik-v/yii2-builder": "@dev",
         "kit-tools/yii2-webui-popover": "*",
         "symfony/process": "*",
-        "trntv/yii2-file-kit": "*",
+        "yii2-starter-kit/yii2-file-kit": "*",
         "dmstr/yii2-adminlte-asset":"2.*",
         "kucha/ueditor": "*",
         "rmrevin/yii2-fontawesome": "~2.17",
         "intervention/image": "^2.3",
         "bizley/migration": "^2.2",
-        "jean85/pretty-package-versions": "~1.2"
+        "jean85/pretty-package-versions": "~1.2",
+        "kassko/util-reflection": "dev-master"
     },
     "autoload": {
         "psr-4": {
             "yikaikeji\\openadm\\": ""
         }
     },
-    "scripts": {
-      "post-install-cmd": [
-        "yii\\composer\\Installer::postInstall"
-      ]
-    },
     "extra": {
-      "bootstrap": "yikaikeji\\openadm\\AdminBootstrap",
-      "yii\\composer\\Installer::postInstall": {
-        "copyFiles": [
-          {
-            "config/openadm.php": "config/openadm.php"
-          }
-        ]
-      }
+      "bootstrap": "yikaikeji\\openadm\\AdminBootstrap"
     }
 }

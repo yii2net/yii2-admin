@@ -1,5 +1,5 @@
 <?php
-namespace yikaikeji\openadm\modules\admin;
+namespace yikaikeji\openadm\extensions\admin;
 
 use Yii;
 /**
@@ -10,7 +10,7 @@ class Module extends \yii\base\Module
     /**
      * @inheritdoc
      */
-    public $controllerNamespace = 'yikaikeji\openadm\modules\admin\controllers';
+    public $controllerNamespace = 'yikaikeji\openadm\extensions\admin\controllers';
 
     public $defaultRoute = 'dashboard/index';
 

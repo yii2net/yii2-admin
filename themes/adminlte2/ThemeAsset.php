@@ -3,7 +3,7 @@
  * 主题 Adminlte2
  */
 
-namespace app\themes\adminlte2;
+namespace yikaikeji\openadm\themes\adminlte2;
 use yii\web\AssetBundle;
 
 /**
@@ -15,7 +15,7 @@ class ThemeAsset extends AssetBundle
     const  name = 'adminlte2';
     const  themeId = 'adminlte2';
 
-    public $sourcePath = '@app/themes/'.self::themeId.'/assets';
+    public $sourcePath = '@openadm/themes/'.self::themeId.'/assets';
     public $css = [
         'css/openadm.css'
     ];
@@ -25,6 +25,6 @@ class ThemeAsset extends AssetBundle
     ];
     public $jsOptions = ['position' => \yii\web\View::POS_END];
     public $depends = [
-        'app\themes\adminlte2\AdminltePluginsAsset'
+        'yikaikeji\openadm\themes\adminlte2\AdminltePluginsAsset'
     ];
 }

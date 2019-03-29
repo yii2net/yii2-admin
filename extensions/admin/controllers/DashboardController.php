@@ -1,5 +1,5 @@
 <?php
-namespace yikaikeji\openadm\modules\admin\controllers;
+namespace yikaikeji\openadm\extensions\admin\controllers;
 
 use yii;
 use yii\helpers\Json;
@@ -8,7 +8,7 @@ use yikaikeji\openadm\web\SystemEvent;
 
 /**
  * @name 控制面板
- * @package yikaikeji\openadm\modules\admin\controllers
+ * @package yikaikeji\openadm\extensions\admin\controllers
  */
 class DashboardController extends Controller
 {

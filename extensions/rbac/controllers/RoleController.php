@@ -1,5 +1,5 @@
 <?php
-namespace yikaikeji\openadm\modules\rbac\controllers;
+namespace yikaikeji\openadm\extensions\rbac\controllers;
 
 use yii\rbac\Item;
 use yii2mod\rbac\base\ItemController;

@@ -1,5 +1,5 @@
 <?php
-namespace app\themes\adminlte2;
+namespace yikaikeji\openadm\themes\adminlte2;
 
 use yii\base\Exception;
 use dmstr\web\AdminLteAsset as BaseAdminLteAsset;

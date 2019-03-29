@@ -1,5 +1,5 @@
 <?php
-namespace yikaikeji\openadm\modules\noty;
+namespace yikaikeji\openadm\extensions\noty;
 
 use Yii;
 use yii\base\Widget;
@@ -7,7 +7,7 @@ use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
 use yii\helpers\Html;
 use yii\web\View;
-use lo\modules\noty\layers;
+use lo\extensions\noty\layers;
 
 /**
  * This package comes with a Wrapper widget that can be used to regularly poll the server
@@ -15,7 +15,7 @@ use lo\modules\noty\layers;
  *
  * This widget should be used in your main layout file as follows:
  * ```php
- *  use lo\modules\noty\Wrapper;
+ *  use lo\extensions\noty\Wrapper;
  *
  *  echo Wrapper::widget([
  *      'layerClass' => 'lo\modules\noty\layers\Noty',

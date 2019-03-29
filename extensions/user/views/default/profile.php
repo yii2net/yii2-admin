@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
 use yii\widgets\ActiveForm;
 use amnah\yii2\user\helpers\Timezone;
-use lo\modules\noty\Wrapper;
+use lo\extensions\noty\Wrapper;
 /**
  * @var yii\web\View $this
  * @var yii\widgets\ActiveForm $form

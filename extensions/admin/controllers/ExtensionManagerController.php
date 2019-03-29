@@ -4,9 +4,9 @@ namespace yikaikeji\openadm\extensions\admin\controllers;
 use Yii;
 use yikaikeji\openadm\controllers\Controller;
 use yikaikeji\openadm\web\SystemConfig;
-use yikaikeji\openadm\extensions\admin\models\ModuleManager;
+use yikaikeji\openadm\extensions\admin\models\ExtensionManager;
 
-class ModuleManagerController extends Controller
+class ExtensionManagerController extends Controller
 {
 
     public $defaultAction = 'local';
@@ -24,7 +24,7 @@ class ModuleManagerController extends Controller
 		$tab = in_array($tab,array('all','setuped','new')) ? $tab : 'all';
 		//获取插件
 		$pageSize = 20;
-		$result = ModuleManager::GetExtensions($tab,$page,$pageSize);
+		$result = ExtensionManager::GetExtensions($tab,$page,$pageSize);
 		return $this->render("local",['tab'=>$tab,'result'=>$result]);
 	}
 	
@@ -39,11 +39,11 @@ class ModuleManagerController extends Controller
 	{
         if(Yii::$app->request->isPost){
             $action   = Yii::$app->request->post('action','');
-            $moduleid = Yii::$app->request->post('moduleid','');
-            if($moduleid && $action && in_array($action,['setup','unsetup','delete'])){
-                ModuleManager::setShowMsg(1);
-                $result = ModuleManager::$action($moduleid);
-                ModuleManager::setShowMsg(0);
+            $extensionid = Yii::$app->request->post('extensionid','');
+            if($extensionid && $action && in_array($action,['setup','unsetup','delete'])){
+                ExtensionManager::setShowMsg(1);
+                $result = ExtensionManager::$action($extensionid);
+                ExtensionManager::setShowMsg(0);
                 //update  systemconfig
                 SystemConfig::cache_flush();
             }

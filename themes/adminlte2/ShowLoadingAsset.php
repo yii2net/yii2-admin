@@ -5,7 +5,7 @@
  * @license MIT
  */
 
-namespace app\themes\adminlte2;
+namespace yikaikeji\openadm\themes\adminlte2;
 
 use Yii;
 use yii\web\AssetBundle;

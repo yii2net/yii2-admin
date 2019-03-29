@@ -1,5 +1,5 @@
 <?php
-use yikaikeji\openadm\modules\noty\Wrapper;
+use yikaikeji\openadm\extensions\noty\Wrapper;
 //for notification
 echo Wrapper::widget([
     'layerClass' => 'lo\modules\noty\layers\Noty',
@@ -54,4 +54,3 @@ $.noty.defaults = {
   buttons: false // an array of buttons, for creating confirmation dialogs.
 };
     ");
-?>

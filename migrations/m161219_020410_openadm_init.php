@@ -17,7 +17,7 @@ class m161219_020410_openadm_init extends Migration
             'cfg_order' => $this->integer(11)->defaultValue(0)->comment('排序'),
             'cfg_pid' => $this->integer(11)->defaultValue(0)->comment('父ID'),
             'ctime' => $this->integer(11)->defaultValue(0)->comment('创建时间'),
-            'cfg_type' => "set('SYSTEM','USER','ROUTE','MODULE') NOT NULL DEFAULT 'USER' COMMENT 'SYSTEM:系统配置,USER:用户配置,ROUTE:路由,MODULE:模块'",
+            'cfg_type' => "set('SYSTEM','USER','ROUTE','EXTENSION') NOT NULL DEFAULT 'USER' COMMENT 'SYSTEM:系统配置,USER:用户配置,ROUTE:路由,EXTENSION:扩展'",
             'cfg_status' => "tinyint(4) NOT NULL DEFAULT '1' COMMENT '1显示 0 不显示'",
             'cfg_comment' => $this->string(255)->comment('配置说明'),
         ], $tableOptions);
@@ -26,7 +26,7 @@ class m161219_020410_openadm_init extends Migration
         $this->createIndex('{{%cfg_name}}', '{{%system_config}}', 'cfg_name', false);
         $this->createIndex('{{%cfg_pid}}', '{{%system_config}}', 'cfg_pid', false);
         $this->createIndex('{{%cfg_type}}', '{{%system_config}}', 'cfg_type', false);
-        $route = json_encode(['admin/module-manager/<a:\w+>/<tab:\w+>'=>'admin/module-manager/<a>']);
+        $route = json_encode(['admin/extension-manager/<a:\w+>/<tab:\w+>'=>'admin/extension-manager/<a>']);
         $columns = ['id','cfg_name', 'cfg_value', 'cfg_order','cfg_pid','ctime','cfg_type','cfg_status','cfg_comment'];
         $ctime = time();
         $this->batchInsert('{{%system_config}}', $columns, [
@@ -34,13 +34,13 @@ class m161219_020410_openadm_init extends Migration
             [2,'MENU', '{"url":"#","icon":"fa fa-cogs"}', 50, 1, $ctime, 'USER', 1, '系统设置'],
             [3,'MENU', '{"url":"#","icon":"fa fa-unlock-alt"}', 51, 1,$ctime , 'USER', 1, '权限管理'],
             [4,'MENU', '{"url":"/admin/dashboard/main","icon":"fa fa-dashboard"}', 0, 1, $ctime, 'USER', 1, '控制面板'],
-            [5,'MENU', '{"url":"/admin/module-manager/local/all"}', 0, 2, $ctime, 'USER', 1, '模块管理'],
+            [5,'MENU', '{"url":"/admin/extension-manager/local/all"}', 0, 2, $ctime, 'USER', 1, '扩展管理'],
             [6,'MENU', '{"url":"/user/admin/index"}', 0, 2, $ctime, 'USER', 1, '用户管理'],
             [7,'MENU', '{"url":"/rbac/assignment"}', 0, 3, $ctime, 'USER', 1, '授权用户'],
             [8,'MENU', '{"url":"/rbac/role"}', 0, 3, $ctime, 'USER', 1, '角色列表'],
             [9,'MENU', '{"url":"/rbac/route"}', 0, 3, $ctime, 'USER', 1, '路由列表'],
-            //第12条路由很重要,删除后不能正确访问模块管理功能
-            [10,'MODULEMANAGER_ROUTE', $route, 0, 0, $ctime, 'ROUTE', 1, '模块管理路由']
+            //第12条路由很重要,删除后不能正确访问扩展管理功能
+            [10,'EXTENSIONMANAGER_ROUTE', $route, 0, 0, $ctime, 'ROUTE', 1, '扩展管理路由']
         ]);
 
     }

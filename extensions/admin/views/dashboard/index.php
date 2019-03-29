@@ -2,7 +2,7 @@
 use yii\helpers\Json;
 use yii\helpers\Html;
 use yii\helpers\Url;
-use app\themes\adminlte2\ThemeAsset;
+use yikaikeji\openadm\themes\adminlte2\ThemeAsset;
 ThemeAsset::register($this);
 
 $this->registerJs( "var OA_Menus=". Json::encode($menus),\yii\web\View::POS_HEAD);

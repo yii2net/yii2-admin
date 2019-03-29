@@ -5,7 +5,7 @@
  * Date: 2017/1/1
  * Time: 下午12:10
  */
-namespace app\themes\adminlte2;
+namespace yikaikeji\openadm\themes\adminlte2;
 use yii\web\AssetBundle;
 class AdminltePluginsAsset extends AssetBundle
 {
@@ -19,7 +19,7 @@ class AdminltePluginsAsset extends AssetBundle
         'yii\web\YiiAsset',
         'yii\bootstrap\BootstrapAsset',
         'yii\bootstrap\BootstrapPluginAsset',
-        'app\themes\adminlte2\AdminLteAsset',
-        'app\themes\adminlte2\ShowLoadingAsset',
+        'yikaikeji\openadm\themes\adminlte2\AdminLteAsset',
+        'yikaikeji\openadm\themes\adminlte2\ShowLoadingAsset',
     ];
 }

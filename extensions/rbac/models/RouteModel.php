@@ -1,5 +1,5 @@
 <?php
-namespace yikaikeji\openadm\modules\rbac\models;
+namespace yikaikeji\openadm\extensions\rbac\models;
 
 use Yii;
 use yii\base\BaseObject;

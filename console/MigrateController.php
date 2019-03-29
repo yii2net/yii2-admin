@@ -6,7 +6,7 @@ use yii\base\InvalidConfigException;
 use yii\console\controllers\MigrateController as BaseMigrateController;
 use yii;
 use yii\helpers\Console;
-use yikaikeji\openadm\modules\admin\models\ModuleManager;
+use yikaikeji\openadm\extensions\admin\models\ExtensionManager;
 /**
  * Class MigrateController
  *
@@ -47,11 +47,11 @@ class MigrateController extends BaseMigrateController
      */
     public $templateFile = '@yii/views/migration.php';
 
-    protected $_module_migration_paths = [];
+    protected $_extension_migration_paths = [];
 
     /**
      * 如果 migrationPath 有值,则说明yii migrate --migrationPath=$path,通过传参运行
-     * migrationPath 没有传参,则使用默认的 defaultMigrationPath 和 module的migrations
+     * migrationPath 没有传参,则使用默认的 defaultMigrationPath 和 extension的migrations
      *
      * 此method需要放在beforeAction里面,此时migrationPath已经被赋值。
      */
@@ -61,7 +61,7 @@ class MigrateController extends BaseMigrateController
         if($this->migrationPath != ''){
             $path = Yii::getAlias($this->migrationPath);
             if(is_dir($path)){
-                $this->_module_migration_paths[] = $path;
+                $this->_extension_migration_paths[] = $path;
             }else{
                 //报错,退出
                 throw new InvalidConfigException("Migration failed. Directory specified in migrationPath doesn't exist: {$this->migrationPath}");
@@ -71,13 +71,13 @@ class MigrateController extends BaseMigrateController
             //如果system config被migrate/down 删除了,会报错,通过try catch 过滤掉
             try {
                 //自动把插件的migrations path加入到搜索路径
-                $setupedModules = ModuleManager::GetSetupedModules();
-                if ($setupedModules && is_array($setupedModules)){
-                    foreach ($setupedModules as $module) {
-                        $moduleId = isset($module['id']) ? $module['id'] : '';
-                        $path = Yii::getAlias('@modules') . DIRECTORY_SEPARATOR . "{$moduleId}" . DIRECTORY_SEPARATOR . "migrations";
+                $setupedExtensions = ExtensionManager::GetSetupedExtensions();
+                if ($setupedExtensions && is_array($setupedExtensions)){
+                    foreach ($setupedExtensions as $extension) {
+                        $extensionId = isset($extension['id']) ? $extension['id'] : '';
+                        $path = Yii::getAlias('@extensions') . DIRECTORY_SEPARATOR . "{$extensionId}" . DIRECTORY_SEPARATOR . "migrations";
                         if (is_dir($path)) {
-                            $this->_module_migration_paths[] = $path;
+                            $this->_extension_migration_paths[] = $path;
                         }
                     }
                 }
@@ -88,12 +88,12 @@ class MigrateController extends BaseMigrateController
             //默认的migrationPath
             $path = Yii::getAlias($this->migrationPath);
             if(is_dir($path)){
-                $this->_module_migration_paths[] = $path;
+                $this->_extension_migration_paths[] = $path;
             }
         }
         //添加path到include path
-        if(count($this->_module_migration_paths)>0){
-            $need_include_paths = join(PATH_SEPARATOR,$this->_module_migration_paths);
+        if(count($this->_extension_migration_paths)>0){
+            $need_include_paths = join(PATH_SEPARATOR,$this->_extension_migration_paths);
             set_include_path(get_include_path() . PATH_SEPARATOR . $need_include_paths);
         }else{
             throw new InvalidConfigException('At least one of `defaultMigrationPath` or `migrationPath` or `migrationNamespaces` should be specified.');
@@ -128,8 +128,8 @@ class MigrateController extends BaseMigrateController
         }
 
         $migrationPaths = [];
-        //把modules的加进来
-        foreach ($this->_module_migration_paths as $_path){
+        //把extensions的加进来
+        foreach ($this->_extension_migration_paths as $_path){
             $migrationPaths[] = $_path;
         }
         foreach ($this->migrationNamespaces as $namespace) {
@@ -150,7 +150,7 @@ class MigrateController extends BaseMigrateController
                 $path = $migrationPath . DIRECTORY_SEPARATOR . $file;
                 if (preg_match('/^(m(\d{6}_?\d{6})\D.*?)\.php$/is', $file, $matches) && is_file($path)) {
                     $class = $matches[1];
-                    //增加判断,如果namespace是数字,代表添加的全局的module的migrations
+                    //增加判断,如果namespace是数字,代表添加的全局的extension的migrations
                     if (!empty($namespace) && !is_numeric($namespace)) {
                         $class = $namespace . '\\' . $class;
                     }
@@ -167,7 +167,7 @@ class MigrateController extends BaseMigrateController
         return array_values($migrations);
     }
 
-    public function getMigrationClassOfModule()
+    public function getMigrationClassOfExtension()
     {
         $dir = dir(Yii::getAlias($this->migrationPath));
         $migrations = [];
@@ -179,9 +179,9 @@ class MigrateController extends BaseMigrateController
         return $migrations;
     }
 
-    public function actionDownModule()
+    public function actionDownExtension()
     {
-        $migrations = $this->getMigrationClassOfModule();
+        $migrations = $this->getMigrationClassOfExtension();
 
         if (empty($migrations)) {
             $this->stdout("No migration has been done before.\n", Console::FG_YELLOW);

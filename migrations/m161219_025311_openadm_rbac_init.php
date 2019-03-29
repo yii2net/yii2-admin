@@ -15,7 +15,7 @@ class m161219_025311_openadm_rbac_init extends Migration
         $this->createPermission('/admin/dashboard/*');
         $this->createPermission('/debug/*');
         $this->createPermission('/gii/*');
-        $this->createPermission('/admin/module-manager/*');
+        $this->createPermission('/admin/extension-manager/*');
         $this->createPermission('/plugin/*');
         $this->createPermission('/rbac/*');
         $this->createPermission('/site/*');
@@ -26,7 +26,7 @@ class m161219_025311_openadm_rbac_init extends Migration
         $this->addChild('Admin', '/admin/dashboard/*');
         $this->addChild('Admin', '/debug/*');
         $this->addChild('Admin', '/gii/*');
-        $this->addChild('Admin', '/admin/module-manager/*');
+        $this->addChild('Admin', '/admin/extension-manager/*');
         $this->addChild('Admin', '/plugin/*');
         $this->addChild('Admin', '/rbac/*');
         $this->addChild('Admin', '/site/*');

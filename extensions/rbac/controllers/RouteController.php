@@ -1,11 +1,11 @@
 <?php
-namespace yikaikeji\openadm\modules\rbac\controllers;
+namespace yikaikeji\openadm\extensions\rbac\controllers;
 
 use Yii;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\Response;
-use yikaikeji\openadm\modules\rbac\models\RouteModel;
+use yikaikeji\openadm\extensions\rbac\models\RouteModel;
 
 /**
  * Class RouteController

@@ -1,6 +1,13 @@
 <?php
 
 return [
+    'basePath' => '@app',
+    'vendorPath' => '@vendor',
+    'runtimePath' => '@runtime',
+    'aliases' => [
+        '@bower' => '@vendor/bower-asset',
+        '@npm'   => '@vendor/npm-asset',
+    ],
     'components' => [
         'cache' => [
             'class' => 'yii\caching\FileCache',
@@ -15,7 +22,7 @@ return [
             'basePath' => '@webroot/static/assets',
             'baseUrl'  => '@web/static/assets',
             'linkAssets'=>true,
-            'bundles' => require(__DIR__ . '/' . (YII_ENV_PROD ? 'assets-prod.php' : 'assets-dev.php')),
+            'bundles' => require(\yii::getAlias('@config') . '/' . (YII_ENV_PROD ? 'assets-prod.php' : 'assets-dev.php')),
         ],
         'i18n' => [
             'translations' => [
@@ -35,10 +42,6 @@ return [
                     'basePath' => '@app/messages',
                 ],
             ],
-        ],
-        'errorHandler' => [
-            'class' =>'yikaikeji\openadm\web\ErrorHandler',
-            'errorAction' => 'site/error',
         ],
         'urlManager' => [
             'enablePrettyUrl' => true,
@@ -82,13 +85,10 @@ return [
     ],
     'modules' => [
         'admin' => [
-            'class' => 'yikaikeji\openadm\modules\admin\Module',
+            'class' => 'yikaikeji\openadm\extensions\admin\Module',
             'as access' => [
                 'class' => yii2mod\rbac\filters\AccessControl::class,
             ],
-        ],
-        'hello' => [
-            'class' => 'yikaikeji\hello\Module'
         ],
         'noty' => [
             'class' => 'lo\modules\noty\Module',
@@ -101,15 +101,15 @@ return [
             'requireUsername' => true,
             'controllerMap' => [
                 'admin' => [
-                    'class' => 'yikaikeji\openadm\modules\user\controllers\AdminController',
+                    'class' => 'yikaikeji\openadm\extensions\user\controllers\AdminController',
                     'protected_uids' => [1],
                     'superadmin_uid' => 1,//超级管理员
                 ],
                 'default' => [
-                    'class' => 'yikaikeji\openadm\modules\user\controllers\DefaultController',
+                    'class' => 'yikaikeji\openadm\extensions\user\controllers\DefaultController',
                 ]
             ],
-            'viewPath' => '@openadm/modules/user/views',
+            'viewPath' => '@openadm/extensions/user/views',
         ],
         'rbac' => [
             'class' => 'yii2mod\rbac\Module',
@@ -121,13 +121,13 @@ return [
                     'class' => 'yii2mod\rbac\controllers\AssignmentController',
                 ],
                 'role' => [
-                    'class' => 'yikaikeji\openadm\modules\rbac\controllers\RoleController',
+                    'class' => 'yikaikeji\openadm\extensions\rbac\controllers\RoleController',
                 ],
                 'route' => [
-                    'class' => 'yikaikeji\openadm\modules\rbac\controllers\RouteController',
+                    'class' => 'yikaikeji\openadm\extensions\rbac\controllers\RouteController',
                 ],
             ],
-            'viewPath' => '@openadm/modules/rbac/views',
+            'viewPath' => '@openadm/extensions/rbac/views',
         ],
     ],
 ];
