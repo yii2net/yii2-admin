@@ -6,14 +6,22 @@ use yii\helpers\Json;
 use yikaikeji\openadm\controllers\Controller;
 use yikaikeji\openadm\web\SystemEvent;
 
+/**
+ * @name 控制面板
+ * @package yikaikeji\openadm\modules\admin\controllers
+ */
 class DashboardController extends Controller
 {
     public $defaultAction = 'index';
-	
+
+    /**
+     * @name 主页
+     */
     public function actionMain()
     {
         return $this->render('main');
     }
+
 
     public function actionIndex()
     {

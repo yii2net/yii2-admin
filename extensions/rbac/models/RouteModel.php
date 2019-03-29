@@ -5,6 +5,7 @@ use Yii;
 use yii\base\BaseObject;
 use yii\caching\TagDependency;
 use yii\helpers\VarDumper;
+use Kassko\Util\Reflection\ReflectorRepository;
 
 /**
  * Class RouteModel
@@ -268,19 +269,35 @@ class RouteModel extends BaseObject
         $token = "Get actions of controller '" . $controller->uniqueId . "'";
         Yii::beginProfile($token, __METHOD__);
         try {
+            $reflectorRepo = new ReflectorRepository;
             $prefix = '/' . $controller->uniqueId . '/';
             foreach ($controller->actions() as $id => $value) {
                 $result[$prefix . $id] = $prefix . $id;
             }
-            $class = new \ReflectionClass($controller);
-
+            $class = $reflectorRepo->reflClass($controller);
+            $docParser = $reflectorRepo->classDocParser($controller);
+            $docParser->setFieldsNumbersByTags(['name'=>2]);
+            $docParser->parse();
+            $tag = $docParser->getTag('name');
+            if(count($tag)>=1){
+                $className = $tag[0]->getField(0);
+            }
             foreach ($class->getMethods() as $method) {
                 $name = $method->getName();
+                //echo "$name \n";
                 if ($method->isPublic() && !$method->isStatic() && strpos($name, 'action') === 0 && $name !== 'actions') {
                     $name = strtolower(preg_replace('/(?<![A-Z])[A-Z]/', ' \0', substr($name, 6)));
                     $id = $prefix . ltrim(str_replace(' ', '-', $name), '-');
                     $id = str_replace("//","/",$id);//去掉重复的//
                     $result[$id] = $id;
+                    $docParser = $reflectorRepo->methodDocParser($controller,$method->getName());
+                    $docParser->setFieldsNumbersByTags(['name'=>2]);
+                    $docParser->parse();
+                    $tag = $docParser->getTag('name');
+                    if(count($tag)>=1){
+                        $methodName = $tag[0]->getField(0);
+                        //var_dump($methodName);
+                    }
                 }
             }
         } catch (\Exception $exc) {

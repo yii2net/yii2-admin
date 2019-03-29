@@ -5,6 +5,7 @@ use yii\web\Controller;
 
 /**
  * Default controller for the `admin` module
+ * @name 后台首页
  */
 class DefaultController extends Controller
 {

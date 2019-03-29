@@ -1,10 +1,10 @@
 <?php
-namespace yikaikeji\openadm\modules\admin\controllers;
+namespace yikaikeji\openadm\extensions\admin\controllers;
 
 use Yii;
 use yikaikeji\openadm\controllers\Controller;
 use yikaikeji\openadm\web\SystemConfig;
-use yikaikeji\openadm\modules\admin\models\ModuleManager;
+use yikaikeji\openadm\extensions\admin\models\ModuleManager;
 
 class ModuleManagerController extends Controller
 {
@@ -24,13 +24,13 @@ class ModuleManagerController extends Controller
 		$tab = in_array($tab,array('all','setuped','new')) ? $tab : 'all';
 		//获取插件
 		$pageSize = 20;
-		$result = ModuleManager::GetModules($tab,$page,$pageSize);
+		$result = ModuleManager::GetExtensions($tab,$page,$pageSize);
 		return $this->render("local",['tab'=>$tab,'result'=>$result]);
 	}
 	
 	public function actionShop()
 	{
-		$url = $this->module_center_url.'/modules/token/'.Yii::app()->params['token'];
+		$url = $this->module_center_url.'/extensions/token/'.Yii::app()->params['token'];
 		$this->render("shop",array('url'=>$url));
 	}
 

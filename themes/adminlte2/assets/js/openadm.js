@@ -1,10 +1,14 @@
 var OA_Menus_Children = [];
+var OA_MenusIDs = [];
 function oa_build_top_menu() {
+    OA_Menus_Children = [];
+    OA_MenusIDs = [];
     var top_menu_html = "";
     if(typeof OA_Menus == "object" ){
         for(var i in OA_Menus){
             var top_menu = OA_Menus[i];
             if(top_menu.content.cfg_pid == 0){//说明是顶部菜单
+                OA_MenusIDs.push(parseInt(top_menu.content.id));
                 if(typeof top_menu.items == "object"){//说明有子菜单
                     top_menu_html += '<li><a id="nav'+top_menu.content.id+'" data-id="'+top_menu.content.id+'" href="#">'+top_menu.content.cfg_comment+'</a></li>';
                     OA_Menus_Children[top_menu.content.id] = top_menu.items;
@@ -38,6 +42,7 @@ function oa_build_left_menu(el) {
             var currentLeftMenuItems = OA_Menus_Children[topmenu_id];
             var sidebar_html = '<ul class="sidebar-menu tree">';
             for(var i in currentLeftMenuItems){
+                OA_MenusIDs.push(parseInt(currentLeftMenuItems[i].content.id));
                 if(typeof currentLeftMenuItems[i].items == "undefined"){
                     sidebar_html += '<li class="treeview"><a id="nav'+currentLeftMenuItems[i].content.id+'" class="openlink" data-label="'+currentLeftMenuItems[i].content.cfg_comment+'" data-id="'+currentLeftMenuItems[i].content.id+'" href="'+currentLeftMenuItems[i].content.value.url+'"><i class="'+currentLeftMenuItems[i].content.value.icon+'"></i> <span>'+currentLeftMenuItems[i].content.cfg_comment+'</span>';
                     sidebar_html += '</a>';
@@ -47,6 +52,7 @@ function oa_build_left_menu(el) {
                     var subLeftMenuItems = currentLeftMenuItems[i].items;
                     sidebar_html += '<ul class="treeview-menu">';
                     for(var j in subLeftMenuItems){
+                        OA_MenusIDs.push(parseInt(subLeftMenuItems[j].content.id));
                         //判断有没有第三层菜单
                         if(typeof subLeftMenuItems[j].items == "undefined"){
                             sidebar_html += '<li><a id="nav'+subLeftMenuItems[j].content.id+'" class="openlink" data-label="'+subLeftMenuItems[j].content.cfg_comment+'" data-id="'+subLeftMenuItems[j].content.id+'" href="'+subLeftMenuItems[j].content.value.url+'"><i class="'+ ( oa_icon_is_empty( subLeftMenuItems[j].content.value.icon ) ? "fa  fa-angle-right" : subLeftMenuItems[j].content.value.icon) +'"></i> '+subLeftMenuItems[j].content.cfg_comment+'</a></li>';
@@ -185,7 +191,6 @@ function initOpenAdmMenusEvents() {
 
     $('.openlink').each(function (index,el) {
         $(el).click(function (e) {
-            console.log(e);
             oa_open_window(el);
             return false;
         });//end click
@@ -271,6 +276,27 @@ function oa_tab_context_menu(el) {
     });
 }
 
+/**
+ * 递归获取content.id
+ * @param menus
+ * @param depth
+ */
+function oa_menu_ids(menus,depth) {
+    if(depth>=5)return;
+    depth = depth || 0;
+    for(var i in menus){
+        if(typeof menus[i].content == 'object' && typeof menus[i].content.id != 'undefined'){
+            OA_MenusIDs.push(parseInt(menus[i].content.id))
+        }
+        if(typeof menus[i].items == 'object'){
+            oa_menu_ids(menus[i].items,depth++)
+        }
+        if(typeof menus[i] == 'object'){
+            oa_menu_ids(menus[i],depth++)
+        }
+    }
+}
+
 function oa_update_menu(delMenuId)
 {
     //如果是删除菜单的操作,则需要关闭相应的tab window
@@ -292,6 +318,15 @@ function oa_update_menu(delMenuId)
     $.get('/admin/dashboard/index',function (data) {
         $('body').append(data);
         oa_build_top_menu();
+        oa_menu_ids(OA_Menus_Children,0);
+
+        //判断打开的tabs的页面 不在 OA_Menus_Children 的要关闭
+        $('#tab_nav li').each(function () {
+            var id = parseInt($(this).data('id'));
+            if(OA_MenusIDs.indexOf(id) === -1){
+                oa_tab_close(id);
+            }
+        })
         var hasFoundOldMenu = false;
         $('#topmenu a').each(function (i,el) {
             if(activeMenuId == $(el).data('id')){
