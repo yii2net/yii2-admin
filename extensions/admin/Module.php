@@ -14,6 +14,8 @@ class Module extends \yii\base\Module
 
     public $defaultRoute = 'dashboard/index';
 
+    public $extensionDir = '@app/extensions';
+
     /**
      * @inheritdoc
      */

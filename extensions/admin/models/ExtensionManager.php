@@ -13,6 +13,7 @@ use yii\base\ErrorException;
 use yii\helpers\Json;
 use yii\base\InvalidArgumentException;
 use yii\helpers\Html;
+use Yikaikeji\Extension;
 
 class ExtensionManager
 {

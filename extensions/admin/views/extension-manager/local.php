@@ -17,7 +17,7 @@ td{padding:0;}
 $items = [
     ['label'=>'全部','url'=>['local','tab'=>'all'],'active'=>'true'],
     ['label'=>'已安装','url'=>['local','tab'=>'setuped'],'active'=>'true'],
-    ['label'=>'未安装','url'=>['local','tab'=>'new'],'active'=>'true'],
+    ['label'=>'未安装','url'=>['local','tab'=>'downloaded'],'active'=>'true'],
 ];
 foreach (['all','setuped','new'] as $i=>$v){
     if($tab!=$v){
@@ -35,33 +35,47 @@ $data = array();
 if(is_array($result) && isset($result['data'])){
 	foreach($result['data'] as $v){
 		if(is_array($v)){
-			$author = isset($v['config']['author']) ? "开发者:".$v['config']['author'] :'';
-			$email = isset($v['config']['email']) ? "联系方式:".$v['config']['email'] :'';
-			$dependencies = isset($v['config']['dependencies']) ? $v['config']['dependencies'] :'';
-			$v['config']['description'] = mb_substr($v['config']['description'], 0,"255");
-			$v['config']['description'] .= "<br/>".$author.", ".$email;
+            $author = "";
+		    if(isset($v['authors'])){
+		        foreach ($v['authors'] as $one){
+                    $author .= ",{$one['name']}";
+                }
+		        $author = "开发者：".substr($author,1);
+            }
+			$dependencies = [];
+            foreach ($v['require'] as $packageName=>$packageVersion){
+                $dependencies[] = "{$packageName}: {$packageVersion}";
+            }
+			$v['description'] = mb_substr($v['description'], 0,"255");
+			if($author){
+                $v['description'] .= "<br/>".$author;
+            }
 			if(!empty($dependencies)){
-				$v['config']['description'] .= "<br/>"."依赖模块:".$dependencies;
+				$v['description'] .= "<br/>"."依赖模块:".join('; ',$dependencies);
 			}
-			if(!empty($v['config']['needed'])){
-				$v['config']['description'] .= "<br/>"."<font color='#f00' id='needed'>缺失依赖模块:</font>".$v['config']['needed'];
+			if(!empty($v['unInstalledDependencies'])){
+			    $need = [];
+			    foreach ($v['unInstalledDependencies'] as $packageName=>$packageVersion){
+                    $need[] = "{$packageName}:{$packageVersion}";
+                }
+				$v['description'] .= "<br/>"."<span style='color:#f00' id='needed'>缺失依赖模块:</span>".join("; ",$need);
 			}
 			//增加操作类型
             $btn_setup_label = Html::tag('i','安装',['class'=>'fa fa-cog']);
-			$btn_setup = Html::a($btn_setup_label,'#',['class' => 'setup btn btn-xs btn-primary','style'=>'','data-toggle' => 'modal','data-title'=>$v['config']['name'],'data-target'=>'#install-modal']);
+			$btn_setup = Html::a($btn_setup_label,'#',['class' => 'setup btn btn-xs btn-primary','style'=>'','data-toggle' => 'modal','data-title'=>$v['name'],'data-target'=>'#install-modal']);
 
             $btn_unsetup_label = Html::tag('i','卸载',['class'=>'fa fa-edit']);
-			$btn_unsetup = Html::a($btn_unsetup_label,'#',['class' => 'unsetup btn btn-xs btn-success','style'=>'','data-toggle' => 'modal','data-title'=>$v['config']['name'],'data-toggle'=>'#modal']);
+			$btn_unsetup = Html::a($btn_unsetup_label,'#',['class' => 'unsetup btn btn-xs btn-success','style'=>'','data-toggle' => 'modal','data-title'=>$v['name'],'data-toggle'=>'#modal']);
 
 			$btn_delete_label = Html::tag('i','删除',['class'=>'fa fa-trash']);
-            $btn_delete = Html::a($btn_delete_label,'#',['class' => 'delete btn btn-xs btn-danger','style'=>'','data-title'=>$v['config']['name'],'data-toggle' => 'modal','data-toggle'=>'#modal']);
-			$v['config']['_action_'] = '';
-			if($v['setup']){
-				$v['config']['_action_'] = $btn_unsetup;
-			}else{
-				$v['config']['_action_'] = $btn_setup.' '.$btn_delete;
+            $btn_delete = Html::a($btn_delete_label,'#',['class' => 'delete btn btn-xs btn-danger','style'=>'','data-title'=>$v['name'],'data-toggle' => 'modal','data-toggle'=>'#modal']);
+			$v['_action_'] = '';
+			if($v['status']=='downloaded'){
+				$v['_action_'] = $btn_unsetup;
+			}elseif($v['status']=='setuped'){
+				$v['_action_'] = $btn_setup.' '.$btn_delete;
 			}
-			$data[]=$v['config'];
+			$data[]=$v;
 		}
 			
 	}
@@ -70,23 +84,23 @@ if(is_array($result) && isset($result['data'])){
 $gridDataProvider = new ArrayDataProvider([
     'allModels' => $data,
     'sort' => [
-        'attributes' => ['id', 'username', 'email'],
+        //'attributes' => ['name', 'prettyName', 'email'],
     ],
     'pagination' => [
-        'pageSize' => 20,
+        'pageSize' => $result['pageSize'],
     ],
 ]);
 //,'onclick'=>'extension_action(this,"setup")'
-//$gridDataProvider->setTotalItemCount(isset($result['total']) ? $result['total'] :0);
-//$gridDataProvider->getPagination()->pageSize = isset($result['pageSize']) ? $result['pageSize'] :0;
+$gridDataProvider->setTotalCount($result['total']);
+$gridDataProvider->getPagination()->pageSize = $result['pageSize'];
 echo GridView::widget([
     'dataProvider' => $gridDataProvider,
     'layout' => "{items}{summary}{pager}",
     'columns' => array(
-        array('attribute'=>'id', 'header'=>'ID','options'=>array('style'=>'width:15%','class'=>'extensionid')),
-        array('attribute'=>'name', 'header'=>'名称','options'=>array('style'=>'width:15%')),
-        array('attribute'=>'type', 'header'=>'类型','options'=>array('style'=>'width:5%')),
-        array('attribute'=>'version', 'header'=>'版本','options'=>array('style'=>'width:5%')),
+        array('attribute'=>'name', 'header'=>'包名','options'=>array('style'=>'width:15%','class'=>'extensionid')),
+        array('attribute'=>'prettyName', 'header'=>'名称','options'=>array('style'=>'width:15%')),
+        array('attribute'=>'extType', 'header'=>'类型','options'=>array('style'=>'width:5%')),
+        array('attribute'=>'version', 'header'=>'版本','options'=>array('style'=>'width:10%')),
         array('attribute'=>'description', 'header'=>'描述','format' => 'raw','options'=>array('style'=>'width:45%')),
         array('attribute'=>'_action_','header'=>'操作','format' => 'raw','options'=>array('style'=>'width:15%')),
     ),

@@ -31,7 +31,7 @@
         "rmrevin/yii2-fontawesome": "~2.17",
         "intervention/image": "^2.3",
         "bizley/migration": "^2.2",
-        "jean85/pretty-package-versions": "~1.2",
+        "yikaikeji/extension": "dev-master",
         "kassko/util-reflection": "dev-master"
     },
     "autoload": {

@@ -5,7 +5,7 @@ use Yii;
 use yikaikeji\openadm\controllers\Controller;
 use yikaikeji\openadm\web\SystemConfig;
 use yikaikeji\openadm\extensions\admin\models\ExtensionManager;
-
+use Yikaikeji\Extension\Loader as ExtensionLoader;
 class ExtensionManagerController extends Controller
 {
 
@@ -21,10 +21,11 @@ class ExtensionManagerController extends Controller
 	
 	public function actionLocal($tab = "all",$page=1)
 	{
-		$tab = in_array($tab,array('all','setuped','new')) ? $tab : 'all';
+		$tab = in_array($tab,array('all','setuped','downloaded')) ? $tab : 'all';
 		//获取插件
 		$pageSize = 20;
-		$result = ExtensionManager::GetExtensions($tab,$page,$pageSize);
+		$ExtensionLoader = new ExtensionLoader(['installedPath'=>Yii::getAlias($this->module->extensionDir)]);
+		$result = $ExtensionLoader->localList('',$tab=='all' ? '' : $tab,'',$page,$pageSize);
 		return $this->render("local",['tab'=>$tab,'result'=>$result]);
 	}
 	
