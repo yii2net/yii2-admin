@@ -24,7 +24,11 @@ class ExtensionManagerController extends Controller
 		$tab = in_array($tab,array('all','setuped','downloaded')) ? $tab : 'all';
 		//获取插件
 		$pageSize = 20;
-		$ExtensionLoader = new ExtensionLoader(['installedPath'=>Yii::getAlias($this->module->extensionDir)]);
+		$ExtensionLoader = new ExtensionLoader([
+		    'rootProjectPath'=>Yii::getAlias($this->module->rootProjectPath),
+		    'packageInstalledPath'=>Yii::getAlias($this->module->packageInstalledPath),
+            'packageScanPath'=>Yii::getAlias($this->module->packageScanPath),
+        ]);
 		$result = $ExtensionLoader->localList('',$tab=='all' ? '' : $tab,'',$page,$pageSize);
 		return $this->render("local",['tab'=>$tab,'result'=>$result]);
 	}
@@ -40,10 +44,17 @@ class ExtensionManagerController extends Controller
 	{
         if(Yii::$app->request->isPost){
             $action   = Yii::$app->request->post('action','');
-            $extensionid = Yii::$app->request->post('extensionid','');
-            if($extensionid && $action && in_array($action,['setup','unsetup','delete'])){
+            $packageName = Yii::$app->request->post('packageName','');
+            $packageVersion = Yii::$app->request->post('packageVersion','');
+            $locate = Yii::$app->request->post('locate','');
+            if($packageName && $action && in_array($action,['setup','unsetup','delete'])){
                 ExtensionManager::setShowMsg(1);
-                $result = ExtensionManager::$action($extensionid);
+                $ExtensionLoader = new ExtensionLoader([
+                    'rootProjectPath'=>Yii::getAlias($this->module->rootProjectPath),
+                    'packageInstalledPath'=>Yii::getAlias($this->module->packageInstalledPath),
+                    'packageScanPath'=>Yii::getAlias($this->module->packageScanPath),
+                ]);
+                $result = $ExtensionLoader->$action($packageName,$packageVersion,$locate);
                 ExtensionManager::setShowMsg(0);
                 //update  systemconfig
                 SystemConfig::cache_flush();

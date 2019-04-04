@@ -98,9 +98,9 @@ echo GridView::widget([
     'layout' => "{items}{summary}{pager}",
     'columns' => array(
         array('attribute'=>'name', 'header'=>'包名','options'=>array('style'=>'width:15%','class'=>'extensionid')),
+        array('attribute'=>'version', 'header'=>'版本','options'=>array('style'=>'width:10%')),
         array('attribute'=>'prettyName', 'header'=>'名称','options'=>array('style'=>'width:15%')),
         array('attribute'=>'extType', 'header'=>'类型','options'=>array('style'=>'width:5%')),
-        array('attribute'=>'version', 'header'=>'版本','options'=>array('style'=>'width:10%')),
         array('attribute'=>'description', 'header'=>'描述','format' => 'raw','options'=>array('style'=>'width:45%')),
         array('attribute'=>'_action_','header'=>'操作','format' => 'raw','options'=>array('style'=>'width:15%')),
     ),
@@ -139,10 +139,12 @@ function doAction(o,action){
     $('.modal-body').css('height','400px');
     $('.modal-body').css('overflow-y','scroll');
     var tr = $(o).parent().parent();
-    var id = tr.find("td:first").text();
+    var packageName = tr.find("td:first").text();
+    var packageVersion = tr.find("td:nth-child(2)").text();
+    var locate = 'local';
 
     //使用iframe
-    submitForm('/admin/extension-manager/ajax',{extensionid:id,action:action,'_csrf':'<?=Yii::$app->request->csrfToken?>'});
+    submitForm('/admin/extension-manager/ajax',{packageName:packageName,packageVersion:packageVersion,locate:locate,action:action,'_csrf':'<?=Yii::$app->request->csrfToken?>'});
 }
 
 window.onmessage = function (msg,boxId) {

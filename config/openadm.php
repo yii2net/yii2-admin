@@ -66,8 +66,7 @@ return [
             'class' => 'yikaikeji\openadm\extensions\admin\Module',
             'as access' => [
                 'class' => yii2mod\rbac\filters\AccessControl::class,
-            ],
-            'extensionDir' => '@app/extensions'
+            ]
         ],
         'noty' => [
             'class' => 'lo\modules\noty\Module',
