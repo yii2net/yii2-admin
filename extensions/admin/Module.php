@@ -20,6 +20,8 @@ class Module extends \yii\base\Module
 
     public $rootProjectPath = '@root';
 
+    public $composerPath = '/usr/local/bin/composer';
+
     /**
      * @inheritdoc
      */

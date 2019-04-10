@@ -5,7 +5,7 @@ use Yii;
 use yikaikeji\openadm\controllers\Controller;
 use yikaikeji\openadm\web\SystemConfig;
 use yikaikeji\openadm\extensions\admin\models\ExtensionManager;
-use Yikaikeji\Extension\Loader as ExtensionLoader;
+
 class ExtensionManagerController extends Controller
 {
 
@@ -24,12 +24,7 @@ class ExtensionManagerController extends Controller
 		$tab = in_array($tab,array('all','setuped','downloaded')) ? $tab : 'all';
 		//获取插件
 		$pageSize = 20;
-		$ExtensionLoader = new ExtensionLoader([
-		    'rootProjectPath'=>Yii::getAlias($this->module->rootProjectPath),
-		    'packageInstalledPath'=>Yii::getAlias($this->module->packageInstalledPath),
-            'packageScanPath'=>Yii::getAlias($this->module->packageScanPath),
-        ]);
-		$result = $ExtensionLoader->localList('',$tab=='all' ? '' : $tab,'',$page,$pageSize);
+		$result = ExtensionManager::GetLocalExtensions($tab,$page,$pageSize);
 		return $this->render("local",['tab'=>$tab,'result'=>$result]);
 	}
 	
@@ -47,19 +42,19 @@ class ExtensionManagerController extends Controller
             $packageName = Yii::$app->request->post('packageName','');
             $packageVersion = Yii::$app->request->post('packageVersion','');
             $locate = Yii::$app->request->post('locate','');
+            ob_start();
+            ob_end_clean();
+            ob_implicit_flush();
+            header('X-Accel-Buffering: no');
             if($packageName && $action && in_array($action,['setup','unsetup','delete'])){
                 ExtensionManager::setShowMsg(1);
-                $ExtensionLoader = new ExtensionLoader([
-                    'rootProjectPath'=>Yii::getAlias($this->module->rootProjectPath),
-                    'packageInstalledPath'=>Yii::getAlias($this->module->packageInstalledPath),
-                    'packageScanPath'=>Yii::getAlias($this->module->packageScanPath),
-                ]);
-                $result = $ExtensionLoader->$action($packageName,$packageVersion,$locate);
+                ExtensionManager::$action($packageName,$packageVersion,$locate);
                 ExtensionManager::setShowMsg(0);
                 //update  systemconfig
                 SystemConfig::cache_flush();
             }
         }
+        Yii::$app->end(Yii::$app->STATE_SENDING_RESPONSE);
 	}
 
 

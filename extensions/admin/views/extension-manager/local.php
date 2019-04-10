@@ -5,12 +5,19 @@ use yii\data\ArrayDataProvider;
 use yii\grid\GridView;
 use yii\bootstrap\Button;
 use yii\bootstrap\Modal;
-$this->params['breadcrumbs'][] = '模块管理';
+$this->params['breadcrumbs'][] = '扩展管理';
 ?>
 <style>
 .table thead>tr>th, .table tbody>tr>th, .table tfoot>tr>th, .table thead>tr>td, .table tbody>tr>td, .table tfoot>tr>td{font-size:12px;line-height:20px;padding:3px;overflow:hidden;height:20px;}
 td{padding:0;}
 .pagination{margin:5px 0;}
+.modal-body{
+    background-color: #000;
+    color:#c7c7c7;
+}
+.modal.in .modal-dialog{
+    width: 700px;
+}
 </style>
 <div class="nav-tabs-custom">
 <?php
@@ -51,28 +58,32 @@ if(is_array($result) && isset($result['data'])){
                 $v['description'] .= "<br/>".$author;
             }
 			if(!empty($dependencies)){
-				$v['description'] .= "<br/>"."依赖模块:".join('; ',$dependencies);
+				$v['description'] .= "<br/>"."依赖扩展:".join('; ',$dependencies);
 			}
 			if(!empty($v['unInstalledDependencies'])){
 			    $need = [];
 			    foreach ($v['unInstalledDependencies'] as $packageName=>$packageVersion){
-                    $need[] = "{$packageName}:{$packageVersion}";
+			        if(is_array($packageVersion)){
+                        $need[] = "{$packageName}:{$packageVersion[0]}";
+                    }else{
+                        $need[] = "{$packageName}:{$packageVersion}";
+                    }
                 }
-				$v['description'] .= "<br/>"."<span style='color:#f00' id='needed'>缺失依赖模块:</span>".join("; ",$need);
+				$v['description'] .= "<br/>"."<span style='color:#f00' id='needed'>缺失依赖扩展:</span>".join("; ",$need);
 			}
 			//增加操作类型
             $btn_setup_label = Html::tag('i','安装',['class'=>'fa fa-cog']);
-			$btn_setup = Html::a($btn_setup_label,'#',['class' => 'setup btn btn-xs btn-primary','style'=>'','data-toggle' => 'modal','data-title'=>$v['name'],'data-target'=>'#install-modal']);
+			$btn_setup = Html::a($btn_setup_label,'#',['class' => 'setup btn btn-xs btn-primary','style'=>'','data-toggle' => 'modal','data-title'=>$v['name'],'data-version'=>$v['version'],'data-target'=>'#install-modal']);
 
             $btn_unsetup_label = Html::tag('i','卸载',['class'=>'fa fa-edit']);
-			$btn_unsetup = Html::a($btn_unsetup_label,'#',['class' => 'unsetup btn btn-xs btn-success','style'=>'','data-toggle' => 'modal','data-title'=>$v['name'],'data-toggle'=>'#modal']);
+			$btn_unsetup = Html::a($btn_unsetup_label,'#',['class' => 'unsetup btn btn-xs btn-success','style'=>'','data-toggle' => 'modal','data-title'=>$v['name'],'data-version'=>$v['version'],'data-toggle'=>'#modal']);
 
 			$btn_delete_label = Html::tag('i','删除',['class'=>'fa fa-trash']);
-            $btn_delete = Html::a($btn_delete_label,'#',['class' => 'delete btn btn-xs btn-danger','style'=>'','data-title'=>$v['name'],'data-toggle' => 'modal','data-toggle'=>'#modal']);
+            $btn_delete = Html::a($btn_delete_label,'#',['class' => 'delete btn btn-xs btn-danger','style'=>'','data-title'=>$v['name'],'data-toggle' => 'modal','data-version'=>$v['version'],'data-toggle'=>'#modal']);
 			$v['_action_'] = '';
-			if($v['status']=='downloaded'){
+			if($v['status']=='setuped'){
 				$v['_action_'] = $btn_unsetup;
-			}elseif($v['status']=='setuped'){
+			}elseif($v['status']=='downloaded'){
 				$v['_action_'] = $btn_setup.' '.$btn_delete;
 			}
 			$data[]=$v;
@@ -133,8 +144,8 @@ function extension_action(o,action)
 
 function doAction(o,action){
     $('#install-modal').modal('show');
-    var title = action == 'setup' ? "安装模块" : ( action == 'unsetup' ? "卸载模块" : "删除模块" );
-    title += ": <b>"+$(o).data('title')+"</b>";
+    var title = action == 'setup' ? "安装扩展" : ( action == 'unsetup' ? "卸载扩展" : "删除扩展" );
+    title += ": <b>"+$(o).data('title')+":"+$(o).data('version')+"</b>";
     $('#install-modal .modal-header').html(title);
     $('.modal-body').css('height','400px');
     $('.modal-body').css('overflow-y','scroll');
