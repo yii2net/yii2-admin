@@ -256,10 +256,10 @@ class ExtensionManager
     /**
      * 删除静态变量数组里面的值
      */
-    static public function ExtensionDeleteStaticVar($packageName)
+    static public function ExtensionDeleteStaticVar($package)
     {
         if(!empty(static::$_setupedextensions)){
-            unset(static::$_setupedextensions[$packageName]);
+            unset(static::$_setupedextensions[$package->getName()]);
         }
     }
 
@@ -613,6 +613,53 @@ class ExtensionManager
         return $save_config;
     }
 
+    static public function RefreshExtensionsConfig($package,$action = 'setup')
+    {
+        $packageNames = [];
+        $extensions = static::GetSetupedExtensions();
+        if($action == 'unsetup' && isset($extensions[$package->getName()])){
+            unset($extensions[$package->getName()]);
+        }elseif($action == 'setup' && !isset($extensions[$package->getName()])){
+            $extensions[$package->getName()] = '';
+        }
+        if($extensions){
+            $packageNames = array_keys($extensions);
+        }
+        if($packageNames){
+            $setupedExtensionsConfig = [];
+            foreach ($packageNames as $packageName){
+                //if($packageName == $package->getName())continue;
+                $setupedExtensionsConfig = yii\helpers\ArrayHelper::merge(
+                    $setupedExtensionsConfig,
+                    static::getPackageApplicationConfigByKeys($packageName)
+                );
+            }
+        }else{
+            $setupedExtensionsConfig = [
+                'web' => [],
+                'console' => []
+            ];
+        }
+        foreach ($setupedExtensionsConfig as $key => $config){
+            $filename = strtolower($key)."-ext.php";
+            $file = \Yii::getAlias("@config").DIRECTORY_SEPARATOR.$filename;
+            file_put_contents($file,"<?php \n return ".var_export($config,true). ';');
+        }
+    }
+
+    static public function getPackageApplicationConfigByKeys($packageName)
+    {
+        $config = [];
+        $needCombineKeys = ['web','console'];
+        $configFile = \Yii::getAlias("@extensions").DIRECTORY_SEPARATOR.$packageName.DIRECTORY_SEPARATOR."config.php";
+        if($configFile){
+            $array = require $configFile;
+            foreach ($needCombineKeys as $key){
+                $config[$key] = isset($array[$key]) ? $array[$key] : [];
+            }
+        }
+        return $config;
+    }
 
     /**
      * 安装扩展
@@ -624,6 +671,7 @@ class ExtensionManager
         $data = array("status"=>static::STATUS_ERROR,'msg'=>'未知错误');
         //检查是否已经安装
         if( 0 == static::IsSetuped($packageName)){
+            static::showMsg("执行 composer update ...",1);
             static::loader()->setup($packageName,$packageVersion,$locate);
             static::showMsg("获取扩展配置...",0);
             $configRaw = static::GetExtensionConfig($packageName,false,false);//关闭这里的扩展检测
@@ -650,22 +698,27 @@ class ExtensionManager
                     $data['msg']      = "扩展Migrate失败,请检查扩展Migration配置!";
                     return $data;
                 }
-                static::showMsg("开始注册菜单...",0);
+
                 //注入菜单
+                static::showMsg("开始注册菜单...",0);
                 static::ExtensionInjectMenu($package);
                 static::showMsg("完成",1,'success');
-                static::showMsg("开始注册路由...",0);
-                //注入route
-                static::ExtensionInjectRoute($package);
-                static::showMsg("完成",1,'success');
+
+                //注入config到db
                 static::showMsg("开始注册系统配置...",0);
-                //注入config
                 static::ExtensionInjectConfig($package);
                 static::showMsg("完成",1,'success');
-                static::showMsg("保存扩展信息到数据库...",0);
+
+                //重新生成所有生效插件的config到openadm/config/extensions.php
+                static::showMsg("开始刷新所有扩展的配置文件...",0);
+                static::RefreshExtensionsConfig($package,'setup');
+                static::showMsg("完成",1,'success');
+
                 //完成最后操作
+                static::showMsg("保存扩展信息到数据库...",0);
                 static::ExtensionSetupedCompleted($package);
                 static::showMsg("完成",1,'success');
+
                 $data['status'] = static::STATUS_SUCCESS;
                 $data['msg'] = "安装成功";
                 static::showMsg("扩展安装完成",1,'success');
@@ -707,10 +760,15 @@ class ExtensionManager
         static::ExtensionDeleteDBConfig($package);
         static::showMsg('完成',1,'success');
         //composer remove
-        static::showMsg('composer remove '. $packageName . '...',0,'info');
-        static::loader()->unSetup($packageName);
+        static::showMsg('执行 composer remove '. $packageName . '...',1,'info');
+        static::loader()->unSetup($packageName,$locate);
         static::showMsg('完成',1,'success');
+
         static::ExtensionDeleteStaticVar($package);
+
+        //重新生成所有生效插件的config到openadm/config/extensions.php
+        static::showMsg("开始刷新所有扩展的配置文件...",0);
+        static::RefreshExtensionsConfig($package,'unsetup');
         static::showMsg('卸载完成!',1,'success');
         $data = array("status"=>static::STATUS_SUCCESS,'msg'=>'卸载完成');
         return $data;
