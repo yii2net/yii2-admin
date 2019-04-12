@@ -110,35 +110,59 @@ function oa_top_menu_click() {
     })
 }
 
-function oa_open_app(url,label,id) {
+function oa_task_tab(label,id) {
     var tab_box    = $('#tab_box');
     var tabnav_box = $('#tab_nav');
-    //判断tab是否已经存在
     if($('#tab_nav_'+id).length==0) {
         //create tab nav
-        var tab_nav = $('<li data-id="'+id+'"  id="tab_nav_'+id+'" class="active"><a href="#tab_'+id+'"  data-toggle="tab">'+label+' <i class="fa fa-remove" onclick="oa_tab_close('+id+')"></i></a></li>');
+        var tab_nav = $('<li data-id="'+id+'"  id="tab_nav_'+id+'" class="taskactive"><a href="#tab_'+id+'"  data-toggle="task-tab">'+label+' <i class="fa fa-remove" onclick="oa_tab_close('+id+')"></i></a></li>');
         tabnav_box.append(tab_nav);
-
-        $(tab_nav).on('shown.bs.tab', function (e) {
-            var id = $(e.target).parent().data('id');
-            height = oa_intval($('#iframe_'+id).outerHeight());
-            oa_tab_iframe_height(id,height);//需要重新设置iframe的高度,否则点击其他tab再点击回来iframe高度不可用。
-        })
 
         //create content
         var tab = $('<div class="tab-pane" id="tab_'+id+'"></div>');
         tab_box.append(tab);
-        var iframe = $('<iframe id="iframe_'+id+'" width="100%" frameborder="no" border="0" marginwidth="0" marginheight="0" scrolling="auto" allowtransparency="yes" src="" />');
-        $('#tab_'+id).html(iframe);
-        $("#iframe_"+id).attr('src',url);
+
+        oa_tab_context_menu(tab_nav);
+        oa_setTabActiveById(id);
     }
 
+}
+
+function oa_task_toggle() {
+    $('')
+}
+
+function oa_open_app(url,label,id) {
+
+    if(oa_check_need_iframe(url)){
+        oa_open_iframe(url,label,id);
+    }else{
+        oa_open_single(url,label,id);
+    }
+}
+
+function oa_check_need_iframe(url) {
+    return new RegExp("iframe").test(url);
+}
+
+function oa_open_single(url,label,id) {
+    oa_task_tab(label,id);
+    var iframe = $('<div id="iframe_'+id+'" data-url="'+ url +'" data-label="'+label+'"></div>');
+    $('#tab_'+id).html(iframe);
+    $(iframe).load(url);
+}
+
+function oa_open_iframe(url,label,id) {
+    oa_task_tab(label,id);
+    $('#tab_nav_'+id).on('shown.bs.task-tab', function (e) {
+        var id = $(e.target).parent().data('id');
+        height = oa_intval($('#iframe_' + id).outerHeight());
+        oa_tab_iframe_height(id, height);//需要重新设置iframe的高度,否则点击其他tab再点击回来iframe高度不可用。
+    });
+    var iframe = $('<iframe id="iframe_' + id + '" width="100%" frameborder="no" border="0" marginwidth="0" marginheight="0" scrolling="auto" allowtransparency="yes" src="" />');
+    $('#tab_' + id).html(iframe);
+    $("#iframe_" + id).attr('src', url);
     oa_tab_iframe_height(id);
-
-    oa_tab_context_menu(tab_nav);
-
-    oa_setTabActiveById(id);
-
 }
 
 function oa_open_window(el) {
@@ -189,24 +213,29 @@ function oa_tab_iframe_height(id,height) {
 
 function initOpenAdmMenusEvents() {
 
-    $('.openlink').each(function (index,el) {
+    $('.sidebar-menu .openlink').each(function (index,el) {
         $(el).bind('click',function (e) {
             $('.sidebar-menu li').removeClass('active');
             $(el).parent().addClass('active');
             oa_open_window(el);
             return false;
         });//end click
-
+    });
+    $('.user-menu .openlink').each(function (index,el) {
+        $(el).bind('click',function (e) {
+            oa_open_window(el);
+            return false;
+        });//end click
     });
 }
 
 function oa_setTabActiveById(id) {
     //切换active为当前的tab
-    $('#tab_nav li').removeClass('active');
-    $('#tab_nav_'+id).addClass('active');
+    $('#tab_nav li').removeClass('taskactive');
+    $('#tab_nav_'+id).addClass('taskactive');
     //tab content
-    $('#tab_box div').removeClass('active');
-    $('#tab_'+id).addClass('active');
+    $('#tab_box div').removeClass('taskactive');
+    $('#tab_'+id).addClass('taskactive');
 }
 
 function resizeIFramesSize() {
@@ -236,14 +265,27 @@ function oa_tab_close(id) {
     $(tabnavbid).remove();
 }
 
+function oa_app_refresh(id) {
+    var elid = 'iframe_'+id;
+    if($('div#'+elid).length>0){
+        //single
+        var url = $('div#'+elid).data('url');
+        var label = $('div#'+elid).data('label');
+        oa_open_single(url,label,id);
+    }else{
+        //iframe
+        var url = oa_timestamp(document.getElementById(elid).contentDocument.location.href);
+        document.getElementById('iframe_'+id).contentDocument.location.href = url;
+    }
+}
+
 function oa_tab_context_menu(el) {
     var id = $(el).data('id');
     $(el).contextMenu('tabmenu',{
         bindings:{
             'refresh':function (t) {
                 oa_setTabActiveById(id);
-                var url = oa_timestamp(document.getElementById('iframe_'+id).contentDocument.location.href);
-                document.getElementById('iframe_'+id).contentDocument.location.href = url;
+                oa_app_refresh(id);
                 $("div#tabmenu").hide();
             },
             'cancel': function(t) {

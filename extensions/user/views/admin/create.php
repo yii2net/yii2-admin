@@ -18,7 +18,7 @@ $this->title = $title;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('user', 'Users'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="box box-info">
+<div class="box">
     <div class="box-header with-border">
         <h3 class="box-title"><i class="fa fa-user"></i><span class="break"><?php echo Html::encode($this->title); ?></span></h3>
         <div class="box-icon">

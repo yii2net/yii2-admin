@@ -96,7 +96,7 @@ return [
             ],
             'controllerMap' => [
                 'assignment' => [
-                    'class' => 'yii2mod\rbac\controllers\AssignmentController',
+                    'class' => 'yikaikeji\openadm\extensions\rbac\controllers\AssignmentController',
                 ],
                 'role' => [
                     'class' => 'yikaikeji\openadm\extensions\rbac\controllers\RoleController',

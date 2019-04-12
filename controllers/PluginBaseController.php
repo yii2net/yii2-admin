@@ -13,7 +13,7 @@ class PluginBaseController extends Controller
 {
 	protected $pluginName = "";
 
-    public $layout = '/main';//必须是/main,斜线不能去掉,否则Plugin找不到模板
+    public $layout = false;//必须是/main,斜线不能去掉
 
     public function getUniqueId()
     {

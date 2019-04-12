@@ -21,6 +21,7 @@ class ThemeAsset extends AssetBundle
     ];
     public $js = [
         'js/jquery.contextmenu.r2.js',
+        'js/tasktab.js',
         'js/openadm.js',
         'js/theme.js'
     ];

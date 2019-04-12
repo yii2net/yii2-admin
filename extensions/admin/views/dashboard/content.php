@@ -4,10 +4,12 @@ use yii\widgets\Breadcrumbs;
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper" id="openadm_content">
     <!-- Content Header (Page header) -->
-    <ul class="nav nav-tabs" id="tab_nav">
+    <ul class="task-nav task-nav-tabs" id="tab_nav">
     </ul>
-    <div class="tab-content" id="tab_box">
+    <div class="content">
+        <div class="tab-content" id="tab_box">
 
+        </div>
     </div>
 </div>
 <!-- /.content-wrapper -->

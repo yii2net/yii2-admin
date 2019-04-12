@@ -8,7 +8,7 @@ th,.label,.btn,.dropdown-menu>li>a{
     width: auto;
     min-width: 100px;
 }
-a{
+a,a:hover,a:active,a:focus{
     color:#333;
 }
 .box{
@@ -32,20 +32,55 @@ a{
 body>.content{
     padding-top:0px;
 }
-#openadm_content .nav-tabs{
+/*这个是控制任务栏的样式*/
+.task-nav {
+    padding-left: 0;
+    margin-bottom: 0;
+    list-style: none;
+}
+.task-nav-tabs {
+    border-bottom: 1px solid #ddd;
+}
+.task-nav-tabs > li {
+    float: left;
+    margin-bottom: -1px;
+}
+.task-nav > li {
+    position: relative;
+    display: block;
+}
+.task-nav-tabs > li > a {
+    margin-right: 2px;
+    line-height: 1.42857143;
+    border-radius: 4px 4px 0 0;
+}
+.task-nav > li > a {
+    position: relative;
+    display: block;
+    padding: 10px 15px;
+}
+.task-nav-tabs > li.taskactive > a, .task-nav-tabs > li.taskactive > a:hover, .task-nav-tabs > li.taskactive > a:focus {
+    border-radius: 0;
+    border-top: none;
+}
+.task-nav-tabs > li.taskactive > a, .task-nav-tabs > li.taskactive > a:hover, .task-nav-tabs > li.taskactive > a:focus {
+    cursor: default;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-bottom-color: transparent;
+    color:#333;
+}
+#openadm_content>.task-nav-tabs{
     border-bottom: none;
     height: 40px;
     line-height: 40px;
     background-color: #fff;
     box-shadow: 0 1px 2px 0 rgba(0,0,0,.2);
 }
-#openadm_content .nav-tabs>li{
+#openadm_content>.task-nav-tabs>li{
     margin-bottom:0;
 }
-.nav-tabs-custom>.nav-tabs > li > a{
-    border-bottom: 0;
-}
-#openadm_content .nav-tabs > li{
+#openadm_content>.task-nav-tabs > li{
     height:40px;
     margin-right:0;
     min-width: 0;
@@ -56,18 +91,33 @@ body>.content{
     border-right: 1px solid #f6f6f6;
     vertical-align: top;
 }
-#openadm_content .nav-tabs > li.active > a{
+#openadm_content>.task-nav-tabs > li.taskactive > a{
     background-color: #f6f6f6;
     border:none;
 }
-#openadm_content .nav-tabs > li > a{
+#openadm_content>.task-nav-tabs > li > a:hover{
+    background-color: #f6f6f6;
+}
+#openadm_content>.task-nav-tabs > li > a {
     border-radius: 0;
     border-top: none;
     border-bottom: none;
     font-size: 13px;
     line-height: 40px;
     padding: 0 15px;
-    margin-right:0;
+    margin-right: 0;
+}
+.tab-content > .tab-pane.taskactive{
+    display: block;
+}
+/*任务栏样式 结束*/
+/*控制single页面的样式*/
+#openadm_content .content{
+    padding-top: 0px;
+}
+
+.nav-tabs-custom>.nav-tabs > li > a{
+    border-bottom: 0;
 }
 .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus{
     border-radius: 0;

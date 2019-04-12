@@ -14,6 +14,8 @@ use yikaikeji\openadm\extensions\rbac\models\RouteModel;
  */
 class RouteController extends Controller
 {
+    public $layout = false;
+
     /**
      * Returns a list of behaviors that this component should behave as.
      *
