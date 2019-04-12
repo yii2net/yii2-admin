@@ -23,8 +23,8 @@ ThemeAsset::register($this);
     </head>
 
     <?php if(!Yii::$app->user->isGuest):?>
-    <body class="hold-transition sidebar-mini skin-yellow-light" style="padding: 15px;background-color: #f9fafc;">
-    <div class="wrapper">
+    <body class="hold-transition sidebar-mini skin-yellow-light" style="background-color: #ecf0f5;">
+    <div class="content">
 
         <?php $this->beginBody() ?>
         <?=$content?>

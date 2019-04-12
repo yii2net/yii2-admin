@@ -13,7 +13,7 @@ $this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['view', 'id
 $this->params['breadcrumbs'][] = Yii::t('yii2mod.rbac', 'Update');
 $this->render('/layouts/_sidebar');
 ?>
-<div class="box box-primary">
+<div class="box">
     <div class="box-header with-border">
         <h3 class="box-title"><i class="fa fa-user"></i><span class="break"><?php echo Html::encode($this->title); ?></span></h3>
         <div class="box-icon">

@@ -36,6 +36,9 @@ use yii\helpers\Url;
                             <li><a href="<?=Url::to('/user/admin/logout')?>"><i class="fa  fa-sign-out"></i> 退出</a></li>
                         </ul>
                     </li>
+                    <li>
+                        <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
+                    </li>
                 </ul>
             </div>
 

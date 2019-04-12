@@ -27,11 +27,11 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <?php Pjax::begin(['options'=>['class'=>'nav-tabs-custom']]); ?>
         <?php  $content = '<p>'?>
-        <?php  $content.= ' '.Html::a('激活', "javascript:void(0);", ['class' => 'btn btn-xs btn-success batch-active']) ?>
-        <?php  $content.= ' '.Html::a('取消激活', "javascript:void(0);", ['class' => 'btn btn-xs btn-success batch-inactive']) ?>
-        <?php  $content.= ' '.Html::a('封号', "javascript:void(0);", ['class' => 'btn btn-xs btn-primary batch-banned']) ?>
-        <?php  $content.= ' '.Html::a('取消封号', "javascript:void(0);", ['class' => 'btn btn-xs btn-primary batch-unbanned']) ?>
-        <?php  $content.= ' '.Html::a('删除', "javascript:void(0);", ['class' => 'btn btn-xs btn-danger batchdelete']) ?>
+        <?php  $content.= ' '.Html::a('激活', "javascript:void(0);", ['class' => 'btn btn-sm btn-success batch-active']) ?>
+        <?php  $content.= ' '.Html::a('取消激活', "javascript:void(0);", ['class' => 'btn btn-sm btn-success batch-inactive']) ?>
+        <?php  $content.= ' '.Html::a('封号', "javascript:void(0);", ['class' => 'btn btn-sm btn-info batch-banned']) ?>
+        <?php  $content.= ' '.Html::a('取消封号', "javascript:void(0);", ['class' => 'btn btn-sm btn-info batch-unbanned']) ?>
+        <?php  $content.= ' '.Html::a('删除', "javascript:void(0);", ['class' => 'btn btn-sm btn-danger batchdelete']) ?>
         <?php  $content.= '</p>'?>
         <?php  $content.= GridView::widget([
             'dataProvider' => $dataProvider,

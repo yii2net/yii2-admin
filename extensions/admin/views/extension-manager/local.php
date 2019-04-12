@@ -1,10 +1,13 @@
 <?php
-use yii\helpers\Html;
+use yii\bootstrap\Html;
 use yii\bootstrap\Nav;
 use yii\data\ArrayDataProvider;
 use yii\grid\GridView;
 use yii\bootstrap\Button;
+use yii\bootstrap\ButtonGroup;
 use yii\bootstrap\Modal;
+use yii\bootstrap\Tabs;
+
 $this->params['breadcrumbs'][] = '扩展管理';
 ?>
 <style>
@@ -21,104 +24,109 @@ td{padding:0;}
 </style>
 <div class="nav-tabs-custom">
 <?php
-$items = [
-    ['label'=>'全部','url'=>['local','tab'=>'all'],'active'=>'true'],
-    ['label'=>'已安装','url'=>['local','tab'=>'setuped'],'active'=>'true'],
-    ['label'=>'未安装','url'=>['local','tab'=>'downloaded'],'active'=>'true'],
-];
-foreach (['all','setuped','new'] as $i=>$v){
-    if($tab!=$v){
-        unset($items[$i]['active']);
-    }
-}
-echo Nav::widget(array(
-    'options' => ['class' =>'nav-tabs'],
-    'items'=>$items
-));
-?>
-<div class="tab-content">
-<?php
-$data = array(); 
-if(is_array($result) && isset($result['data'])){
-	foreach($result['data'] as $v){
-		if(is_array($v)){
-            $author = "";
-		    if(isset($v['authors'])){
-		        foreach ($v['authors'] as $one){
-                    $author .= ",{$one['name']}";
-                }
-		        $author = "开发者：".substr($author,1);
-            }
-			$dependencies = [];
-            foreach ($v['require'] as $packageName=>$packageVersion){
-                $dependencies[] = "{$packageName}: {$packageVersion}";
-            }
-			$v['description'] = mb_substr($v['description'], 0,"255");
-			if($author){
-                $v['description'] .= "<br/>".$author;
-            }
-			if(!empty($dependencies)){
-				$v['description'] .= "<br/>"."依赖扩展:".join('; ',$dependencies);
-			}
-			if(!empty($v['unInstalledDependencies'])){
-			    $need = [];
-			    foreach ($v['unInstalledDependencies'] as $packageName=>$packageVersion){
-			        if(is_array($packageVersion)){
-                        $need[] = "{$packageName}:{$packageVersion[0]}";
-                    }else{
-                        $need[] = "{$packageName}:{$packageVersion}";
+    $content = '<div class="tab-toolbar">';
+    $content .= Button::widget([ 'encodeLabel'=>false,'label' => Html::icon('refresh',['tag'=>'i','prefix'=>'fa fa-']), 'options' => ['class' => 'btn bg-navy btn-flat btn-sm' , 'style'=>'border-radius:2px;']]);
+    $buttons = [
+        ['label'=>Html::icon('list',['tag'=>'i','prefix'=>'fa fa-']) . ' 全部','options'=>[ 'class'=>'btn btn-info btn-sm'],'encodeLabel'=>false ],
+        ['label'=>Html::icon('plug',['tag'=>'i','prefix'=>'fa fa-']) . ' 已安装','options'=>[ 'class'=>'btn btn-info btn-sm'],'encodeLabel'=>false ],
+        ['label'=>Html::icon('download',['tag'=>'i','prefix'=>'fa fa-']) . ' 未安装','options'=>[ 'class'=>'btn btn-info btn-sm'],'encodeLabel'=>false ]
+    ];
+    $content .= ButtonGroup::widget(['buttons' => $buttons]);
+    $content .= '</div>';
+
+    $data = array();
+    if(is_array($result) && isset($result['data'])){
+        foreach($result['data'] as $v){
+            if(is_array($v)){
+                $author = "";
+                if(isset($v['authors'])){
+                    foreach ($v['authors'] as $one){
+                        $author .= ",{$one['name']}";
                     }
+                    $author = "开发者：".substr($author,1);
                 }
-				$v['description'] .= "<br/>"."<span style='color:#f00' id='needed'>缺失依赖扩展:</span>".join("; ",$need);
-			}
-			//增加操作类型
-            $btn_setup_label = Html::tag('i','安装',['class'=>'fa fa-cog']);
-			$btn_setup = Html::a($btn_setup_label,'#',['class' => 'setup btn btn-xs btn-primary','style'=>'','data-toggle' => 'modal','data-title'=>$v['name'],'data-version'=>$v['version'],'data-target'=>'#install-modal']);
+                $dependencies = [];
+                foreach ($v['require'] as $packageName=>$packageVersion){
+                    $dependencies[] = "{$packageName}: {$packageVersion}";
+                }
+                $v['description'] = mb_substr($v['description'], 0,"255");
+                if($author){
+                    $v['description'] .= "<br/>".$author;
+                }
+                if(!empty($dependencies)){
+                    $v['description'] .= "<br/>"."依赖扩展:".join('; ',$dependencies);
+                }
+                if(!empty($v['unInstalledDependencies'])){
+                    $need = [];
+                    foreach ($v['unInstalledDependencies'] as $packageName=>$packageVersion){
+                        if(is_array($packageVersion)){
+                            $need[] = "{$packageName}:{$packageVersion[0]}";
+                        }else{
+                            $need[] = "{$packageName}:{$packageVersion}";
+                        }
+                    }
+                    $v['description'] .= "<br/>"."<span style='color:#f00' id='needed'>缺失依赖扩展:</span>".join("; ",$need);
+                }
+                //增加操作类型
+                $btn_setup_label = Html::tag('i','安装',['class'=>'fa fa-cog']);
+                $btn_setup = Html::a($btn_setup_label,'#',['class' => 'setup btn btn-xs btn-primary','style'=>'','data-toggle' => 'modal','data-title'=>$v['name'],'data-version'=>$v['version'],'data-target'=>'#install-modal']);
 
-            $btn_unsetup_label = Html::tag('i','卸载',['class'=>'fa fa-edit']);
-			$btn_unsetup = Html::a($btn_unsetup_label,'#',['class' => 'unsetup btn btn-xs btn-success','style'=>'','data-toggle' => 'modal','data-title'=>$v['name'],'data-version'=>$v['version'],'data-toggle'=>'#modal']);
+                $btn_unsetup_label = Html::tag('i','卸载',['class'=>'fa fa-edit']);
+                $btn_unsetup = Html::a($btn_unsetup_label,'#',['class' => 'unsetup btn btn-xs btn-success','style'=>'','data-toggle' => 'modal','data-title'=>$v['name'],'data-version'=>$v['version'],'data-toggle'=>'#modal']);
 
-			$btn_delete_label = Html::tag('i','删除',['class'=>'fa fa-trash']);
-            $btn_delete = Html::a($btn_delete_label,'#',['class' => 'delete btn btn-xs btn-danger','style'=>'','data-title'=>$v['name'],'data-toggle' => 'modal','data-version'=>$v['version'],'data-toggle'=>'#modal']);
-			$v['_action_'] = '';
-			if($v['status']=='setuped'){
-				$v['_action_'] = $btn_unsetup;
-			}elseif($v['status']=='downloaded'){
-				$v['_action_'] = $btn_setup.' '.$btn_delete;
-			}
-			$data[]=$v;
-		}
-			
-	}
-}
+                $btn_delete_label = Html::tag('i','删除',['class'=>'fa fa-trash']);
+                $btn_delete = Html::a($btn_delete_label,'#',['class' => 'delete btn btn-xs btn-danger','style'=>'','data-title'=>$v['name'],'data-toggle' => 'modal','data-version'=>$v['version'],'data-toggle'=>'#modal']);
+                $v['_action_'] = '';
+                if($v['status']=='setuped'){
+                    $v['_action_'] = $btn_unsetup;
+                }elseif($v['status']=='downloaded'){
+                    $v['_action_'] = $btn_setup.' '.$btn_delete;
+                }
+                $data[]=$v;
+            }
 
-$gridDataProvider = new ArrayDataProvider([
-    'allModels' => $data,
-    'sort' => [
-        //'attributes' => ['name', 'prettyName', 'email'],
-    ],
-    'pagination' => [
-        'pageSize' => $result['pageSize'],
-    ],
-]);
-//,'onclick'=>'extension_action(this,"setup")'
-$gridDataProvider->setTotalCount($result['total']);
-$gridDataProvider->getPagination()->pageSize = $result['pageSize'];
-echo GridView::widget([
-    'dataProvider' => $gridDataProvider,
-    'layout' => "{items}{summary}{pager}",
-    'columns' => array(
-        array('attribute'=>'name', 'header'=>'包名','options'=>array('style'=>'width:15%','class'=>'extensionid')),
-        array('attribute'=>'version', 'header'=>'版本','options'=>array('style'=>'width:10%')),
-        array('attribute'=>'prettyName', 'header'=>'名称','options'=>array('style'=>'width:15%')),
-        array('attribute'=>'extType', 'header'=>'类型','options'=>array('style'=>'width:5%')),
-        array('attribute'=>'description', 'header'=>'描述','format' => 'raw','options'=>array('style'=>'width:45%')),
-        array('attribute'=>'_action_','header'=>'操作','format' => 'raw','options'=>array('style'=>'width:15%')),
-    ),
-]);
+        }
+    }
+
+    $gridDataProvider = new ArrayDataProvider([
+        'allModels' => $data,
+        'sort' => [
+            //'attributes' => ['name', 'prettyName', 'email'],
+        ],
+        'pagination' => [
+            'pageSize' => $result['pageSize'],
+        ],
+    ]);
+    //,'onclick'=>'extension_action(this,"setup")'
+    $gridDataProvider->setTotalCount($result['total']);
+    $gridDataProvider->getPagination()->pageSize = $result['pageSize'];
+    $content .= GridView::widget([
+        'dataProvider' => $gridDataProvider,
+        'layout' => "{items}{summary}{pager}",
+        'columns' => array(
+            array('attribute'=>'name', 'header'=>'包名','options'=>array('style'=>'width:15%','class'=>'extensionid')),
+            array('attribute'=>'version', 'header'=>'版本','options'=>array('style'=>'width:10%')),
+            array('attribute'=>'prettyName', 'header'=>'名称','options'=>array('style'=>'width:15%')),
+            array('attribute'=>'extType', 'header'=>'类型','options'=>array('style'=>'width:5%')),
+            array('attribute'=>'description', 'header'=>'描述','format' => 'raw','options'=>array('style'=>'width:45%')),
+            array('attribute'=>'_action_','header'=>'操作','format' => 'raw','options'=>array('style'=>'width:15%')),
+        ),
+    ]);
+
+    echo Tabs::widget([
+        'items' => [
+            [
+                'label' =>  "本地扩展",
+                'content'=> $content,
+                'active' => true
+            ],
+            [
+                'label' => '扩展商店',
+                'url'=>['store'],
+            ]
+        ],
+    ]);
 ?>
-</div>
-
 </div>
 <script>
 //setup a extension

@@ -47,6 +47,7 @@ $this->registerJs( '
         <?= $this->render('header.php') ?>
         <?= $this->render('left.php') ?>
         <?= $this->render('content.php') ?>
+        <?= $this->render('controlsidebar.php') ?>
         <?php endif;?>
 
 

@@ -21,7 +21,8 @@ class ThemeAsset extends AssetBundle
     ];
     public $js = [
         'js/jquery.contextmenu.r2.js',
-        'js/openadm.js'
+        'js/openadm.js',
+        'js/theme.js'
     ];
     public $jsOptions = ['position' => \yii\web\View::POS_END];
     public $depends = [
