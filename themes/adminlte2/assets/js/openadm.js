@@ -190,7 +190,9 @@ function oa_tab_iframe_height(id,height) {
 function initOpenAdmMenusEvents() {
 
     $('.openlink').each(function (index,el) {
-        $(el).click(function (e) {
+        $(el).bind('click',function (e) {
+            $('.sidebar-menu li').removeClass('active');
+            $(el).parent().addClass('active');
             oa_open_window(el);
             return false;
         });//end click
