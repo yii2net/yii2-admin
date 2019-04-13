@@ -57,6 +57,8 @@ class SystemEvent extends Component
                             unset($menus[$k]);
                         }
                         else{
+                            //判断url类型是iframe or  single page
+                            $value['apptype'] = Util::checkIframeOrSingleCached($value['url']);
                             $menus[$k]['value'] = $value;
                         }
                     }

@@ -21,34 +21,8 @@ class SystemConfig
     const CONFIG_TYPE_ROUTE    = "ROUTE";
     const CONFIG_TYPE_EXTENSION   = "EXTENSION";
 
-    const CACHE_5MINS           = 300;
-    const CACHE_30MINS          = 1800;
-    const CACHE_1HOURS          = 3600;
 
     const EVENT_CLEAR_CACHE     = "event_clear_system_config_cache";
-
-    static public function cache_flush()
-    {
-        Yii::$app->cache->flush();
-    }
-
-    static public function getCache()
-    {
-        return Yii::$app->cache;
-    }
-
-    static public function cache_set($key,$data,$expired='')
-    {
-        if(empty($expired)){
-            $expired = static::CACHE_1HOURS;
-        }
-        return static::getCache()->set($key,$data,$expired);
-    }
-
-    static public function cache_get($key)
-    {
-        return static::getCache()->get($key);
-    }
 	
 	/**
 	 * 返回 array(value=>comment)类型数据
@@ -83,10 +57,10 @@ class SystemConfig
 	{
 	    if($allowCaching){
             $cacheKey = $name.'-'.$pid.'-'.$type;
-            $data = static::cache_get($cacheKey);
+            $data = Util::cache_get($cacheKey);
             if(!$data || empty($data)){
                 $data = static::_Get($name,$pid,$type);
-                static::cache_set($cacheKey,$data);
+                Util::cache_set($cacheKey,$data);
             }
         }else{
             $data = static::_Get($name,$pid,$type);

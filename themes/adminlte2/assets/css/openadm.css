@@ -31,6 +31,7 @@ a,a:hover,a:active,a:focus{
 }
 body>.content{
     padding-top:0px;
+    padding-left:0px;
 }
 /*这个是控制任务栏的样式*/
 .task-nav {
