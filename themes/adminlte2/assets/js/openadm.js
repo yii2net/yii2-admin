@@ -139,14 +139,14 @@ function oa_open_app(apptype,url,label,id) {
             oa_open_iframe(url,label,id);
             break;
     }
-    oa_tab_context_menu($('#tab_nav'));
+    oa_tab_context_menu(id);
     oa_setTabActiveById(id);
 }
 
 function oa_open_single(url,label,id) {
     if($('#tab_nav_'+id).length==0) {
         oa_task_tab(label,id);
-        var iframe = $('<div id="iframe_'+id+'" data-apptype="single" data-url="'+ url +'" data-label="'+label+'"></div>');
+        var iframe = $('<div id="iframe_'+id+'" data-url="'+url+'" data-apptype="single" data-url="'+ url +'" data-label="'+label+'"></div>');
         $('#tab_'+id).html(iframe);
         $(iframe).load(url);
     }
@@ -160,7 +160,7 @@ function oa_open_iframe(url,label,id) {
             height = oa_intval($('#iframe_' + id).outerHeight());
             oa_tab_iframe_height(id, height);//需要重新设置iframe的高度,否则点击其他tab再点击回来iframe高度不可用。
         });
-        var iframe = $('<iframe id="iframe_' + id + '" data-apptype="iframe" width="100%" frameborder="no" border="0" marginwidth="0" marginheight="0" scrolling="auto" allowtransparency="yes" src="" />');
+        var iframe = $('<iframe id="iframe_' + id + '" data-url="'+url+'" data-apptype="iframe" width="100%" frameborder="no" border="0" marginwidth="0" marginheight="0" scrolling="auto" allowtransparency="yes" src="" />');
         $('#tab_' + id).html(iframe);
         $("#iframe_" + id).attr('src', url);
         oa_tab_iframe_height(id);
@@ -274,51 +274,58 @@ function oa_app_refresh(id) {
         var apptype = iframe.data('apptype');
         var url     = iframe.data('url');
         if(apptype == 'single'){
-            $(iframe).load(url);
+            $(iframe).load(oa_timestamp(url));
         }else{
-            $(iframe).contentDocument.location.href = url;
+            var iframes = $(iframe).contents();
+            if(iframes.length>0){
+                iframes[0].location.href = oa_timestamp(url);
+            }
         }
     }
 }
 
-function oa_tab_context_menu(el) {
-    var id = $(el).data('id');
+function oa_tab_context_menu(id) {
+    var el = $('#tab_nav_'+id);
     $(el).contextMenu('tabmenu',{
         bindings:{
             'refresh':function (t) {
                 //todo
-                console.log(t)
-                oa_setTabActiveById(id);
-                oa_app_refresh(id);
+                var active_id = $(t).data('id');
+                oa_setTabActiveById(active_id);
+                oa_app_refresh(active_id);
                 $("div#tabmenu").hide();
             },
             'cancel': function(t) {
                 $("div#tabmenu").hide();
             },
             'closeSelf':function(t){
-                oa_tab_close(id);
+                var active_id = $(t).data('id');
+                oa_tab_close(active_id);
             },
             'closeAll':function(t){
                 $('#tab_nav').empty();
                 $('#tab_box').empty();
             },
             'closeOther':function(t){
+                var active_id = $(t).data('id');
                 $('#tab_nav li').each(function(i,o){
                     var oid = $(o).data('id');
-                    if(oid != id){
+                    if(oid != active_id){
                         oa_tab_close(oid);
                     }
                 });
             },
             'closeLeft':function(t){
-                $('#tab_nav_'+id).prevAll().remove();
-                $('#tab_'+id).prevAll().remove();
-                oa_setTabActiveById(id);
+                var active_id = $(t).data('id');
+                $('#tab_nav_'+active_id).prevAll().remove();
+                $('#tab_'+active_id).prevAll().remove();
+                oa_setTabActiveById(active_id);
             },
             'closeRight':function(t){
-                $('#tab_nav_'+id).nextAll().remove();
-                $('#tab_'+id).nextAll().remove();
-                oa_setTabActiveById(id);
+                var active_id = $(t).data('id');
+                $('#tab_nav_'+active_id).nextAll().remove();
+                $('#tab_'+active_id).nextAll().remove();
+                oa_setTabActiveById(active_id);
             }
         }
     });

@@ -18,9 +18,9 @@ use yii\widgets\Breadcrumbs;
         <li id="refresh">刷新</li>
         <li id="closeSelf">关闭本页</li>
         <li id="closeAll">关闭全部</li>
-        <li id="closeOther">关闭其他</li>
         <li id="closeLeft">关闭左边</li>
         <li id="closeRight">关闭右边</li>
+        <li id="closeOther">关闭其他</li>
         <li id="cancel">取消</li>
     </ul>
 </div>
