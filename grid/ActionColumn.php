@@ -31,9 +31,9 @@ class ActionColumn extends GridActionColumn
     public function getName($name)
     {
         $names = [
-            'view' => '查看',
-            'update' => '编辑',
-            'delete' => '删除'
+            'view' => '',
+            'update' => '',
+            'delete' => ''
         ];
         return isset($names[$name]) ? $names[$name] : '';
     }
@@ -43,12 +43,12 @@ class ActionColumn extends GridActionColumn
      */
     protected function initDefaultButtons()
     {
-        $this->initDefaultButton('view', 'eye',['class'=>'btn btn-xs btn-primary']);
-        $this->initDefaultButton('update', 'edit',['class'=>'btn btn-xs btn-success']);
+        $this->initDefaultButton('view', 'eye',['class'=>'btn btn-sm btn-primary']);
+        $this->initDefaultButton('update', 'edit',['class'=>'btn btn-sm btn-success']);
         $this->initDefaultButton('delete', 'trash', [
             'data-confirm' => Yii::t('yii', 'Are you sure you want to delete this item?'),
             'data-method' => 'post',
-            'class'=>'btn btn-xs btn-danger'
+            'class'=>'btn btn-sm btn-danger'
         ]);
     }
 

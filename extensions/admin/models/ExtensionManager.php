@@ -244,6 +244,14 @@ class ExtensionManager
         return $result;
     }
 
+    static public function GetRemoteExtensions($category="",$query='',$page=1,$pageSize=20)
+    {
+        //url = https://www.easy-mock.com/mock/5cafe8c28e2ab4156b285246/list
+        $url = "https://www.easy-mock.com/mock/5cafe8c28e2ab4156b285246/list";
+        $result = json_decode(file_get_contents($url),true);
+        return $result['data'];
+    }
+
 
     /**
      * 获取扩展路径

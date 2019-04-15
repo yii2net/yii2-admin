@@ -13,9 +13,38 @@ a,a:hover,a:active,a:focus{
 }
 .box{
     border-radius:0;
+    border-top: none;
+}
+.box-title{
+    font-weight: 100;
+}
+.pad15{
+    padding: 15px;
+}
+.box-header{
+    padding: 0 0 10px;
+}
+.box-body{
+    padding: 15px 0 0;
+}
+.pagination,.panel-footer,.pagination > li:first-child > a, .pagination > li:first-child > span,.pagination > li:last-child > a, .pagination > li:last-child > span{
+    border-radius:0;
+}
+.panel-footer{
+    background-color: #fff;
+}
+.panel-footer > .pull-right{
+    float:left !important;
+}
+.kv-panel-pager{
+    float: right;
 }
 .btn{
-    border-radius:2px;
+    border-radius:0;
+}
+.panel{
+    border-radius: 0;
+    margin-bottom: 0;
 }
 .nav-tabs-custom>.nav-tabs>li.active{
     border-top-color: #d2d6de;
@@ -23,8 +52,24 @@ a,a:hover,a:active,a:focus{
 .tab-toolbar{
     margin-bottom: 10px;
 }
+.summary{
+    min-height: 34px;
+    line-height: 34px;
+}
+.panel-footer{
+    padding: 10px 10px;
+}
 .tab-toolbar .btn-group{
     margin-left: 10px;
+}
+.select2-container .select2-selection--single .select2-selection__rendered{
+    margin-top: 0;
+}
+.select2-container--krajee .select2-selection--single .select2-selection__clear{
+    top:0;
+}
+.select2-container--bootstrap .select2-selection{
+    border-radius: 0;
 }
 #tab_box{
     margin-top:15px;
@@ -32,6 +77,7 @@ a,a:hover,a:active,a:focus{
 body>.content{
     padding-top:0px;
     padding-left:0px;
+    padding-right:0px;
 }
 /*这个是控制任务栏的样式*/
 .task-nav {

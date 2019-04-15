@@ -28,10 +28,17 @@ class ExtensionManagerController extends Controller
 		return $this->render("local",['tab'=>$tab,'result'=>$result]);
 	}
 	
-	public function actionShop()
+	public function actionStore($tab = "all",$page=1)
 	{
-		$url = $this->module_center_url.'/extensions/token/'.Yii::app()->params['token'];
-		$this->render("shop",array('url'=>$url));
+        $tab = in_array($tab,array('all','setuped','downloaded')) ? $tab : 'all';
+        //获取插件
+        $pageSize = 20;
+        $result = ExtensionManager::GetRemoteExtensions('','',$page,$pageSize);
+        $categories = [
+            'all' => '全部',
+            'dev' => '开发'
+        ];
+        return $this->render("store",['tab'=>$tab,'result'=>$result,'categories'=>$categories]);
 	}
 
 	//iframe for long request

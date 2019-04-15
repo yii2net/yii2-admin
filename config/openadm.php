@@ -1,6 +1,14 @@
 <?php
 
 return [
+    'params' => [
+        'bsDependencyEnabled' => false, // this will not load Bootstrap CSS and JS for all Krajee extensions
+        // you need to ensure you load the Bootstrap CSS/JS manually in your view layout before Krajee CSS/JS assets
+        //
+        // other params settings below
+        // 'bsVersion' => '4.x',
+        // 'adminEmail' => 'admin@example.com'
+    ],
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
@@ -67,6 +75,14 @@ return [
             'as access' => [
                 'class' => yii2mod\rbac\filters\AccessControl::class,
             ]
+        ],
+        'dynagrid'=> [
+            'class'=>'\kartik\dynagrid\Module',
+            // other module settings
+        ],
+        'gridview'=> [
+            'class'=>'\kartik\grid\Module',
+            // other module settings
         ],
         'noty' => [
             'class' => 'lo\modules\noty\Module',

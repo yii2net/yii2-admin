@@ -1,8 +1,10 @@
 <?php
 use yii\bootstrap\Html;
+use yii\helpers\Url;
 use yii\bootstrap\Nav;
 use yii\data\ArrayDataProvider;
-use yii\grid\GridView;
+//use yii\grid\GridView;
+use kartik\dynagrid\DynaGrid;
 use yii\bootstrap\Button;
 use yii\bootstrap\ButtonGroup;
 use yii\bootstrap\Modal;
@@ -11,9 +13,6 @@ use yii\bootstrap\Tabs;
 $this->params['breadcrumbs'][] = '扩展管理';
 ?>
 <style>
-.table thead>tr>th, .table tbody>tr>th, .table tfoot>tr>th, .table thead>tr>td, .table tbody>tr>td, .table tfoot>tr>td{font-size:12px;line-height:20px;padding:3px;overflow:hidden;height:20px;}
-td{padding:0;}
-.pagination{margin:5px 0;}
 .modal-body{
     background-color: #000;
     color:#c7c7c7;
@@ -22,18 +21,9 @@ td{padding:0;}
     width: 700px;
 }
 </style>
+
 <div class="nav-tabs-custom">
 <?php
-    $content = '<div class="tab-toolbar">';
-    $content .= Button::widget([ 'encodeLabel'=>false,'label' => Html::icon('refresh',['tag'=>'i','prefix'=>'fa fa-']), 'options' => ['class' => 'btn bg-navy btn-flat btn-sm' , 'style'=>'border-radius:2px;']]);
-    $buttons = [
-        ['label'=>Html::icon('list',['tag'=>'i','prefix'=>'fa fa-']) . ' 全部','options'=>[ 'class'=>'btn btn-info btn-sm'],'encodeLabel'=>false ],
-        ['label'=>Html::icon('plug',['tag'=>'i','prefix'=>'fa fa-']) . ' 已安装','options'=>[ 'class'=>'btn btn-info btn-sm'],'encodeLabel'=>false ],
-        ['label'=>Html::icon('download',['tag'=>'i','prefix'=>'fa fa-']) . ' 未安装','options'=>[ 'class'=>'btn btn-info btn-sm'],'encodeLabel'=>false ]
-    ];
-    $content .= ButtonGroup::widget(['buttons' => $buttons]);
-    $content .= '</div>';
-
     $data = array();
     if(is_array($result) && isset($result['data'])){
         foreach($result['data'] as $v){
@@ -97,21 +87,52 @@ td{padding:0;}
             'pageSize' => $result['pageSize'],
         ],
     ]);
-    //,'onclick'=>'extension_action(this,"setup")'
-    $gridDataProvider->setTotalCount($result['total']);
-    $gridDataProvider->getPagination()->pageSize = $result['pageSize'];
-    $content .= GridView::widget([
+$classes = [
+        'all' => 'btn btn-info '. ($tab == 'all' ? 'active' : ''),
+        'setuped' => 'btn btn-info '. ($tab == 'setuped' ? 'active' : ''),
+        'downloaded' => 'btn btn-info '. ($tab == 'downloaded' ? 'active' : '')
+];
+$buttons = [
+    ['tagName'=>'a','label'=>Html::icon('list',['tag'=>'i','prefix'=>'fa fa-']) . ' 全部','options'=>[ 'href'=>Url::to(['local','tab'=>'all']),'class'=>$classes['all']],'encodeLabel'=>false ],
+    ['tagName'=>'a','label'=>Html::icon('plug',['tag'=>'i','prefix'=>'fa fa-']) . ' 已安装','options'=>[ 'href'=>Url::to(['local','tab'=>'setuped']),'class'=>$classes['setuped']],'encodeLabel'=>false ],
+    ['tagName'=>'a','label'=>Html::icon('download',['tag'=>'i','prefix'=>'fa fa-']) . ' 未安装','options'=>[ 'href'=>Url::to(['local','tab'=>'downloaded']),'class'=>$classes['downloaded']],'encodeLabel'=>false ]
+];
+$before = ButtonGroup::widget(['buttons' => $buttons]);
+
+$panelFooterTemplate=<<< HTML
+{summary}<div class="kv-panel-pager">{pager}</div>
+    <div class="clearfix"></div>
+HTML;
+
+$content = DynaGrid::widget([
+    'columns' => array(
+        //['class'=>'kartik\grid\CheckboxColumn', 'order'=>DynaGrid::ORDER_FIX_LEFT],
+        array('attribute'=>'name', 'header'=>'包名','options'=>array('style'=>'width:15%','class'=>'extensionid')),
+        array('attribute'=>'version', 'header'=>'版本','options'=>array('style'=>'width:10%')),
+        array('attribute'=>'prettyName', 'header'=>'名称','options'=>array('style'=>'width:15%')),
+        array('attribute'=>'extType', 'header'=>'类型','options'=>array('style'=>'width:5%')),
+        array('attribute'=>'description', 'header'=>'描述','format' => 'raw','options'=>array('style'=>'width:40%')),
+        array('attribute'=>'_action_','header'=>'操作','format' => 'raw','options'=>array('style'=>'width:30%')),
+    ),
+    'storage'=>DynaGrid::TYPE_COOKIE,
+    'theme'=>'panel-default',
+    'allowThemeSetting' => false,
+    'allowFilterSetting' => false,
+    'allowPageSetting' => false,
+    'allowSortSetting' => true,
+    'gridOptions'=>[
+        'hover' => true,
         'dataProvider' => $gridDataProvider,
-        'layout' => "{items}{summary}{pager}",
-        'columns' => array(
-            array('attribute'=>'name', 'header'=>'包名','options'=>array('style'=>'width:15%','class'=>'extensionid')),
-            array('attribute'=>'version', 'header'=>'版本','options'=>array('style'=>'width:10%')),
-            array('attribute'=>'prettyName', 'header'=>'名称','options'=>array('style'=>'width:15%')),
-            array('attribute'=>'extType', 'header'=>'类型','options'=>array('style'=>'width:5%')),
-            array('attribute'=>'description', 'header'=>'描述','format' => 'raw','options'=>array('style'=>'width:45%')),
-            array('attribute'=>'_action_','header'=>'操作','format' => 'raw','options'=>array('style'=>'width:15%')),
-        ),
-    ]);
+        'panel'=>[
+            'before'=>$before,
+            'after' => false
+        ],
+        'panelTemplate'=>"{panelBefore}\n{items}\n{panelFooter}",
+        'toolbar' =>  false,
+        'panelFooterTemplate' => $panelFooterTemplate
+    ],
+    'options'=>['id'=>'dynagrid-ext-local'] // a unique identifier is important
+]);
 
     echo Tabs::widget([
         'items' => [

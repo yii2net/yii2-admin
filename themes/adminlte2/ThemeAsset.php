@@ -25,7 +25,7 @@ class ThemeAsset extends AssetBundle
         'js/openadm.js',
         'js/theme.js'
     ];
-    public $jsOptions = ['position' => \yii\web\View::POS_END];
+    public $jsOptions = ['position' => \yii\web\View::POS_BEGIN];
     public $depends = [
         'yikaikeji\openadm\themes\adminlte2\AdminltePluginsAsset'
     ];
