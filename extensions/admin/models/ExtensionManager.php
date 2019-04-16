@@ -278,7 +278,7 @@ class ExtensionManager
             static::GetSetupedExtensions();
         }
         //除了判断数据库里面有记录，还要判断文件夹是否存在
-        return isset(static::$_setupedextensions[$packageName]) && is_dir(static::GetExtensionPath($packageName));
+        return isset(static::$_setupedextensions[$packageName]) && is_dir(static::GetExtensionPath($packageName)) ? 1 :0;
     }
 
     /**

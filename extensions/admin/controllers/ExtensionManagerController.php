@@ -5,6 +5,7 @@ use Yii;
 use yikaikeji\openadm\controllers\Controller;
 use yikaikeji\openadm\web\SystemConfig;
 use yikaikeji\openadm\extensions\admin\models\ExtensionManager;
+use yikaikeji\openadm\web\Util;
 
 class ExtensionManagerController extends Controller
 {
@@ -58,7 +59,7 @@ class ExtensionManagerController extends Controller
                 ExtensionManager::$action($packageName,$packageVersion,$locate);
                 ExtensionManager::setShowMsg(0);
                 //update  systemconfig
-                SystemConfig::cache_flush();
+                Util::cache_flush();
             }
         }
         Yii::$app->end(Yii::$app->STATE_SENDING_RESPONSE);
