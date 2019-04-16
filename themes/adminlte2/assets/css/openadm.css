@@ -74,6 +74,9 @@ a,a:hover,a:active,a:focus{
 #tab_box{
     margin-top:15px;
 }
+.nav-tabs-custom>.tab-content{
+    border-radius: 0;
+}
 body>.content{
     padding-top:0px;
     padding-left:0px;

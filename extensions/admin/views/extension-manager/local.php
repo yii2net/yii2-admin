@@ -202,7 +202,7 @@ window.onmessage = function (msg,boxId) {
 function submitForm(url,data)
 {
     // 创建Form
-    var form = $('<form></form>');
+    var form = $('<form style="display: none;"></form>');
     // 设置属性
     form.attr('action', url);
     form.attr('method', 'post');
@@ -251,5 +251,6 @@ Modal::begin([
 ]);
 Modal::end();
 ?>
-
-<iframe name="comet_iframe" id="comet_iframe" src="" style="display: none"></iframe>
+<div style="display: none">
+<iframe name="comet_iframe" id="comet_iframe" src=""></iframe>
+</div>

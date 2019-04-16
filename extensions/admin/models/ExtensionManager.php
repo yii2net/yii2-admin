@@ -46,6 +46,7 @@ class ExtensionManager
         if(static::$ExtensionLoader == null){
             $admin = Yii::$app->getModule('admin');
             static::$ExtensionLoader = new ExtensionLoader([
+                'packagePathSymLink' => false,
                 'composerPath'=>$admin->composerPath,
                 'rootProjectPath'=>Yii::getAlias($admin->rootProjectPath),
                 'packageInstalledPath'=>Yii::getAlias($admin->packageInstalledPath),
@@ -142,7 +143,8 @@ class ExtensionManager
     static public function GetSetupedExtensions()
     {
         if(empty(static::$_setupedextensions)){
-            $extensions = SystemConfig::Get('',null,SystemConfig::CONFIG_TYPE_EXTENSION);
+            //不允许缓存
+            $extensions = SystemConfig::Get('',null,SystemConfig::CONFIG_TYPE_EXTENSION,false);
             foreach ($extensions as $extension){
                 try{
                     static::$_setupedextensions[$extension['cfg_name']] = Json::decode($extension['cfg_value'],true);
@@ -229,14 +231,10 @@ class ExtensionManager
      */
     static public function GetLocalExtensions($type="all",$page=1,$pageSize=20)
     {
-        //获取数据源
-        $setupedextensions = static::GetSetupedExtensions();
-        //print_r($setupedextensions);
         $result = static::loader()->localList('',$type=='all' ? '' : $type,'',$page,$pageSize);
-        //print_r($result);
         if($result){
             foreach ($result['data'] as $k=>$v){
-                if(isset($setupedextensions[$v['name']])){
+                if(static::IsSetuped($v['name'])){
                     $result['data'][$k]['status'] = 'setuped';
                 }
             }
@@ -279,7 +277,8 @@ class ExtensionManager
         if(empty(static::$_setupedextensions)){
             static::GetSetupedExtensions();
         }
-        return isset(static::$_setupedextensions[$packageName]) ? 1 : 0;
+        //除了判断数据库里面有记录，还要判断文件夹是否存在
+        return isset(static::$_setupedextensions[$packageName]) && is_dir(static::GetExtensionPath($packageName));
     }
 
     /**

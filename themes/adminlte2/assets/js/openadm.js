@@ -1,5 +1,6 @@
 var OA_Menus_Children = [];
 var OA_MenusIDs = [];
+var OA_Content_Window = {height:0};
 function oa_build_top_menu() {
     OA_Menus_Children = [];
     OA_MenusIDs = [];
@@ -146,7 +147,7 @@ function oa_open_app(apptype,url,label,id) {
 function oa_open_single(url,label,id) {
     if($('#tab_nav_'+id).length==0) {
         oa_task_tab(label,id);
-        var iframe = $('<div id="iframe_'+id+'" data-url="'+url+'" data-apptype="single" data-url="'+ url +'" data-label="'+label+'"></div>');
+        var iframe = $('<div class="oa_app_iframe" id="iframe_'+id+'" data-url="'+url+'" data-apptype="single" data-url="'+ url +'" data-label="'+label+'"></div>');
         $('#tab_'+id).html(iframe);
         $(iframe).load(url);
     }
@@ -160,7 +161,7 @@ function oa_open_iframe(url,label,id) {
             height = oa_intval($('#iframe_' + id).outerHeight());
             oa_tab_iframe_height(id, height);//需要重新设置iframe的高度,否则点击其他tab再点击回来iframe高度不可用。
         });
-        var iframe = $('<iframe id="iframe_' + id + '" data-url="'+url+'" data-apptype="iframe" width="100%" frameborder="no" border="0" marginwidth="0" marginheight="0" scrolling="auto" allowtransparency="yes" src="" />');
+        var iframe = $('<iframe class="oa_app_iframe" id="iframe_' + id + '" data-url="'+url+'" data-apptype="iframe" width="100%" frameborder="no" border="0" marginwidth="0" marginheight="0" scrolling="auto" allowtransparency="yes" src="" />');
         $('#tab_' + id).html(iframe);
         $("#iframe_" + id).attr('src', url);
         oa_tab_iframe_height(id);
@@ -189,13 +190,8 @@ function oa_intval(height) {
 
 function oa_tab_iframe_height(id,height) {
     var iframe_min_height = 550;
-    var body_height    = oa_intval($(window).outerHeight());
-    var header_height  = oa_intval($('.main-header').outerHeight());
-    var footer_height  = oa_intval($('.main-footer').outerHeight());
-    var tab_nav_height = oa_intval($('#tab_nav').outerHeight());
     //每次都重新设置高度
-    var iframe_height  = body_height - header_height - tab_nav_height - footer_height;
-    //console.log(body_height ,header_height , tab_nav_height , footer_height)
+    var iframe_height  = oa_content_height();
     if(iframe_height < iframe_min_height){
         iframe_height = iframe_min_height;
     }
@@ -241,13 +237,14 @@ function oa_setTabActiveById(id) {
     $('#tab_'+id).addClass('taskactive');
 }
 
-function resizeIFramesSize() {
-    var body_height    = $('body').outerHeight();
-    var header_height  = $('.main-header').outerHeight();
-    var footer_height  = $('.main-footer').outerHeight();
-    var tab_nav_height = $('#tab_nav').outerHeight();
-    var iframe_height  = body_height - header_height - tab_nav_height - footer_height;
-    $("iframe").attr('height',iframe_height);
+function oa_content_height() {
+    var body_height    = $(top.window.document).outerHeight();
+    var header_height  = $(top.window.document).find('.main-header').outerHeight() || 0;
+    var footer_height  = $(top.window.document).find('.main-footer').outerHeight() || 0;
+    var tab_nav_height = $(top.window.document).find('#tab_nav').outerHeight() || 0;
+    //-15 为padding距离
+    var iframe_height  = body_height - header_height - tab_nav_height - footer_height - 15;
+    return iframe_height;
 }
 
 function oa_tab_close(id) {
@@ -442,5 +439,5 @@ function checkTopWindow() {
 }
 
 top.window.onresize = function (e) {
-    resizeIFramesSize();
+    $('.oa_app_iframe').attr('height',oa_content_height());
 }
