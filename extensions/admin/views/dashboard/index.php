@@ -41,7 +41,7 @@ $this->registerJs( '
     </head>
 
     <?php if(!Yii::$app->user->isGuest):?>
-    <body  class="hold-transition skin-blue sidebar-mini">
+    <body  class="hold-transition skin-blue sidebar-mini" style="overflow: hidden;">
     <div class="wrapper">
         <?php $this->beginBody() ?>
         <?= $this->render('header.php') ?>
@@ -62,14 +62,9 @@ $this->registerJs( '
         <?php endif;?>
 
     </div>
-    <!-- ./wrapper -->
-    <?php if(!Yii::$app->user->isGuest):?>
-        <?php
-        echo $this->render('noty.default.php')
-        ?>
-    <?php endif;?>
     <!-- end: JavaScript-->
     <?php $this->endBody() ?>
+    <?php \yikaikeji\openadm\web\Util::Alert(); ?>
     </body>
     </html>
 <?php $this->endPage() ?>

@@ -8,15 +8,18 @@ use dmstr\web\AdminLteAsset as BaseAdminLteAsset;
  * AdminLte AssetBundle
  * @since 0.1
  */
-class BSTableAsset extends BaseAdminLteAsset
+class NotyAsset extends BaseAdminLteAsset
 {
-    public $sourcePath = '@npm/bootstrap-table/dist';
+    public $sourcePath = '@bower/noty/js/noty';
     public $css = [
-        'bootstrap-table.css',
     ];
     public $js = [
-        'bootstrap-table.js',
-        'bootstrap-table-locale-all.js'
+        'packaged/jquery.noty.packaged.js',
+//        'themes/default.js',
+//        'themes/bootstrap.js',
+//        'themes/metroui.js',
+//        'themes/relax.js',
+//        'themes/semanticUI.js',
     ];
     public $depends = [
     ];

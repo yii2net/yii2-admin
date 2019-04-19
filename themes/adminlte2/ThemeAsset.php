@@ -23,10 +23,13 @@ class ThemeAsset extends AssetBundle
         'js/jquery.contextmenu.r2.js',
         'js/tasktab.js',
         'js/openadm.js',
+        'js/openadm-modal.js',
         'js/theme.js'
     ];
     public $jsOptions = ['position' => \yii\web\View::POS_BEGIN];
     public $depends = [
-        'yikaikeji\openadm\themes\adminlte2\AdminltePluginsAsset'
+        'yikaikeji\openadm\themes\adminlte2\AdminltePluginsAsset',
+        'yikaikeji\openadm\themes\adminlte2\NotyAsset',
+        'yikaikeji\openadm\themes\adminlte2\LayerAsset',
     ];
 }

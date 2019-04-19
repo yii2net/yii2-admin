@@ -62,7 +62,7 @@ class ExtensionManagerController extends Controller
                 Util::cache_flush();
             }
         }
-        Yii::$app->end(Yii::$app->STATE_SENDING_RESPONSE);
+        exit;
 	}
 
 

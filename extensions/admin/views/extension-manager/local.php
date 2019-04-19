@@ -12,16 +12,6 @@ use yii\bootstrap\Tabs;
 
 $this->params['breadcrumbs'][] = '扩展管理';
 ?>
-<style>
-.modal-body{
-    background-color: #000;
-    color:#c7c7c7;
-}
-.modal.in .modal-dialog{
-    width: 700px;
-}
-</style>
-
 <div class="nav-tabs-custom">
 <?php
     $data = array();

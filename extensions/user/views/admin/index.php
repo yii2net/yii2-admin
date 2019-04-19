@@ -1,10 +1,15 @@
 <?php
 
-use yii\helpers\Html;
-use yii\grid\GridView;
+use yii\bootstrap\Html;
+use yii\helpers\Url;
 use yii2mod\editable\EditableColumn;
 use yii\widgets\Pjax;
 use yii\bootstrap\Tabs;
+use kartik\dynagrid\DynaGrid;
+use yii\bootstrap\Button;
+use yii\bootstrap\ButtonGroup;
+use yii\bootstrap\Modal;
+use xiongchuan86\kartikcrud\CrudAsset;
 
 /**
  * @var yii\web\View $this
@@ -25,22 +30,50 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
 
-<?php Pjax::begin(['options'=>['class'=>'nav-tabs-custom']]); ?>
-        <?php  $content = '<p>'?>
-        <?php  $content.= ' '.Html::a('激活', "javascript:void(0);", ['class' => 'btn btn-sm btn-success batch-active']) ?>
-        <?php  $content.= ' '.Html::a('取消激活', "javascript:void(0);", ['class' => 'btn btn-sm btn-success batch-inactive']) ?>
-        <?php  $content.= ' '.Html::a('封号', "javascript:void(0);", ['class' => 'btn btn-sm btn-info batch-banned']) ?>
-        <?php  $content.= ' '.Html::a('取消封号', "javascript:void(0);", ['class' => 'btn btn-sm btn-info batch-unbanned']) ?>
-        <?php  $content.= ' '.Html::a('删除', "javascript:void(0);", ['class' => 'btn btn-sm btn-danger batchdelete']) ?>
-        <?php  $content.= '</p>'?>
-        <?php  $content.= GridView::widget([
-            'dataProvider' => $dataProvider,
-            'filterModel' => $searchModel,
-            'layout' => "{items}{summary}{pager}",
-            'options'=>['id'=>'grid'],
+<?php Pjax::begin(['options'=>['class'=>'box pad15']]); ?>
+<div class="box-header with-border">
+    <h3 class="box-title"><i class="fa fa-user"></i><span class="break">用户管理</span></h3>
+</div>
+<div class="box-body pad table-responsive">
+        <?php  $btns  = ' '.Html::a('创建', ['create'], [ 'title'=>'创建用户','role'=>'modal-remote','class' => 'btn btn-success user-add']) ?>
+        <?php  $btns .= ' '.Html::a('激活', "javascript:void(0);", ['class' => 'btn btn-primary batch-active']) ?>
+        <?php  $btns .= ' '.Html::a('取消激活', "javascript:void(0);", ['class' => 'btn btn-primary batch-inactive']) ?>
+        <?php  $btns .= ' '.Html::a('封号', "javascript:void(0);", ['class' => 'btn btn-info batch-banned']) ?>
+        <?php  $btns .= ' '.Html::a('取消封号', "javascript:void(0);", ['class' => 'btn btn-info batch-unbanned']) ?>
+        <?php  $btns .= ' '.Html::a('删除', "javascript:void(0);", ['class' => 'btn btn-danger batchdelete']) ?>
+        <?php
+
+$before = $btns;
+
+$panelFooterTemplate=<<< HTML
+{summary}<div class="kv-panel-pager">{pager}</div>
+    <div class="clearfix"></div>
+HTML;
+
+        $content = DynaGrid::widget([
+            'storage'=>DynaGrid::TYPE_COOKIE,
+            'theme'=>'panel-default',
+            'allowThemeSetting' => false,
+            'allowFilterSetting' => false,
+            'allowPageSetting' => false,
+            'allowSortSetting' => true,
+            'gridOptions'=>[
+                'pjax'=>true,
+                'hover' => true,
+                'dataProvider' => $dataProvider,
+                'filterModel' => $searchModel,
+                'panel'=>[
+                    'before'=>$before,
+                    'after' => false
+                ],
+                'panelTemplate'=>"{panelBefore}\n{items}\n{panelFooter}",
+                'toolbar' =>  false,
+                'panelFooterTemplate' => $panelFooterTemplate
+            ],
+            'options'=>['id'=>'dynagrid-user'], // a unique identifier is important
             'columns' => [
                 [
-                    'class' => 'yii\grid\CheckboxColumn',//复选框
+                    'class' => '\kartik\grid\CheckboxColumn',
                     'multiple' => true,
                     'name' => 'uid',
                     'filterOptions'=>['style'=>'width:30px']
@@ -48,7 +81,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 [
                     'attribute' => 'id',
-                    'filterOptions'=>['style'=>'width:30px']
+                    'filterOptions'=>['style'=>'width:50px']
                 ],
                 [
                     'attribute' => 'username',
@@ -130,33 +163,72 @@ $this->params['breadcrumbs'][] = $this->title;
                 // 'banned_reason',
 
                 [
-                    'class' => 'yikaikeji\openadm\grid\ActionColumn',
-                    'options'=>['style'=>'width:180px']
+                    'class' => 'kartik\grid\ActionColumn',
+                    'dropdown' => false,
+                    'vAlign'=>'middle',
+                    'urlCreator' => function($action, $model, $key, $index) {
+                        return Url::to([$action,'id'=>$key]);
+                    },
+
+                    //动作栏按钮设定（默认为：查看，禁用，删除）
+                    'template' => \xiongchuan86\kartikcrud\Helper::filterActionColumn(['view','activate','inactivate', 'delete']),
+                    'buttons' => [
+                        'activate' => function($url, $model) {
+                            //if ($model->status == 1) {
+                            //    return '';
+                            //}
+                            $options = [
+                                'role'=>'modal-remote',
+                                'title'=>'启用',
+                                'data-confirm'=>false,
+                                'data-method'=>false,// for overide yii data api
+                                'data-request-method'=>'post',
+                                'data-toggle'=>'tooltip',
+                                'data-confirm-title'=>'确认操作',
+                                'data-confirm-message'=>'你确定要启用吗？'
+                            ];
+                            return Html::a('<span class="glyphicon glyphicon-ok"></span>', $url, $options);
+                        },
+                        'inactivate' => function($url, $model) {
+                            //if ($model->status == 0) {
+                            //return '';
+                            //}
+                            $options = [
+                                'role'=>'modal-remote',
+                                'title'=>'禁用',
+                                'data-confirm'=>false,
+                                'data-method'=>false,// for overide yii data api
+                                'data-request-method'=>'post',
+                                'data-toggle'=>'tooltip',
+                                'data-confirm-title'=>'确认操作',
+                                'data-confirm-message'=>'你确定要禁用吗？'
+                            ];
+                            return Html::a('<span class="glyphicon glyphicon-cog"></span>', $url, $options);
+                        },
+                    ],
+                    'viewOptions'=>['role'=>'modal-remote','title'=>'查看及修改','data-toggle'=>'tooltip'],
+                    //'updateOptions'=>['role'=>'modal-remote','title'=>'更新', 'data-toggle'=>'tooltip'],
+                    'deleteOptions'=>['role'=>'modal-remote','title'=>'删除',
+                        'data-confirm'=>false, 'data-method'=>false,// for overide yii data api
+                        'data-request-method'=>'post',
+                        'data-toggle'=>'tooltip',
+                        'data-confirm-title'=>'确认操作',
+                        'data-confirm-message'=>'你确定要删除该记录吗？'],
                 ],
-            ],
-        ]); ?>
-        <?=  Tabs::widget([
-            'items' => [
-                [
-                    'label' =>  "用户管理",
-                    'content'=> $content,
-                    'active' => true
-                ],
-                [
-                    'label' => '添加用户',
-                    'url'=>['create'],
-                ]
             ],
         ]);
+        echo $content;
         ?>
+</div>
 <?php Pjax::end(); ?>
 
 <?php
 $this->registerJs('
 function oa_action(action,status,tips){
-    var keys = $("#grid").yiiGridView("getSelectedRows");
+    $("#dynagrid-user").yiiGridView("setSelectionColumn",{name:"uid[]"});
+    var keys = $("#dynagrid-user").yiiGridView("getSelectedRows");
     if(keys.length==0){
-        noty({text: "请至少选择一条数据!",type:\'warning\'});
+        oa.Noty({text: "请至少选择一条数据!",type:\'warning\'});
         return ;
     }
     if(tips == ""){
@@ -167,10 +239,10 @@ function oa_action(action,status,tips){
                 success: function (data) {
                     // do something
                     if(data["code"] == 200){
-                        noty({text: data.msg,type:\'success\'});
+                        oa.Noty({text: data.msg,type:\'success\'});
                         setTimeout(function(){location.href=oa_timestamp(location.href);},1000);
                     }else{
-                        noty({text: data.msg,type:\'error\',timeout:1000});
+                        oa.Noty({text: data.msg,type:\'error\',timeout:1000});
                     }
                 }
             });
@@ -183,10 +255,10 @@ function oa_action(action,status,tips){
                 success: function (data) {
                     // do something
                     if(data["code"] == 200){
-                        noty({text: data.msg,type:\'success\'});
+                        oa.Noty({text: data.msg,type:\'success\'});
                         setTimeout(function(){location.href=oa_timestamp(location.href);},1000);
                     }else{
-                        noty({text: data.msg,type:\'error\',timeout:1000});
+                        oa.Noty({text: data.msg,type:\'error\',timeout:1000});
                     }
                 }
             });
@@ -211,3 +283,15 @@ $(".batch-unbanned").on("click", function () {
 ');
 
 ?>
+
+<?php Modal::begin([
+    "id"=>"ajaxCrudModal",
+    "footer"=>"",// always need it for jquery plugin
+    "options" =>['data-backdrop '=>'static','data-keyboard'=>'false','z-index'=>'-999'],
+])?>
+<?php Modal::end(); ?>
+
+<?php
+//引入js放在最后，应为_column.php引入了kv-checkbox.js,为了让别最后引入改写后的：kv-grid-checkbox-fix.js放在最后
+CrudAsset::register($this);
+

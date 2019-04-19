@@ -11,5 +11,5 @@ use yii2mod\rbac\controllers\AssignmentController as BaseAssignmentController;
  */
 class AssignmentController extends BaseAssignmentController
 {
-    public $layout = false;
+    //public $layout = false;
 }

@@ -44,16 +44,19 @@ class Util
         if(preg_match('/^http/i',$url)){
             return self::APP_IFRAME;
         }
-
-        $controller = Yii::$app->createController($url);
-        if($controller){
-            $controller = $controller[0];
-            if($controller->layout === false){
-                return self::APP_SINGLE;
+        try{
+            $controller = Yii::$app->createController($url);
+            if($controller){
+                $controller = $controller[0];
+                if($controller->layout === false){
+                    return self::APP_SINGLE;
+                }else{
+                    return self::APP_IFRAME;
+                }
             }else{
                 return self::APP_IFRAME;
             }
-        }else{
+        }catch (\Exception $e){
             return self::APP_IFRAME;
         }
     }
@@ -66,5 +69,27 @@ class Util
             self::cache_set($url,$appType);
         }
         return $appType;
+    }
+
+    static public function Alert()
+    {
+        $alertTypes = [
+            'error' => 'alert-danger',
+            'danger' => 'alert-danger',
+            'success' => 'alert-success',
+            'info' => 'alert-info',
+            'warning' => 'alert-warning'
+        ];
+        $session = Yii::$app->session;
+        $flashes = $session->getAllFlashes();
+        foreach ($flashes as $type => $data) {
+            if (isset($alertTypes[$type])) {
+                $data = (array)$data;
+                foreach ($data as $i => $message) {
+                    echo "<script>oa.Noty({type:'{$type}',text:'$message'});</script>";
+                }
+                $session->removeFlash($type);
+            }
+        }
     }
 }

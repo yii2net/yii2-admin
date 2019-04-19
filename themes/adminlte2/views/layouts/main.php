@@ -1,8 +1,10 @@
 <?php
 use yii\helpers\Html;
 use yii\helpers\Url;
+use yii\bootstrap\Alert;
 use yikaikeji\openadm\themes\adminlte2\ThemeAsset;
 ThemeAsset::register($this);
+
 ?>
 <?php $this->beginPage() ?>
 
@@ -23,7 +25,7 @@ ThemeAsset::register($this);
     </head>
 
     <?php if(!Yii::$app->user->isGuest):?>
-    <body class="hold-transition sidebar-mini skin-yellow-light" style="background-color: #ecf0f5;">
+    <body class="hold-transition sidebar-mini skin-yellow-light iframe" style="padding: 15px 15px 0;">
     <div class="content">
 
         <?php $this->beginBody() ?>
@@ -31,14 +33,9 @@ ThemeAsset::register($this);
         <?php endif;?>
 
     </div>
-    <!-- ./wrapper -->
-    <?php if(!Yii::$app->user->isGuest):?>
-        <?php
-        echo $this->render('noty.default.php')
-        ?>
-    <?php endif;?>
     <!-- end: JavaScript-->
     <?php $this->endBody() ?>
+    <?php \yikaikeji\openadm\web\Util::Alert(); ?>
     </body>
     </html>
 <?php $this->endPage() ?>

@@ -168,6 +168,21 @@ function oa_open_iframe(url,label,id) {
     }
 }
 
+function oa_init_window_events(apptype,id) {
+    if(apptype == 'single'){
+        oa_init_page_events('#iframe_'+id);
+    }
+}
+
+function oa_init_page_events(page) {
+    page = page || 'body';
+    $(page).find('.btn').each(function (i,el) {
+        $(this).bind('click',function (el) {
+            oa_open_page_window(el.currentTarget);
+        })
+    })
+}
+
 function oa_open_window(el) {
     var id = $(el).data('id');
     var url   = $(el).attr('href');
@@ -179,7 +194,8 @@ function oa_open_window(el) {
         label = $(el).text();
     }
     var apptype = $(el).data('apptype');
-    oa_open_app(apptype,url,label,id)
+    oa_open_app(apptype,url,label,id);
+    oa_init_window_events(apptype,id);
     return false;
 }
 
@@ -242,8 +258,8 @@ function oa_content_height() {
     var header_height  = $(top.window.document).find('.main-header').outerHeight() || 0;
     var footer_height  = $(top.window.document).find('.main-footer').outerHeight() || 0;
     var tab_nav_height = $(top.window.document).find('#tab_nav').outerHeight() || 0;
-    //-15 为padding距离
-    var iframe_height  = body_height - header_height - tab_nav_height - footer_height - 15;
+
+    var iframe_height  = body_height - header_height - tab_nav_height - footer_height;
     return iframe_height;
 }
 
@@ -438,6 +454,44 @@ function checkTopWindow() {
     }
 }
 
+var oa = {};
+oa.Noty = function(options){
+    var default_options = {
+        theme: 'relax',
+        layout: 'top',
+        timeout: 1000
+    };
+    $.extend(default_options,options);
+    new noty(default_options).show();
+}
+
+function oa_open_page_window(el){
+    var url = $(el).attr('href');
+    if(typeof url == 'undefined'){
+        url = $(el).data('url');
+    }
+    if(url){
+        var title = $(el).data('title') || false;
+
+        oa_open_dialog({content:url,title:title});
+    }
+    event.preventDefault();
+    return true;
+}
+function oa_open_dialog(opts){
+    var options = {
+        type: 2,
+        title: false,
+        area: ['800px', '500px'],
+        shade: 0.2,
+        shadeClose: true,
+        closeBtn: 1,
+        maxmin:true,
+        content: ''
+    };
+    $.extend(options,opts);
+    layer.open(options);
+}
 top.window.onresize = function (e) {
     $('.oa_app_iframe').attr('height',oa_content_height());
 }

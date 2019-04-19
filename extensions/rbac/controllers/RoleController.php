@@ -15,7 +15,7 @@ use yii\db\IntegrityException;
  */
 class RoleController extends ItemController
 {
-    public $layout = false;
+    //public $layout = false;
     /**
      * @var int
      */

@@ -37,12 +37,7 @@ return [
                     'class' => 'yii\i18n\PhpMessageSource',
                     'sourceLanguage' => 'en-US',
                     'basePath' => '@app/messages',
-                ],
-                'noty' => [
-                    'class' => 'yii\i18n\PhpMessageSource',
-                    'sourceLanguage' => 'en-US',
-                    'basePath' => '@app/messages',
-                ],
+                ]
             ],
         ],
         'authManager' => [
@@ -83,9 +78,6 @@ return [
         'gridview'=> [
             'class'=>'\kartik\grid\Module',
             // other module settings
-        ],
-        'noty' => [
-            'class' => 'lo\modules\noty\Module',
         ],
         'user' => [
             'class' => 'amnah\yii2\user\Module',
