@@ -647,10 +647,13 @@ class ExtensionManager
                 'console' => []
             ];
         }
-        foreach ($setupedExtensionsConfig as $key => $config){
-            $filename = strtolower($key)."-ext.php";
-            $file = \Yii::getAlias("@config").DIRECTORY_SEPARATOR.$filename;
-            file_put_contents($file,"<?php \n return ".var_export($config,true). ';');
+        //var_dump($setupedExtensionsConfig);exit;
+        if($setupedExtensionsConfig && is_array($setupedExtensionsConfig)){
+            foreach ($setupedExtensionsConfig as $key => $config){
+                $filename = strtolower($key)."-ext.php";
+                $file = \Yii::getAlias("@config").DIRECTORY_SEPARATOR.$filename;
+                file_put_contents($file,"<?php \n return ".var_export($config,true). ';');
+            }
         }
     }
 
