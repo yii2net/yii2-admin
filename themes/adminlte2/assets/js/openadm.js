@@ -492,6 +492,22 @@ function oa_open_dialog(opts){
     $.extend(options,opts);
     layer.open(options);
 }
+
+
 top.window.onresize = function (e) {
     $('.oa_app_iframe').attr('height',oa_content_height());
 }
+
+(function ($) {
+    $(document).ready(function () {
+        //如果table里面有checkbox，点击行就可以选择checkbox或者反选
+        $(document).on('click','table tr',function () {
+            if(event.target.tagName == 'TD'){
+                checkbox = $(this).find('input[type=checkbox]');
+                if(!checkbox.hasClass('select-on-check-all')){
+                    checkbox.prop('checked', !checkbox.prop('checked'));
+                }
+            }
+        })
+    });
+}(jQuery));
