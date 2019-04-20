@@ -9,7 +9,7 @@ use kartik\dynagrid\DynaGrid;
 use yii\bootstrap\Button;
 use yii\bootstrap\ButtonGroup;
 use yii\bootstrap\Modal;
-use xiongchuan86\kartikcrud\BulkButtonWidget;
+use openadm\kartikcrud\BulkButtonWidget;
 
 /**
  * @var yii\web\View $this
@@ -103,7 +103,7 @@ HTML;
                 ],
                 [
                     'attribute'=>'email',
-                    'options'=>['style'=>'width:180px']
+                    'options'=>['style'=>'width:120px']
                 ],
                 //'profile.full_name',
                 //'profile.timezone',
@@ -150,7 +150,7 @@ HTML;
                         $statusDropdown = $user::statusDropdown();
                         return $statusDropdown[$model->status];
                     },
-                    'options'=>['style'=>'width:80px']
+                    'options'=>['style'=>'width:100px']
                 ],
                 [
                     'label'=>'封号',
@@ -200,7 +200,7 @@ HTML;
                     },
 
                     //动作栏按钮设定（默认为：查看，禁用，删除）
-                    'template' => \xiongchuan86\kartikcrud\Helper::filterActionColumn(['view','update', 'delete']),
+                    'template' => \openadm\kartikcrud\Helper::filterActionColumn(['view','update', 'delete']),
                     'buttons' => [
                         'activate' => function($url, $model) {
                             if ($model->status == 1) {

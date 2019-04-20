@@ -29,8 +29,7 @@
         "bizley/migration": "^2.2",
         "openadm/yii2-extension": "dev-master",
         "kassko/util-reflection": "dev-master",
-        "insolita/yii2-adminlte-widgets": "^3.1.1",
-        "xiongchuan86/yii2-kartikcrud": "*"
+        "insolita/yii2-adminlte-widgets": "^3.1.1"
     },
     "autoload": {
         "psr-4": {

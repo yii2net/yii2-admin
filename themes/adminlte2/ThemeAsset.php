@@ -31,6 +31,6 @@ class ThemeAsset extends AssetBundle
         'openadm\admin\themes\adminlte2\AdminltePluginsAsset',
         'openadm\admin\themes\adminlte2\NotyAsset',
         'openadm\admin\themes\adminlte2\LayerAsset',
-        'xiongchuan86\kartikcrud\CrudAsset'
+        'openadm\kartikcrud\CrudAsset'
     ];
 }

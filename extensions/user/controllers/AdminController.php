@@ -316,7 +316,7 @@ class AdminController extends Controller
                         'forceReload'=> $this->ajax_crud_tableid,
                         'title'=> "User #".$id,
                         'size' => 'large',
-                        'content'=>$this->renderAjax('update', compact('user', 'profile')),
+                        'content'=>'<span class="text-success">更新成功</span>',
                         'footer'=> Html::button('<i class="glyphicon glyphicon-ban-circle"></i> 关闭',['class'=>'btn btn-danger','data-dismiss'=>"modal"])
                     ];
                 }else{
@@ -372,7 +372,7 @@ class AdminController extends Controller
                 return $this->redirect(['index']);
             }
             $this->deleteUid($id);
-            echo Yii::$app->session->setFlash("success","删除完成");
+            Yii::$app->session->setFlash("success","删除完成");
             return $this->redirect(['index']);
         }
 

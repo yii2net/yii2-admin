@@ -400,3 +400,6 @@ button.close{
 .modal-body{
     padding-bottom: 5px;
 }
+.kv-form-attribute .form-group{
+    margin-bottom: 0;
+}
