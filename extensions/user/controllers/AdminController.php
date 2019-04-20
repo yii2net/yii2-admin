@@ -178,7 +178,9 @@ class AdminController extends Controller
         $searchModel = $this->module->model("UserSearch");
         $params = Yii::$app->request->getQueryParams();
         $dataProvider = $searchModel->search($params);
-
+        $dataProvider->setSort([
+            'defaultOrder' => ['id'=>['DESC']]
+        ]);
         return $this->render('index', compact('searchModel', 'dataProvider'));
     }
 
@@ -246,7 +248,7 @@ class AdminController extends Controller
                             'size'=>'wide',
                             'content'=>'<span class="text-success">创建用户成功</span>',
                             'footer'=> Html::button('<i class="glyphicon glyphicon-ban-circle"></i> 关闭',['class'=>'btn btn-danger','data-dismiss'=>"modal"]).
-                                Html::a('<i class="glyphicon glyphicon-ok"></i> 继续创建',['create'],['class'=>'btn btn-primary','role'=>'modal-remote'])
+                                Html::a('<i class="glyphicon glyphicon-ok"></i> 继续创建',['create'],['class'=>'btn btn-primary','role'=>'modal-remote','data-reusemodal'=>1])
 
                         ];
                     }else{
@@ -281,7 +283,7 @@ class AdminController extends Controller
      */
     public function actionUpdate($id)
     {
-        // set up user and profile
+        $request = Yii::$app->request;
         $user = $this->findModel($id);
         $user->setScenario("admin");
         $profile = $user->profile;
@@ -290,25 +292,58 @@ class AdminController extends Controller
         $userLoaded = $user->load($post);
         $profile->load($post);
 
-        // validate for ajax request
-        if (Yii::$app->request->isAjax) {
+        if($request->isAjax){
             Yii::$app->response->format = Response::FORMAT_JSON;
-            return ActiveForm::validate($user, $profile);
-        }
-        $old_role = $user->role;
-        // load post data and validate
-        if ($userLoaded && $user->validate() && $profile->validate()) {
-            $user->save(false);
-            $profile->setUser($user->id)->save(false);
-            //删除授权
-            Yii::$app->authManager->revoke(Yii::$app->authManager->getRole($old_role->name), $user->id);
-            //更新授权
-            Yii::$app->authManager->assign(Yii::$app->authManager->getRole($user->role->name), $user->id);
-            return $this->redirect(['index']);
-        }
+            if($request->isGet){
+                return [
+                    'title'=> "更新 User #".$id,
+                    'size' => 'large',
+                    'content'=>$this->renderAjax('update', compact('user', 'profile')),
+                    'footer'=> Html::button('<i class="glyphicon glyphicon-ban-circle"></i> 关闭',['class'=>'btn btn-danger','data-dismiss'=>"modal"]).
+                        Html::button('<i class="glyphicon glyphicon-ok"></i> 保存',['class'=>'btn btn-primary','type'=>"submit"])
+                ];
+            }else{
+                $old_role = $user->role;
+                // load post data and validate
+                if ($userLoaded && $user->validate() && $profile->validate()) {
+                    $user->save(false);
+                    $profile->setUser($user->id)->save(false);
+                    //删除授权
+                    Yii::$app->authManager->revoke(Yii::$app->authManager->getRole($old_role->name), $user->id);
+                    //更新授权
+                    Yii::$app->authManager->assign(Yii::$app->authManager->getRole($user->role->name), $user->id);
+                    return [
+                        'forceReload'=> $this->ajax_crud_tableid,
+                        'title'=> "User #".$id,
+                        'size' => 'large',
+                        'content'=>$this->renderAjax('update', compact('user', 'profile')),
+                        'footer'=> Html::button('<i class="glyphicon glyphicon-ban-circle"></i> 关闭',['class'=>'btn btn-danger','data-dismiss'=>"modal"])
+                    ];
+                }else{
+                    return [
+                        'title'=> "更新 User #".$id,
+                        'size' => 'large',
+                        'content'=>$this->renderAjax('view', compact('user', 'profile')),
+                        'footer'=> Html::button('<i class="glyphicon glyphicon-ban-circle"></i> 关闭',['class'=>'btn btn-danger','data-dismiss'=>"modal"])
+                    ];
+                }
+            }
+        }else{
+            $old_role = $user->role;
+            // load post data and validate
+            if ($userLoaded && $user->validate() && $profile->validate()) {
+                $user->save(false);
+                $profile->setUser($user->id)->save(false);
+                //删除授权
+                Yii::$app->authManager->revoke(Yii::$app->authManager->getRole($old_role->name), $user->id);
+                //更新授权
+                Yii::$app->authManager->assign(Yii::$app->authManager->getRole($user->role->name), $user->id);
+                return $this->redirect(['index']);
+            }
 
-        // render
-        return $this->render('update', compact('user', 'profile'));
+            // render
+            return $this->render('update', compact('user', 'profile'));
+        }
     }
 
     /**
@@ -326,14 +361,7 @@ class AdminController extends Controller
                 return ['forceClose'=>false,'content' => '受保护的账号,不允许删除!'];
             }
             try{
-                $user = $this->findModel($id);
-                $profile = $user->profile;
-                UserToken::deleteAll(['user_id' => $user->id]);
-                UserAuth::deleteAll(['user_id' => $user->id]);
-                $profile && $profile->delete();
-                $user->delete();
-                //删除授权
-                Yii::$app->authManager->revoke(Yii::$app->authManager->getRole($user->role->name), $user->id);
+                $this->deleteUid($id);
                 return ['forceClose'=>true,'forceReload'=>$this->ajax_crud_tableid];
             }catch (\Exception $e){
                 return ['forceClose'=>true,'forceReload'=>$this->ajax_crud_tableid];
@@ -343,15 +371,7 @@ class AdminController extends Controller
                 Yii::$app->session->setFlash("warning","受保护的账号,不允许删除!");
                 return $this->redirect(['index']);
             }
-            // delete profile and userTokens first to handle foreign key constraint
-            $user = $this->findModel($id);
-            $profile = $user->profile;
-            UserToken::deleteAll(['user_id' => $user->id]);
-            UserAuth::deleteAll(['user_id' => $user->id]);
-            $profile && $profile->delete();
-            $user->delete();
-            //删除授权
-            Yii::$app->authManager->revoke(Yii::$app->authManager->getRole($user->role->name), $user->id);
+            $this->deleteUid($id);
             echo Yii::$app->session->setFlash("success","删除完成");
             return $this->redirect(['index']);
         }
@@ -382,9 +402,10 @@ class AdminController extends Controller
         $result= ['code'=>200];
         $data = [];
         $post = Yii::$app->request->post();
-        if($post && isset($post['ids']) && is_array($post['ids'])){
+        $pks = isset($post['pks']) ? explode(',',$post['pks']) : [] ;
+        if(is_array($pks) && !empty($pks)){
             $protected_uids_num = 0;
-            foreach ($post['ids'] as $id){
+            foreach ($pks as $id){
                 if(in_array($id,$this->protected_uids)){
                     $protected_uids_num++;
                 }else{
@@ -407,7 +428,7 @@ class AdminController extends Controller
 
         if (Yii::$app->request->isAjax) {
             Yii::$app->response->format = Response::FORMAT_JSON;
-            return $result;
+            return ['forceClose'=>true,'forceReload'=>$this->ajax_crud_tableid];;
         }
         return $this->redirect(['index']);
     }

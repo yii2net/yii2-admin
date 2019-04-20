@@ -69,7 +69,6 @@ $role = $module->model("Role");
             </td>
         </tr>
 
-    <?php if(!$user->id == $this->context->superadmin_uid):?>
         <tr>
             <th style='width: 20%; text-align: right; vertical-align: middle;'>
                 <?= Html::activeLabel($user, 'role_id') ?></th>
@@ -142,7 +141,7 @@ $role = $module->model("Role");
                 </div>
             </td>
         </tr>
-    <?php endif;?>
+
     <?php if (!Yii::$app->request->isAjax): ?>
     <tr>
         <th style='width: 20%; text-align: right; vertical-align: middle;'>

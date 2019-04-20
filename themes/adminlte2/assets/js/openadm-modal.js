@@ -141,6 +141,13 @@ function OpenadmModal() {
         if(typeof content == 'string' && content){
             $(this.footer).css('display','block');
             $(this.footer).html(content);
+            //add this modal id
+            var footerRm = $(this.modal.getModalFooter()).find('a[role="modal-remote"]');
+            if(footerRm.length>0){
+                if($(footerRm).data('reusemodal') == 1){
+                    $(footerRm).data('openadmModal',this);
+                }
+            }
         }else if(typeof content == 'object'){
             var buttons = '';
             for(var i in content){

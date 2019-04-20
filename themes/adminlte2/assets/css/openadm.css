@@ -338,6 +338,13 @@ li.upload-kit-item.done.image img{
 }
 .bootstrap-dialog.type-primary .modal-header{
     background-color: #3c8dbc;
+    border-radius: 0;
+}
+.bootstrap-dialog.size-large.type-primary .bootstrap-dialog-message{
+    font-size: 16px;
+}
+.iframe .bootstrap-dialog .modal-header,.modal-content{
+    border-radius: 0;
 }
 .bootstrap-dialog-ext-button{
 
@@ -384,9 +391,6 @@ button.close{
 .modal-fullscreen{
     width:100%;
     margin:0 auto;
-}
-.bootstrap-dialog .modal-header,.modal-content{
-    border-radius: 0;
 }
 
 .iframe .box{

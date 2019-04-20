@@ -86,7 +86,7 @@ class Util
             if (isset($alertTypes[$type])) {
                 $data = (array)$data;
                 foreach ($data as $i => $message) {
-                    echo "<script>oa.Noty({type:'{$type}',text:'$message'});</script>";
+                    echo "<script>oa.Noty({type:'{$type}',text:'$message',timeout: 2000});</script>";
                 }
                 $session->removeFlash($type);
             }

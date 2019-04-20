@@ -31,5 +31,6 @@ class ThemeAsset extends AssetBundle
         'yikaikeji\openadm\themes\adminlte2\AdminltePluginsAsset',
         'yikaikeji\openadm\themes\adminlte2\NotyAsset',
         'yikaikeji\openadm\themes\adminlte2\LayerAsset',
+        'xiongchuan86\kartikcrud\CrudAsset'
     ];
 }

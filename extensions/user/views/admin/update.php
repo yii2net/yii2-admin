@@ -16,7 +16,7 @@ $this->params['breadcrumbs'][] = ['label' => $user->id, 'url' => ['view', 'id' =
 $this->params['breadcrumbs'][] = Yii::t('user', 'Update');
 ?>
 <div class="box">
-    <div class="box-header with-border">
+    <div class="box-header with-border" style="display: none">
         <h3 class="box-title"><i class="fa fa-user"></i><span class="break"><?php echo Html::encode($this->title); ?></span><?=($user->id == $this->context->superadmin_uid ? " <button class=\"btn btn-success btn-xs\">超级管理员</button>" : "")?></h3>
     </div>
     <div class="box-body pad table-responsive">
