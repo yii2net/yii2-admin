@@ -1,12 +1,12 @@
 <?php
 
-namespace yikaikeji\openadm\console;
+namespace openadm\admin\console;
 
 use yii\base\InvalidConfigException;
 use yii\console\controllers\MigrateController as BaseMigrateController;
 use yii;
 use yii\helpers\Console;
-use yikaikeji\openadm\extensions\admin\models\ExtensionManager;
+use openadm\admin\extensions\admin\models\ExtensionManager;
 /**
  * Class MigrateController
  *

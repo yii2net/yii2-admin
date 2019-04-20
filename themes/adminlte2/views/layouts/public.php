@@ -1,7 +1,7 @@
 <?php
 use yii\helpers\Html;
 use yii\helpers\Url;
-use yikaikeji\openadm\themes\adminlte2\ThemeAsset;
+use openadm\admin\themes\adminlte2\ThemeAsset;
 ThemeAsset::register($this);
 ?>
 <?php $this->beginPage() ?>

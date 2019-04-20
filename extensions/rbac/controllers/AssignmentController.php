@@ -1,6 +1,6 @@
 <?php
 
-namespace yikaikeji\openadm\extensions\rbac\controllers;
+namespace openadm\admin\extensions\rbac\controllers;
 
 use yii2mod\rbac\controllers\AssignmentController as BaseAssignmentController;
 

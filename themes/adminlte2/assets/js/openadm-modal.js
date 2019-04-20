@@ -239,7 +239,7 @@ function OpenadmModal() {
             url: url,
             method: method,
             data: data,
-            async: false,
+            async: true,
             beforeSend: function () {
                 beforeRemoteRequest.call(instance);
             },

@@ -49,7 +49,7 @@ $this->render('/layouts/_sidebar');
             ],
             [
                 'header' => Yii::t('yii2mod.rbac', 'Action'),
-                'class' => 'yikaikeji\openadm\grid\ActionColumn',
+                'class' => 'openadm\admin\grid\ActionColumn',
             ],
         ],
     ]); ?>

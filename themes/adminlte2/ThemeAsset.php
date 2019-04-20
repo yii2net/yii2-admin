@@ -3,7 +3,7 @@
  * 主题 Adminlte2
  */
 
-namespace yikaikeji\openadm\themes\adminlte2;
+namespace openadm\admin\themes\adminlte2;
 use yii\web\AssetBundle;
 
 /**
@@ -28,9 +28,9 @@ class ThemeAsset extends AssetBundle
     ];
     public $jsOptions = ['position' => \yii\web\View::POS_BEGIN];
     public $depends = [
-        'yikaikeji\openadm\themes\adminlte2\AdminltePluginsAsset',
-        'yikaikeji\openadm\themes\adminlte2\NotyAsset',
-        'yikaikeji\openadm\themes\adminlte2\LayerAsset',
+        'openadm\admin\themes\adminlte2\AdminltePluginsAsset',
+        'openadm\admin\themes\adminlte2\NotyAsset',
+        'openadm\admin\themes\adminlte2\LayerAsset',
         'xiongchuan86\kartikcrud\CrudAsset'
     ];
 }

@@ -1,5 +1,5 @@
 <?php
-namespace yikaikeji\openadm\controllers;
+namespace openadm\admin\controllers;
 
 class HomePluginController extends PluginBaseController
 {

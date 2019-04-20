@@ -4,7 +4,7 @@
  * 所有的插件都要继承此controller
  * @author xiongchuan <xiongchuan86@gmail.com>
  */
-namespace yikaikeji\openadm\controllers;
+namespace openadm\admin\controllers;
 
 use yii\base\UnknownPropertyException;
 use yii;

@@ -2,7 +2,7 @@
 /**
  * 修改action的默认样式
  */
-namespace yikaikeji\openadm\grid;
+namespace openadm\admin\grid;
 
 use Yii;
 use yii\helpers\Html;

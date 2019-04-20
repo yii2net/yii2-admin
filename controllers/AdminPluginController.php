@@ -1,5 +1,5 @@
 <?php
-namespace yikaikeji\openadm\controllers;
+namespace openadm\admin\controllers;
 
 use yii2mod\rbac\filters\AccessControl;
 use yii\base\UserException;

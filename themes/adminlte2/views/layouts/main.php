@@ -2,7 +2,7 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\bootstrap\Alert;
-use yikaikeji\openadm\themes\adminlte2\ThemeAsset;
+use openadm\admin\themes\adminlte2\ThemeAsset;
 ThemeAsset::register($this);
 
 ?>
@@ -35,7 +35,7 @@ ThemeAsset::register($this);
     </div>
     <!-- end: JavaScript-->
     <?php $this->endBody() ?>
-    <?php \yikaikeji\openadm\web\Util::Alert(); ?>
+    <?php \openadm\admin\web\Util::Alert(); ?>
     </body>
     </html>
 <?php $this->endPage() ?>

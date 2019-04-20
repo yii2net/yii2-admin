@@ -66,7 +66,7 @@ return [
     ],
     'modules' => [
         'admin' => [
-            'class' => 'yikaikeji\openadm\extensions\admin\Module',
+            'class' => 'openadm\admin\extensions\admin\Module',
             'as access' => [
                 'class' => yii2mod\rbac\filters\AccessControl::class,
             ]
@@ -87,12 +87,12 @@ return [
             'requireUsername' => true,
             'controllerMap' => [
                 'admin' => [
-                    'class' => 'yikaikeji\openadm\extensions\user\controllers\AdminController',
+                    'class' => 'openadm\admin\extensions\user\controllers\AdminController',
                     'protected_uids' => [1],
                     'superadmin_uid' => 1,//超级管理员
                 ],
                 'default' => [
-                    'class' => 'yikaikeji\openadm\extensions\user\controllers\DefaultController',
+                    'class' => 'openadm\admin\extensions\user\controllers\DefaultController',
                 ]
             ],
             'viewPath' => '@openadm/extensions/user/views',
@@ -104,13 +104,13 @@ return [
             ],
             'controllerMap' => [
                 'assignment' => [
-                    'class' => 'yikaikeji\openadm\extensions\rbac\controllers\AssignmentController',
+                    'class' => 'openadm\admin\extensions\rbac\controllers\AssignmentController',
                 ],
                 'role' => [
-                    'class' => 'yikaikeji\openadm\extensions\rbac\controllers\RoleController',
+                    'class' => 'openadm\admin\extensions\rbac\controllers\RoleController',
                 ],
                 'route' => [
-                    'class' => 'yikaikeji\openadm\extensions\rbac\controllers\RouteController',
+                    'class' => 'openadm\admin\extensions\rbac\controllers\RouteController',
                 ],
             ],
             'viewPath' => '@openadm/extensions/rbac/views',

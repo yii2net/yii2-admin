@@ -1,5 +1,5 @@
 <?php
-namespace yikaikeji\openadm\extensions\user\controllers;
+namespace openadm\admin\extensions\user\controllers;
 
 use Yii;
 use amnah\yii2\user\models\User;
@@ -12,7 +12,7 @@ use yii\web\Response;
 use yii\widgets\ActiveForm;
 use yii2mod\editable\EditableAction;
 use yii2mod\rbac\filters\AccessControl;
-use yikaikeji\openadm\controllers\Controller;
+use openadm\admin\controllers\Controller;
 use yii\helpers\Html;
 
 /**

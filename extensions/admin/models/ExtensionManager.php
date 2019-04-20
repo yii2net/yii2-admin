@@ -4,17 +4,17 @@
  * 扩展id,扩展目录，必须为小写
  * @author xiongchuan <xiongchuan@luxtonenet.com>
  */
-namespace yikaikeji\openadm\extensions\admin\models;
+namespace openadm\admin\extensions\admin\models;
 
 use yii;
-use yikaikeji\openadm\web\SystemConfig;
+use openadm\admin\web\SystemConfig;
 use yii\helpers\FileHelper;
 use yii\base\ErrorException;
 use yii\helpers\Json;
 use yii\base\InvalidArgumentException;
 use yii\helpers\Html;
-use Yikaikeji\Extension\Loader as ExtensionLoader;
-use Yikaikeji\Extension\Implement\Dependency;
+use Openadm\Extension\Loader as ExtensionLoader;
+use Openadm\Extension\Implement\Dependency;
 
 class ExtensionManager
 {

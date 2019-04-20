@@ -1,14 +1,14 @@
 <?php
-namespace yikaikeji\openadm\extensions\admin\controllers;
+namespace openadm\admin\extensions\admin\controllers;
 
 use yii;
 use yii\helpers\Json;
-use yikaikeji\openadm\controllers\Controller;
-use yikaikeji\openadm\web\SystemEvent;
+use openadm\admin\controllers\Controller;
+use openadm\admin\web\SystemEvent;
 
 /**
  * @name 控制面板
- * @package yikaikeji\openadm\extensions\admin\controllers
+ * @package openadm\admin\extensions\admin\controllers
  */
 class DashboardController extends Controller
 {

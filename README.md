@@ -10,13 +10,13 @@ The preferred way to install this extension is through [composer](http://getcomp
 Either run
 
 ```
-php composer.phar require --prefer-dist yikai/yii2-openadm "*"
+php composer.phar require --prefer-dist openadm/yii2-admin "*"
 ```
 
 or add
 
 ```
-"yikai/yii2-openadm": "*"
+"openadm/yii2-admin": "*"
 ```
 
 to the require section of your `composer.json` file.
@@ -28,4 +28,4 @@ Usage
 Once the extension is installed, simply use it in your code by  :
 
 ```php
-<?= \yikai\openadm\AutoloadExample::widget(); ?>```
+```

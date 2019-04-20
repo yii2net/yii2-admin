@@ -1,5 +1,5 @@
 <?php
-namespace yikaikeji\openadm\controllers;
+namespace openadm\admin\controllers;
 
 use yii\helpers\Url;
 use yii\web\Controller as BaseController;

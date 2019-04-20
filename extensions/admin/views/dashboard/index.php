@@ -2,7 +2,7 @@
 use yii\helpers\Json;
 use yii\helpers\Html;
 use yii\helpers\Url;
-use yikaikeji\openadm\themes\adminlte2\ThemeAsset;
+use openadm\admin\themes\adminlte2\ThemeAsset;
 ThemeAsset::register($this);
 
 $this->registerJs( "var OA_Menus=". Json::encode($menus),\yii\web\View::POS_HEAD);
@@ -64,7 +64,7 @@ $this->registerJs( '
     </div>
     <!-- end: JavaScript-->
     <?php $this->endBody() ?>
-    <?php \yikaikeji\openadm\web\Util::Alert(); ?>
+    <?php \openadm\admin\web\Util::Alert(); ?>
     </body>
     </html>
 <?php $this->endPage() ?>

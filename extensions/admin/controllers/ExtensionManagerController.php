@@ -1,11 +1,11 @@
 <?php
-namespace yikaikeji\openadm\extensions\admin\controllers;
+namespace openadm\admin\extensions\admin\controllers;
 
 use Yii;
-use yikaikeji\openadm\controllers\Controller;
-use yikaikeji\openadm\web\SystemConfig;
-use yikaikeji\openadm\extensions\admin\models\ExtensionManager;
-use yikaikeji\openadm\web\Util;
+use openadm\admin\controllers\Controller;
+use openadm\admin\web\SystemConfig;
+use openadm\admin\extensions\admin\models\ExtensionManager;
+use openadm\admin\web\Util;
 
 class ExtensionManagerController extends Controller
 {

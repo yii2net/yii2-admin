@@ -1,5 +1,5 @@
 <?php
-namespace yikaikeji\openadm\web;
+namespace openadm\admin\web;
 
 use yii;
 use yii\base\Component;

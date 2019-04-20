@@ -1,5 +1,5 @@
 <?php
-namespace yikaikeji\openadm\extensions\admin\controllers;
+namespace openadm\admin\extensions\admin\controllers;
 
 use yii\web\Controller;
 

@@ -1,8 +1,8 @@
 {
-    "name": "yikaikeji/yii2-openadm",
+    "name": "openadm/yii2-admin",
     "description": "open admin",
     "type": "yii2-extension",
-    "keywords": ["yii2","extension","admin","openadmin","yikaikeji"],
+    "keywords": ["yii2","extension","admin","openadmin","openadm"],
     "license": "LGPL-3.0+",
     "authors": [
         {
@@ -27,17 +27,17 @@
         "rmrevin/yii2-fontawesome": "~2.17",
         "intervention/image": "^2.3",
         "bizley/migration": "^2.2",
-        "yikaikeji/extension": "dev-master",
+        "openadm/yii2-extension": "dev-master",
         "kassko/util-reflection": "dev-master",
         "insolita/yii2-adminlte-widgets": "^3.1.1",
         "xiongchuan86/yii2-kartikcrud": "*"
     },
     "autoload": {
         "psr-4": {
-            "yikaikeji\\openadm\\": ""
+            "openadm\\admin\\": ""
         }
     },
     "extra": {
-      "bootstrap": "yikaikeji\\openadm\\AdminBootstrap"
+      "bootstrap": "openadm\\admin\\AdminBootstrap"
     }
 }

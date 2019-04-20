@@ -30,7 +30,7 @@ $this->render('/layouts/_sidebar');
         'layout' => "{items}{summary}{pager}",
         'columns' => ArrayHelper::merge($gridViewColumns, [
             [
-                'class' => 'yikaikeji\openadm\grid\ActionColumn',
+                'class' => 'openadm\admin\grid\ActionColumn',
                 'template' => '{view}',
             ],
         ]),
