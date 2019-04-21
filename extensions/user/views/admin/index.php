@@ -6,6 +6,7 @@ use yii2mod\editable\EditableColumn;
 use yii\widgets\Pjax;
 use yii\bootstrap\Tabs;
 use kartik\dynagrid\DynaGrid;
+use kartik\grid\GridView;
 use yii\bootstrap\Button;
 use yii\bootstrap\ButtonGroup;
 use yii\bootstrap\Modal;
@@ -60,15 +61,8 @@ $panelFooterTemplate=<<< HTML
     <div class="clearfix"></div>
 HTML;
 
-        $content = DynaGrid::widget([
-            'storage'=>DynaGrid::TYPE_COOKIE,
-            'theme'=>'panel-default',
-            'allowThemeSetting' => false,
-            'allowFilterSetting' => false,
-            'allowPageSetting' => false,
-            'allowSortSetting' => true,
-            'gridOptions'=>[
-                'pjax'=>true,
+        $content = GridView::widget([
+            'pjax'=>true,
                 'hover' => true,
                 'dataProvider' => $dataProvider,
                 'filterModel' => $searchModel,
@@ -78,8 +72,7 @@ HTML;
                 ],
                 'panelTemplate'=>"{panelBefore}\n{items}\n{panelFooter}",
                 'toolbar' =>  false,
-                'panelFooterTemplate' => $panelFooterTemplate
-            ],
+                'panelFooterTemplate' => $panelFooterTemplate,
             'options'=>['id'=>'dynagrid-user'], // a unique identifier is important
             'columns' => [
                 [

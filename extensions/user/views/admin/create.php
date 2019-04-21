@@ -8,6 +8,7 @@ use yii\helpers\Html;
  * @var amnah\yii2\user\models\Profile $profile
  */
 
+openadm\admin\themes\adminlte2\ThemeAsset::register($this);
 $role_id = Yii::$app->request->get("role_id","");
 if($role_id == 1){
     $title = "添加管理员";

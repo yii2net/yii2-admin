@@ -19,10 +19,11 @@ class AdminLteAsset extends BaseAdminLteAsset
         'js/adminlte.min.js'
     ];
     public $depends = [
-        'rmrevin\yii\fontawesome\AssetBundle',
         'yii\web\YiiAsset',
+        'rmrevin\yii\fontawesome\AssetBundle',
         'yii\bootstrap\BootstrapAsset',
         'yii\bootstrap\BootstrapPluginAsset',
+        'kartik\select2\ThemeDefaultAsset'
     ];
 
     /**

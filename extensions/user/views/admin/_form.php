@@ -82,9 +82,11 @@ $role = $module->model("Role");
             echo $form->field($user, 'role_id',['showLabels'=>false])->widget(kartik\select2\Select2::classname(), [
                 'data' => $role::dropdown(),
                 'options' => ['placeholder' => 'Select a state ...'],
+                'theme' => kartik\select2\Select2::THEME_DEFAULT,
                 'value' => 1,
+                'hideSearch' => true,
                 'pluginOptions' => [
-                    'allowClear' => true ,
+                    //'allowClear' => true ,
                     'multiple' => false
                 ],
             ]);
@@ -102,8 +104,10 @@ $role = $module->model("Role");
     <?= $form->field($user, 'status',['showLabels'=>false])->widget(kartik\select2\Select2::classname(), [
         'data' => $user::statusDropdown(),
         'options' => ['placeholder' => 'Select a state ...'],
+        'theme' => kartik\select2\Select2::THEME_DEFAULT,
+        'hideSearch' => true,
         'pluginOptions' => [
-            'allowClear' => true ,
+            //'allowClear' => true ,
             'multiple' => false
         ],
     ]); ?>

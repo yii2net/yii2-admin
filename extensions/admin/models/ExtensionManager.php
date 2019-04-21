@@ -21,6 +21,7 @@ class ExtensionManager
     const STATUS_SUCCESS = 1;
     const STATUS_ERROR   = 0;
     const ERROR_NEEDED   = 110;
+    const ERROR_COMPOSER   = 130;
     const ERROR_NOTATLOCAL = 120;
     const ERROR_MIGRATE = 130;
 
@@ -46,7 +47,8 @@ class ExtensionManager
         if(static::$ExtensionLoader == null){
             $admin = Yii::$app->getModule('admin');
             static::$ExtensionLoader = new ExtensionLoader([
-                'packagePathSymLink' => false,
+                'packagePathSymLink' => true,
+                'logLevel'=>'info',
                 'composerPath'=>$admin->composerPath,
                 'rootProjectPath'=>Yii::getAlias($admin->rootProjectPath),
                 'packageInstalledPath'=>Yii::getAlias($admin->packageInstalledPath),
@@ -234,8 +236,12 @@ class ExtensionManager
         $result = static::loader()->localList('',$type=='all' ? '' : $type,'',$page,$pageSize);
         if($result){
             foreach ($result['data'] as $k=>$v){
-                if(static::IsSetuped($v['name'])){
+                if(static::IsSetuped($v['name']) == 1){
                     $result['data'][$k]['status'] = 'setuped';
+                }elseif(static::IsSetuped($v['name']) == 0){
+                    $result['data'][$k]['status'] = 'downloaded';
+                }elseif(static::IsSetuped($v['name']) == 2){
+                    $result['data'][$k]['status'] = '';
                 }
             }
         }
@@ -278,7 +284,18 @@ class ExtensionManager
             static::GetSetupedExtensions();
         }
         //除了判断数据库里面有记录，还要判断文件夹是否存在
-        return isset(static::$_setupedextensions[$packageName]) && is_dir(static::GetExtensionPath($packageName)) ? 1 :0;
+
+        $flag = isset(static::$_setupedextensions[$packageName]) && is_dir(static::GetExtensionPath($packageName)) ? 1 :0;
+        if(isset(static::$_setupedextensions[$packageName]) && is_dir(static::GetExtensionPath($packageName))){
+            $flag = 1;
+        }elseif(isset(static::$_setupedextensions[$packageName]) && !is_dir(static::GetExtensionPath($packageName))){
+            $flag = 2;
+        }elseif(!isset(static::$_setupedextensions[$packageName]) && is_dir(static::GetExtensionPath($packageName))){
+            $flag = 0;
+        }else{
+            $flag = 0;
+        }
+        return $flag;
     }
 
     /**
@@ -682,7 +699,15 @@ class ExtensionManager
         //检查是否已经安装
         if( 0 == static::IsSetuped($packageName)){
             static::showMsg("执行 composer update ...",1);
-            static::loader()->setup($packageName,$packageVersion,$locate);
+            $EventArgs = static::loader()->setup($packageName,$packageVersion,$locate);
+            //check result === true
+            if(!$EventArgs->result){
+                static::showMsg("Composer安装失败，请检查Composer的配置或者扩展({$packageName})的配置！",1,'error');
+                $data['status'] = static::STATUS_ERROR;
+                $data['error_no'] = static::ERROR_COMPOSER;
+                $data['msg']      = "Composer安装失败，请检查Composer的配置或者扩展({$packageName})的配置！";
+                return $data;
+            }
             static::showMsg("获取扩展配置...",0);
             $configRaw = static::GetExtensionConfig($packageName,false,false);//关闭这里的扩展检测
             $package = $configRaw['package'];
