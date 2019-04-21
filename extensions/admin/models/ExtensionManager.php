@@ -322,7 +322,7 @@ class ExtensionManager
 
                             $uninstallPackages = $dependency->getUnInstalledDependencies($packageName);
                             if($uninstallPackages && is_array($uninstallPackages)){
-                                static::showMsg('当前安装版本:'.$uninstallPackages[1]." 低于要求的版本:".$pacakgeVersion,1,'error');
+                                static::showMsg('当前安装版本:'.$uninstallPackages[1]." 不符合要求版本公式:".$pacakgeVersion,1,'error');
                             }else{
                                 static::showMsg('未安装',1,'error');
                             }

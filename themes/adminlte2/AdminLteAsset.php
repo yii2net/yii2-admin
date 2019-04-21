@@ -2,7 +2,7 @@
 namespace openadm\admin\themes\adminlte2;
 
 use yii\base\Exception;
-use dmstr\web\AdminLteAsset as BaseAdminLteAsset;
+use yii\web\AssetBundle as BaseAdminLteAsset;
 
 /**
  * AdminLte AssetBundle
@@ -13,14 +13,13 @@ class AdminLteAsset extends BaseAdminLteAsset
     public $sourcePath = '@vendor/almasaeed2010/adminlte/dist';
     public $css = [
         'css/AdminLTE.min.css',
-        'css/skins/_all-skins.min.css'
+//        'css/skins/_all-skins.min.css'
     ];
     public $js = [
         'js/adminlte.min.js'
     ];
     public $depends = [
         'yii\web\YiiAsset',
-        'rmrevin\yii\fontawesome\AssetBundle',
         'yii\bootstrap\BootstrapAsset',
         'yii\bootstrap\BootstrapPluginAsset',
         'kartik\select2\ThemeDefaultAsset'
@@ -30,7 +29,7 @@ class AdminLteAsset extends BaseAdminLteAsset
      * @var string|bool Choose skin color, eg. `'skin-blue'` or set `false` to disable skin loading
      * @see https://almsaeedstudio.com/themes/AdminLTE/documentation/index.html#layout
      */
-    public $skin = null;
+    public $skin = '_all-skins';
 
     /**
      * @inheritdoc
@@ -38,6 +37,14 @@ class AdminLteAsset extends BaseAdminLteAsset
     public function init()
     {
         // Append skin color file if specified
+        if ($this->skin) {
+            if (('_all-skins' !== $this->skin) && (strpos($this->skin, 'skin-') !== 0)) {
+                throw new Exception('Invalid skin specified');
+            }
+
+            $this->css[] = sprintf('css/skins/%s.min.css', $this->skin);
+        }
+
         parent::init();
     }
 }

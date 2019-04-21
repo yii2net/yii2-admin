@@ -2,7 +2,7 @@
 namespace openadm\admin\themes\adminlte2;
 
 use yii\base\Exception;
-use dmstr\web\AdminLteAsset as BaseAdminLteAsset;
+use yii\web\AssetBundle as BaseAdminLteAsset;
 
 /**
  * AdminLte AssetBundle

@@ -229,6 +229,7 @@ $js = <<<JS
         }catch (e){
             //todo    
         }
+        console.log(location.href)
         location.href=oa_timestamp(location.href);
     })
 JS;
