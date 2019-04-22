@@ -11,7 +11,7 @@ class AdminltePluginsAsset extends AssetBundle
 {
     public $sourcePath = '@vendor/almasaeed2010/adminlte/bower_components';
     public $js = [
-        'fastclick/lib/fastclick.js'
+        'fastclick/lib/fastclick.js',
     ];
     public $css = [
         "https://cdn.bootcss.com/font-awesome/5.8.1/css/all.css",

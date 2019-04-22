@@ -17,10 +17,12 @@ class ThemeAsset extends AssetBundle
 
     public $sourcePath = '@openadm/themes/'.self::themeId.'/assets';
     public $css = [
-        'css/openadm.css'
+        'css/openadm.css',
+        'css/ajaxcrud.css',
     ];
     public $js = [
         'js/jquery.contextmenu.r2.js',
+        'js/ajaxcrud.js',
         'js/tasktab.js',
         'js/openadm.js',
         'js/openadm-modal.js',
@@ -29,8 +31,7 @@ class ThemeAsset extends AssetBundle
     public $jsOptions = ['position' => \yii\web\View::POS_BEGIN];
     public $depends = [
         'openadm\admin\themes\adminlte2\AdminltePluginsAsset',
-        'openadm\admin\themes\adminlte2\NotyAsset',
+        'openadm\admin\themes\adminlte2\StaticAsset',
         'openadm\admin\themes\adminlte2\LayerAsset',
-        'openadm\kartikcrud\CrudAsset'
     ];
 }

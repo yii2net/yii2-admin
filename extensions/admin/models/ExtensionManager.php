@@ -260,9 +260,13 @@ class ExtensionManager
     /**
      * 获取扩展路径
      */
-    static public function GetExtensionPath($packageName)
+    static public function GetExtensionPath($packageName, $source = false)
     {
-        return Yii::getAlias('@extensions').DIRECTORY_SEPARATOR.strtolower($packageName).DIRECTORY_SEPARATOR;
+        $prefix = Yii::getAlias('@extensions');
+        if($source){
+            $prefix = Yii::getAlias(Yii::$app->getModule('admin')->packageScanPath);
+        }
+        return $prefix.DIRECTORY_SEPARATOR.strtolower($packageName).DIRECTORY_SEPARATOR;
     }
 
     /**
@@ -817,7 +821,7 @@ class ExtensionManager
     {
         static::showMsg('开始删除扩展...');
         try{
-            $extensionDir = static::GetExtensionPath($packageName);
+            $extensionDir = static::GetExtensionPath($packageName,true);
             FileHelper::removeDirectory($extensionDir);
             static::showMsg('删除完成',1,'success');
             return ['status'=>static::STATUS_SUCCESS,'msg'=>'删除成功'];

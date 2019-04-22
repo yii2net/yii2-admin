@@ -67,18 +67,19 @@ $before .= Select2::widget([
     'name' => 'ext-category',
     'attribute' => 'category',
     'data' => $categories,
-    'theme'=>Select2::THEME_BOOTSTRAP,
+    'theme'=>Select2::THEME_DEFAULT,
+    'hideSearch'=>true,
     'options' => [
         'placeholder' => '选择一个分类',
         'multiple' => false
     ],
     'pluginOptions' => [
-        'allowClear' => true
+        'allowClear' => false
     ],
 ]);
 $before .= "</div>";
 $before .= <<<HTML
-<div class='col-xs-2' style="padding-left: 0">
+<div class='col-xs-3' style="padding-left: 0">
     <div class="input-group">
         <input type="text" class="form-control" placeholder="输入包名">
         <span class="input-group-btn">

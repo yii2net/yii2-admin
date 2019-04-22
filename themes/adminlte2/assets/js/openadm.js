@@ -444,7 +444,7 @@ function checkTopWindow() {
         //top
         //check if url!=""
         if(location.search != ""){
-            var url = $.getUrlParam("url");
+            var url = $.getUrlParam("url") || "";
             var label = $.getUrlParam("title");
             var apptype = $.getUrlParam("apptype") || 'iframe';
             if(url != ""){
@@ -497,7 +497,16 @@ function oa_open_dialog(opts){
 top.window.onresize = function (e) {
     $('.oa_app_iframe').attr('height',oa_content_height());
 }
+function oa_refresh_cache() {
+    $.get('/admin/dashboard/clear-cache',{},function () {
+       window.oa.Noty({type:'success',text:'刷新完成！'});
+        oa_update_menu();
+    });
+}
 
+function oa_fullscreen() {
+    $(document).toggleFullScreen();
+}
 (function ($) {
     $(document).ready(function () {
         //如果table里面有checkbox，点击行就可以选择checkbox或者反选
@@ -508,6 +517,11 @@ top.window.onresize = function (e) {
                     checkbox.prop('checked', !checkbox.prop('checked'));
                 }
             }
-        })
+        });
+        $('.rel').bind('click',function(){
+            var rel = $(this).attr('rel') || null;
+            if( rel && typeof window[rel] == "function" )
+                window[rel].call();
+        });
     });
 }(jQuery));

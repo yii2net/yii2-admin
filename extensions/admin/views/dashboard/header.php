@@ -25,6 +25,21 @@ use yii\helpers\Url;
             <div class="navbar-custom-menu">
                 <ul class="nav navbar-nav">
                     <!-- User Account: style can be found in dropdown.less -->
+                    <li class="tasks-menu">
+                        <a href="<?php echo Yii::$app->request->getBaseUrl();?>" title="首页" target="_blank">
+                            <i class="glyphicon glyphicon-home"></i>
+                        </a>
+                    </li>
+                    <li class="tasks-menu">
+                        <a href="javascript:;" title="清空缓存" class="rel" rel="oa_refresh_cache">
+                            <i class="glyphicon glyphicon-trash"></i>
+                        </a>
+                    </li>
+                    <li class="tasks-menu">
+                        <a href="javascript:;" title="全屏" class="rel" rel="oa_fullscreen">
+                            <i class="glyphicon glyphicon-fullscreen"></i>
+                        </a>
+                    </li>
                     <li class="dropdown user user-menu">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="false" aria-expanded="false">
                             <span class="hidden-xs"><?=Yii::$app->user->displayName?></span>

@@ -8,18 +8,14 @@ use yii\web\AssetBundle as BaseAdminLteAsset;
  * AdminLte AssetBundle
  * @since 0.1
  */
-class NotyAsset extends BaseAdminLteAsset
+class StaticAsset extends BaseAdminLteAsset
 {
-    public $sourcePath = '@bower/noty/js/noty';
+    public $sourcePath = '@bower/';
     public $css = [
     ];
     public $js = [
-        'packaged/jquery.noty.packaged.js',
-//        'themes/default.js',
-//        'themes/bootstrap.js',
-//        'themes/metroui.js',
-//        'themes/relax.js',
-//        'themes/semanticUI.js',
+        'noty/js/noty/packaged/jquery.noty.packaged.js',
+        "jquery-fullscreen/jquery.fullscreen-min.js"
     ];
     public $depends = [
     ];

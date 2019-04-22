@@ -158,7 +158,6 @@ body>.content{
     color:#333;
 }
 #openadm_content>.task-nav-tabs{
-    border-bottom: none;
     height: 40px;
     line-height: 40px;
     background-color: #fff;
@@ -177,6 +176,7 @@ body>.content{
     overflow: hidden;
     border-right: 1px solid #f6f6f6;
     vertical-align: top;
+    border-bottom: 1px solid #ddd;
 }
 #openadm_content>.task-nav-tabs > li.taskactive > a{
     background-color: #f6f6f6;

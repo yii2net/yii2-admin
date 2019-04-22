@@ -18,6 +18,7 @@
         "amnah/yii2-user": "*",
         "bower-asset/noty": "^2.3",
         "bower-asset/bootstrap3-dialog": "^1.35.4",
+        "bower-asset/jquery-fullscreen": "^1.1.4",
         "almasaeed2010/adminlte": "^2.4.0",
         "yii2mod/yii2-editable": "*",
         "creocoder/yii2-flysystem": "0.8.*",

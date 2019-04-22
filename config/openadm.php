@@ -50,7 +50,7 @@ return [
         ],
         'user' => [
             'class' => 'amnah\yii2\user\components\User',
-            'loginUrl' => '/user/admin/login'
+            'loginUrl' => '/user/admin/login',
         ],
         //文件系统
         'fs' => [
@@ -85,6 +85,9 @@ return [
             'logoutRedirect'=>'/',
             'requireEmail' => true,
             'requireUsername' => true,
+            'modelClasses'=>[
+                'UserSearch' => 'openadm\admin\extensions\user\models\search\UserSearch',
+            ],
             'controllerMap' => [
                 'admin' => [
                     'class' => 'openadm\admin\extensions\user\controllers\AdminController',

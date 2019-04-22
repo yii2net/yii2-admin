@@ -145,27 +145,33 @@ HTML;
                     },
                     'options'=>['style'=>'width:100px']
                 ],
-                [
-                    'label'=>'封号',
-                    'class' => 'kartik\grid\EnumColumn',
-                    'attribute' => 'banned_at',
-                    'value'=>function($model){
-                        return $model->banned_at ? "禁用" : "正常";
-                    },
-                    'filter'=>false,
-                    'enum' => ["禁用","正常"], // returns a value => content pair
-                    'loadEnumAsFilter' => false, // optional - defaults to `true`
-                    'options'=>['style'=>'width:80px']
-                ],
 //                [
-//                    'label'=>'禁用',
-//                    'attribute'=>'banned_at',
-//                    'filter'=>'',
+//                    'label'=>'封号',
+//                    'class' => 'kartik\grid\EnumColumn',
+//                    'attribute' => 'banned_at',
 //                    'value'=>function($model){
 //                        return $model->banned_at ? "禁用" : "正常";
 //                    },
-//                    'options'=>['style'=>'width:80px']
+//                    'filter'=>[
+//                            '0' => '禁用',
+//                            '1' => '正常'
+//                    ],
+//                    'enum' => [0=>"禁用",1=>"正常"], // returns a value => content pair
+//                    'loadEnumAsFilter' => true, // optional - defaults to `true`
+//                    'options'=>['style'=>'width:40px']
 //                ],
+                [
+                    'label'=>'禁用',
+                    'attribute'=>'banned_at',
+                    'filter'=>[
+                        '0' => '禁用',
+                        '1' => '正常'
+                    ],
+                    'value'=>function($model){
+                        return $model->banned_at ? "禁用" : "正常";
+                    },
+                    'options'=>['style'=>'width:40px']
+                ],
 
                 // 'password',
                 // 'auth_key',
