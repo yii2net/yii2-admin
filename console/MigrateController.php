@@ -74,8 +74,8 @@ class MigrateController extends BaseMigrateController
                 $setupedExtensions = ExtensionManager::GetSetupedExtensions();
                 if ($setupedExtensions && is_array($setupedExtensions)){
                     foreach ($setupedExtensions as $extension) {
-                        $extensionId = isset($extension['id']) ? $extension['id'] : '';
-                        $path = Yii::getAlias('@extensions') . DIRECTORY_SEPARATOR . "{$extensionId}" . DIRECTORY_SEPARATOR . "migrations";
+                        $packageName = isset($extension['name']) ? $extension['name'] : '';
+                        $path = Yii::getAlias('@extensions') . DIRECTORY_SEPARATOR . "{$packageName}" . DIRECTORY_SEPARATOR . "migrations";
                         if (is_dir($path)) {
                             $this->_extension_migration_paths[] = $path;
                         }

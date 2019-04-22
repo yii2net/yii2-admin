@@ -464,7 +464,7 @@ class ExtensionManager
             static::showMsg("开始执行Migrate操作...");
             $yii = Yii::getAlias(self::getYiiCommand());
             //--interactive=0 非交互式命令行
-            $params = "--migrationPath=$migrationPath -n";
+            $params = "--migrationPath=$migrationPath --interactive=0";
             $action = "migrate/";
             switch ($type){
                 case static::MIGRATE_UP:
