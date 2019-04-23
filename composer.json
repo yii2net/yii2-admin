@@ -4,6 +4,7 @@
     "type": "yii2-extension",
     "keywords": ["yii2","extension","admin","openadmin","openadm"],
     "license": "LGPL-3.0+",
+    "version": "v0.9.0",
     "authors": [
         {
             "name": "xiongchuan86",
@@ -35,6 +36,6 @@
         }
     },
     "extra": {
-      "bootstrap": "openadm\\admin\\AdminBootstrap"
+      "bootstrap": "openadm\\admin\\Bootstrap"
     }
 }

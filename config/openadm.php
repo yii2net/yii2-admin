@@ -16,7 +16,7 @@ return [
     'components' => [
         'view' => [
             'theme' => [
-                'basePath' => '@openadm/themes/adminlte2',
+                'basePath' => '@openadm/admin/themes/adminlte2',
             ],
         ],
         'assetManager' => [
@@ -98,7 +98,7 @@ return [
                     'class' => 'openadm\admin\extensions\user\controllers\DefaultController',
                 ]
             ],
-            'viewPath' => '@openadm/extensions/user/views',
+            'viewPath' => '@openadm/admin/extensions/user/views',
         ],
         'rbac' => [
             'class' => 'yii2mod\rbac\Module',
@@ -116,7 +116,7 @@ return [
                     'class' => 'openadm\admin\extensions\rbac\controllers\RouteController',
                 ],
             ],
-            'viewPath' => '@openadm/extensions/rbac/views',
+            'viewPath' => '@openadm/admin/extensions/rbac/views',
         ],
     ],
 ];

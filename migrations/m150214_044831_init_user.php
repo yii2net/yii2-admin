@@ -17,8 +17,8 @@ class m150214_044831_init_user extends Migration
         $this->createTable('{{%role}}', [
             'id' => Schema::TYPE_PK,
             'name' => Schema::TYPE_STRING . ' not null',
-            'created_at' => Schema::TYPE_TIMESTAMP . ' null',
-            'updated_at' => Schema::TYPE_TIMESTAMP . ' null',
+            'created_at' => Schema::TYPE_DATETIME . ' null',
+            'updated_at' => Schema::TYPE_DATETIME . ' null',
             'can_admin' => Schema::TYPE_SMALLINT . ' not null default 0',
         ], $tableOptions);
         $this->createTable('{{%user}}', [
@@ -31,11 +31,11 @@ class m150214_044831_init_user extends Migration
             'auth_key' => Schema::TYPE_STRING . ' null',
             'access_token' => Schema::TYPE_STRING . ' null',
             'logged_in_ip' => Schema::TYPE_STRING . ' null',
-            'logged_in_at' => Schema::TYPE_TIMESTAMP . ' null',
+            'logged_in_at' => Schema::TYPE_DATETIME . ' null',
             'created_ip' => Schema::TYPE_STRING . ' null',
-            'created_at' => Schema::TYPE_TIMESTAMP . ' null',
-            'updated_at' => Schema::TYPE_TIMESTAMP . ' null',
-            'banned_at' => Schema::TYPE_TIMESTAMP . ' null',
+            'created_at' => Schema::TYPE_DATETIME . ' null',
+            'updated_at' => Schema::TYPE_DATETIME . ' null',
+            'banned_at' => Schema::TYPE_DATETIME . ' null',
             'banned_reason' => Schema::TYPE_STRING . ' null',
         ], $tableOptions);
         $this->createTable('{{%user_token}}', [
@@ -44,14 +44,14 @@ class m150214_044831_init_user extends Migration
             'type' => Schema::TYPE_SMALLINT . ' not null',
             'token' => Schema::TYPE_STRING . ' not null',
             'data' => Schema::TYPE_STRING . ' null',
-            'created_at' => Schema::TYPE_TIMESTAMP . ' null',
-            'expired_at' => Schema::TYPE_TIMESTAMP . ' null',
+            'created_at' => Schema::TYPE_DATETIME . ' null',
+            'expired_at' => Schema::TYPE_DATETIME . ' null',
         ], $tableOptions);
         $this->createTable('{{%profile}}', [
             'id' => Schema::TYPE_PK,
             'user_id' => Schema::TYPE_INTEGER . ' not null',
-            'created_at' => Schema::TYPE_TIMESTAMP . ' null',
-            'updated_at' => Schema::TYPE_TIMESTAMP . ' null',
+            'created_at' => Schema::TYPE_DATETIME . ' null',
+            'updated_at' => Schema::TYPE_DATETIME . ' null',
             'full_name' => Schema::TYPE_STRING . ' null',
             'timezone' => Schema::TYPE_STRING . ' null',
         ], $tableOptions);
@@ -61,8 +61,8 @@ class m150214_044831_init_user extends Migration
             'provider' => Schema::TYPE_STRING . ' not null',
             'provider_id' => Schema::TYPE_STRING . ' not null',
             'provider_attributes' => Schema::TYPE_TEXT . ' not null',
-            'created_at' => Schema::TYPE_TIMESTAMP . ' null',
-            'updated_at' => Schema::TYPE_TIMESTAMP . ' null'
+            'created_at' => Schema::TYPE_DATETIME . ' null',
+            'updated_at' => Schema::TYPE_DATETIME . ' null'
         ], $tableOptions);
 
         // add indexes for performance optimization

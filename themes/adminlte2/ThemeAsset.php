@@ -15,7 +15,7 @@ class ThemeAsset extends AssetBundle
     const  name = 'adminlte2';
     const  themeId = 'adminlte2';
 
-    public $sourcePath = '@openadm/themes/'.self::themeId.'/assets';
+    public $sourcePath = '@openadm/admin/themes/'.self::themeId.'/assets';
     public $css = [
         'css/openadm.css',
         'css/ajaxcrud.css',

@@ -63,16 +63,16 @@ HTML;
 
         $content = GridView::widget([
             'pjax'=>true,
-                'hover' => true,
-                'dataProvider' => $dataProvider,
-                'filterModel' => $searchModel,
-                'panel'=>[
-                    'before'=>$before,
-                    'after' => false
-                ],
-                'panelTemplate'=>"{panelBefore}\n{items}\n{panelFooter}",
-                'toolbar' =>  false,
-                'panelFooterTemplate' => $panelFooterTemplate,
+            'hover' => true,
+            'dataProvider' => $dataProvider,
+            'filterModel' => $searchModel,
+            'panel'=>[
+                'before'=>$before,
+                'after' => false
+            ],
+            'panelTemplate'=>"{panelBefore}\n{items}\n{panelFooter}",
+            'toolbar' =>  false,
+            'panelFooterTemplate' => $panelFooterTemplate,
             'options'=>['id'=>'dynagrid-user'], // a unique identifier is important
             'columns' => [
                 [

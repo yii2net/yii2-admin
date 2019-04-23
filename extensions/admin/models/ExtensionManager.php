@@ -50,6 +50,7 @@ class ExtensionManager
                 'packagePathSymLink' => true,
                 'logLevel'=>'info',
                 'composerPath'=>$admin->composerPath,
+                'vendorPath'=>Yii::getAlias('@vendor'),
                 'rootProjectPath'=>Yii::getAlias($admin->rootProjectPath),
                 'packageInstalledPath'=>Yii::getAlias($admin->packageInstalledPath),
                 'packageScanPath'=>Yii::getAlias($admin->packageScanPath),
@@ -270,6 +271,15 @@ class ExtensionManager
     }
 
     /**
+     * 获取扩展路径
+     */
+    static public function GetVendorExtensionPath($packageName)
+    {
+        $prefix = Yii::getAlias('@vendor');
+        return $prefix.DIRECTORY_SEPARATOR.strtolower($packageName).DIRECTORY_SEPARATOR;
+    }
+
+    /**
      * 删除静态变量数组里面的值
      */
     static public function ExtensionDeleteStaticVar($package)
@@ -290,7 +300,10 @@ class ExtensionManager
         //除了判断数据库里面有记录，还要判断文件夹是否存在
 
         $flag = isset(static::$_setupedextensions[$packageName]) && is_dir(static::GetExtensionPath($packageName)) ? 1 :0;
-        if(isset(static::$_setupedextensions[$packageName]) && is_dir(static::GetExtensionPath($packageName))){
+        if(isset(static::$_setupedextensions[$packageName]) &&
+            //在src/extension||vendor/都可以，取决于composer.json的type=library||yii2-extension
+            (is_dir(static::GetExtensionPath($packageName)) || is_dir(static::GetVendorExtensionPath($packageName)) )
+        ){
             $flag = 1;
         }elseif(isset(static::$_setupedextensions[$packageName]) && !is_dir(static::GetExtensionPath($packageName))){
             $flag = 2;
@@ -458,7 +471,7 @@ class ExtensionManager
             $migrationDirName = static::MIGRATION_DEFAULT_DIRNAME;
         }
         //检查是否需要migrate操作,原则是看是否有migrations目录
-        $migrationPath = Yii::getAlias('@extensions/'.$package->getName().'/'.$migrationDirName);
+        $migrationPath = $package->getInstalledPath().DIRECTORY_SEPARATOR.$migrationDirName;
         if(is_dir($migrationPath)){
             static::showMsg("需要",1,'success');
             static::showMsg("开始执行Migrate操作...");

@@ -10,7 +10,7 @@ use yii\web\AssetBundle as BaseAdminLteAsset;
  */
 class LayerAsset extends BaseAdminLteAsset
 {
-    public $sourcePath = '@openadm/themes/adminlte2/assets/libs/layer/';
+    public $sourcePath = '@openadm/admin/themes/adminlte2/assets/libs/layer/';
     public $css = [
     ];
     public $js = [

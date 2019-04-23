@@ -263,20 +263,21 @@ function oa_content_height() {
     return iframe_height;
 }
 
-function oa_tab_close(id) {
+function oa_tab_close(id,noactive) {
     var tabnavbid = '#tab_nav_'+id;
     var tabid    = '#tab_'+id;
 
     var next = $(tabnavbid).next();
     var prev = $(tabnavbid).prev();
-    if(next.length>0){
-        oa_setTabActiveById($(next).data('id'));
-    }else{
-        if(prev.length>0){
-            oa_setTabActiveById($(prev).data('id'));
+    if(typeof noactive == "boolean" && noactive == true){
+        if(next.length>0){
+            oa_setTabActiveById($(next).data('id'));
+        }else{
+            if(prev.length>0){
+                oa_setTabActiveById($(prev).data('id'));
+            }
         }
     }
-
     $(tabid).remove();
     $(tabnavbid).remove();
 }
@@ -368,7 +369,7 @@ function oa_menu_ids(menus,depth) {
 function oa_update_menu(delMenuId)
 {
     //如果是删除菜单的操作,则需要关闭相应的tab window
-    if(typeof delMenuId == "number")oa_tab_close(delMenuId);
+    if(typeof delMenuId == "number")oa_tab_close(delMenuId,true);
 
     //记录当前的top menu的active状态
     var activeLi = $('#topmenu li.active');
@@ -392,7 +393,7 @@ function oa_update_menu(delMenuId)
         $('#tab_nav li').each(function () {
             var id = parseInt($(this).data('id'));
             if(OA_MenusIDs.indexOf(id) === -1){
-                oa_tab_close(id);
+                oa_tab_close(id,true);
             }
         })
         var hasFoundOldMenu = false;

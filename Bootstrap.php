@@ -7,11 +7,11 @@ use yii\base\Application;
 use openadm\admin\web\SystemEvent;
 
 
-class AdminBootstrap implements BootstrapInterface
+class Bootstrap implements BootstrapInterface
 {
     public function bootstrap($app)
     {
-        Yii::setAlias('@openadm', '@vendor/openadm/yii2-admin');
+        Yii::setAlias('@openadm/admin', __DIR__);
         if(PHP_SAPI !== 'cli'){
             $app->on(Application::EVENT_BEFORE_REQUEST, function () {
                 SystemEvent::beforeRequest();
