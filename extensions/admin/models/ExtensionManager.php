@@ -681,12 +681,19 @@ class ExtensionManager
                 'console' => []
             ];
         }
-        //var_dump($setupedExtensionsConfig);exit;
         if($setupedExtensionsConfig && is_array($setupedExtensionsConfig)){
-            foreach ($setupedExtensionsConfig as $key => $config){
-                $filename = strtolower($key)."-ext.php";
-                $file = \Yii::getAlias("@config").DIRECTORY_SEPARATOR.$filename;
-                file_put_contents($file,"<?php \n return ".var_export($config,true). ';');
+            if(is_writable(\Yii::getAlias("@config"))){
+                foreach ($setupedExtensionsConfig as $key => $config){
+                    $filename = strtolower($key)."-ext.php";
+                    $file = \Yii::getAlias("@config").DIRECTORY_SEPARATOR.$filename;
+                    if(is_writable($file)){
+                        file_put_contents($file,"<?php \n return ".var_export($config,true). ';');
+                    }else{
+                        static::showMsg("配置路径:".$file." ... 不可写, 跳过!");
+                    }
+                }
+            }else{
+                static::showMsg("配置路径:".\Yii::getAlias("@config")." ... 不可写, 跳过!");
             }
         }
     }
@@ -695,12 +702,9 @@ class ExtensionManager
     {
         $config = [];
         $needCombineKeys = ['web','console'];
-        $configFile = \Yii::getAlias("@extensions").DIRECTORY_SEPARATOR.$packageName.DIRECTORY_SEPARATOR."config.php";
-        if($configFile){
-            $array = require $configFile;
-            foreach ($needCombineKeys as $key){
-                $config[$key] = isset($array[$key]) ? $array[$key] : [];
-            }
+        foreach ($needCombineKeys as $key){
+            $package = static::loader()->getPackage($packageName);
+            $config[$key] = $package->get($key) ?: [];
         }
         return $config;
     }

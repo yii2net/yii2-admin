@@ -11,7 +11,7 @@ class Bootstrap implements BootstrapInterface
 {
     public function bootstrap($app)
     {
-        Yii::setAlias('@openadm/admin', __DIR__);
+        Yii::setAlias("@".__NAMESPACE__, __DIR__);
         if(PHP_SAPI !== 'cli'){
             $app->on(Application::EVENT_BEFORE_REQUEST, function () {
                 SystemEvent::beforeRequest();

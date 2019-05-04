@@ -26,7 +26,6 @@
         "creocoder/yii2-flysystem": "0.8.*",
         "nirvana-msu/yii2-showloading": "^1.0@dev",
         "symfony/process": "*",
-        "intervention/image": "^2.3",
         "openadm/yii2-extension": "dev-master",
         "kassko/util-reflection": "dev-master"
     },
