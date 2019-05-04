@@ -54,7 +54,7 @@ class ExtensionManagerController extends Controller
             ob_end_clean();
             ob_implicit_flush();
             header('X-Accel-Buffering: no');
-            if($packageName && $action && in_array($action,['setup','unsetup','delete'])){
+            if($packageName && $action && in_array($action,['setup','unsetup','delete','clear'])){
                 ExtensionManager::setShowMsg(1);
                 ExtensionManager::$action($packageName,$packageVersion,$locate);
                 ExtensionManager::setShowMsg(0);

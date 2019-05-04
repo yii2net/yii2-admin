@@ -712,6 +712,9 @@ class ExtensionManager
     /**
      * 安装扩展
      * @param $packageName
+     * @param $packageVersion
+     * @param $locate
+     * @return array
      */
     static public function setup($packageName,$packageVersion,$locate)
     {
@@ -795,8 +798,11 @@ class ExtensionManager
     }
 
     /**
-     * 卸载扩展
+     * 卸载扩展，不删除
      * @param $packageName
+     * @param string $packageVersion
+     * @param string $locate
+     * @return array
      */
     static public function unsetup($packageName,$packageVersion='',$locate='')
     {
@@ -831,8 +837,11 @@ class ExtensionManager
     }
 
     /**
-     * 删除扩展
-     * @param $packageName string
+     * 删除扩展文件
+     * @param $packageName
+     * @param string $packageVersion
+     * @param string $locate
+     * @return array
      */
     static public function delete($packageName,$packageVersion='',$locate='')
     {
@@ -847,6 +856,34 @@ class ExtensionManager
             static::showMsg($e->getMessage(),1,'error');
             return ['status' => static::STATUS_ERROR,'msg' => "删除失败(没有权限)，请手动删除扩展相关文件和目录！"];
         }
+    }
+
+    /**
+     * 当数据库有扩展配置，缺少扩展目录的时候，要清理无用扩展
+     * @param $packageName
+     * @param string $packageVersion
+     * @param string $locate
+     * @return array
+     */
+    static public function clear($packageName,$packageVersion='',$locate='')
+    {
+        static::showMsg('开始清理扩展...');
+        static::showMsg('检测是否需要执行Migrate...',0);
+        $package = static::loader()->getManager()->getPackageWithoutValidate($packageName);
+        if($package){
+            static::ExtensionInjectMigration($package,static::MIGRATE_DOWN);
+        }
+        static::showMsg('删除数据库配置...',0);
+        static::ExtensionDeleteDBConfig($package);
+        static::showMsg('完成',1,'success');
+        static::ExtensionDeleteStaticVar($package);
+
+        //重新生成所有生效插件的config到openadm/config/extensions.php
+        static::showMsg("开始刷新所有扩展的配置文件...",0);
+        static::RefreshExtensionsConfig($package,'clear');
+        static::showMsg('清理完成!',1,'success');
+        $data = array("status"=>static::STATUS_SUCCESS,'msg'=>'清理完成');
+        return $data;
     }
 
 }

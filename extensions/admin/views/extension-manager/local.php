@@ -56,11 +56,15 @@ $this->params['breadcrumbs'][] = '扩展管理';
 
                 $btn_delete_label = Html::tag('i','删除',['class'=>'fa fa-trash']);
                 $btn_delete = Html::a($btn_delete_label,'#',['class' => 'delete btn btn-xs btn-danger','style'=>'','data-title'=>$v['name'],'data-toggle' => 'modal','data-version'=>$v['version'],'data-toggle'=>'#modal']);
+                $btn_clear_label = Html::tag('i','清理',['class'=>'fa fa-eraser']);
+                $btn_clear = Html::a($btn_clear_label,'#',['class' => 'extclear btn btn-xs btn-warning','style'=>'','data-title'=>$v['name'],'data-toggle' => 'modal','data-version'=>$v['version'],'data-toggle'=>'#modal']);
                 $v['_action_'] = '';
                 if($v['status']=='setuped'){
                     $v['_action_'] = $btn_unsetup;
                 }elseif($v['status']=='downloaded'){
                     $v['_action_'] = $btn_setup.' '.$btn_delete;
+                }else{
+                    $v['_action_'] = $btn_clear;
                 }
                 $data[]=$v;
             }
@@ -163,7 +167,21 @@ function extension_action(o,action)
 
 function doAction(o,action){
     $('#install-modal').modal('show');
-    var title = action == 'setup' ? "安装扩展" : ( action == 'unsetup' ? "卸载扩展" : "删除扩展" );
+    var title = '';
+    switch (action) {
+        case 'setup':
+            title = "安装扩展";
+            break;
+        case 'unsetup':
+            title = "卸载扩展";
+            break;
+        case 'delete':
+            title = "删除扩展";
+            break;
+        case 'clear':
+            title = "清理扩展";
+            break;
+    }
     title += ": <b>"+$(o).data('title')+":"+$(o).data('version')+"</b>";
     $('#install-modal .modal-header').html(title);
     $('.modal-body').css('height','400px');
@@ -214,6 +232,11 @@ $js = <<<JS
         extension_action(this,'setup');
         return false;
     });
+
+    $(document).on('click', '.extclear', function () {
+            extension_action(this,'clear');
+            return false;
+        });
     
     $(document).on('click', '.unsetup', function () {
         extension_action(this,'unsetup');
