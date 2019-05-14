@@ -722,8 +722,10 @@ class ExtensionManager
         $data = array("status"=>static::STATUS_ERROR,'msg'=>'未知错误');
         //检查是否已经安装
         if( 0 == static::IsSetuped($packageName)){
-            static::showMsg("执行 composer update ...",1);
+            static::showMsg("执行 composer ...",1);
+            static::showMsg("<p id='cmd_box' style='background-color: #2c763e;color:#f5db88'>",0);
             $EventArgs = static::loader()->setup($packageName,$packageVersion,$locate);
+            static::showMsg("</p>",0);
             //check result === true
             if(!$EventArgs->result){
                 static::showMsg("Composer安装失败，请检查Composer的配置或者扩展({$packageName})的配置！",1,'error');
@@ -823,7 +825,9 @@ class ExtensionManager
         static::showMsg('完成',1,'success');
         //composer remove
         static::showMsg('执行 composer remove '. $packageName . '...',1,'info');
+        static::showMsg("<p id='cmd_box' style='background-color: #2c763e;color:#f5db88'>",0);
         static::loader()->unSetup($packageName,$locate);
+        static::showMsg("</p>",0);
         static::showMsg('完成',1,'success');
 
         static::ExtensionDeleteStaticVar($package);
