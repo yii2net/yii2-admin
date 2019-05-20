@@ -25,9 +25,7 @@ $role = $module->model("Role");
             <th style='width: 20%; text-align: right; vertical-align: middle;'>
                 <?= Html::activeLabel($user, 'email') ?></th>
             <td>
-                <div class='kv-form-attribute'>    <?= $form->field($user, 'email',[
-                        'showLabels'=>false
-                    ])->textInput() ?>
+                <div class='kv-form-attribute'>    <?= $form->field($user, 'email',['showLabels'=>false])->textInput() ?>
 
                 </div>
             </td>

@@ -17,6 +17,8 @@
         "bizley/migration": "^3.2",
         "yii2mod/yii2-rbac": "*",
         "kartik-v/yii2-dynagrid": "^1.5.1",
+        "kartik-v/yii2-validators": "@dev",
+        "borales/yii2-phone-input": "*",
         "amnah/yii2-user": "*",
         "bower-asset/noty": "^2.3",
         "bower-asset/bootstrap3-dialog": "^1.35.4",

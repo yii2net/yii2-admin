@@ -24,7 +24,7 @@ class ExtensionManagerController extends Controller
 	{
 		$tab = in_array($tab,array('all','setuped','downloaded')) ? $tab : 'all';
 		//获取插件
-		$pageSize = 20;
+		$pageSize = 10;
 		$result = ExtensionManager::GetLocalExtensions($tab,$page,$pageSize);
 		return $this->render("local",['tab'=>$tab,'result'=>$result]);
 	}
@@ -33,7 +33,7 @@ class ExtensionManagerController extends Controller
 	{
         $tab = in_array($tab,array('all','setuped','downloaded')) ? $tab : 'all';
         //获取插件
-        $pageSize = 20;
+        $pageSize = 10;
         $result = ExtensionManager::GetRemoteExtensions('','',$page,$pageSize);
         $categories = [
             'all' => '全部',

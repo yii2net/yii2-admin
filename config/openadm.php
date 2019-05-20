@@ -119,4 +119,6 @@ return [
             'viewPath' => '@openadm/admin/extensions/rbac/views',
         ],
     ],
+    'params'=>[
+    ]
 ];
