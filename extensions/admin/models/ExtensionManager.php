@@ -411,15 +411,25 @@ class ExtensionManager
         }
     }
 
+    static public function _ExtensionInjectMenuWithKeys($packageName,$cfg_pid,array $menus)
+    {
+        foreach ($menus as $key=>$keymenus){
+            $menukey = $key;
+            if(is_numeric($key)){
+                $menukey = 'MENU';//如果是数字，代表菜单是后台的
+            }
+            static::_ExtensionInjectMenu($packageName,$cfg_pid,$menukey,$keymenus);
+        }
+    }
+
     /**
      * 实际注入方法
      * @param $extensionId
      * @param $cfg_name
      * @param array $menus
      */
-    static public function _ExtensionInjectMenu($packageName,$cfg_pid,array $menus)
+    static public function _ExtensionInjectMenu($packageName,$cfg_pid,$key,array $menus)
     {
-        $extension_last_config = static::ExtensionLastSavedConfig($packageName);
         foreach ($menus as $menu){
             $params = [
                 'cfg_value'   => isset($menu['cfg_value']) ? $menu['cfg_value'] : '',
@@ -427,12 +437,6 @@ class ExtensionManager
                 'cfg_pid'     => $cfg_pid ==0 ? (isset($menu['cfg_pid']) ? $menu['cfg_pid'] : 0) : $cfg_pid,
                 'cfg_order'   => isset($menu['cfg_order']) ? $menu['cfg_order'] : 0
             ];
-            //使用旧的配置信息
-            if(!empty($extension_last_config) && isset($extension_last_config['menus']) && isset($extension_last_config['menus'][$params['cfg_comment']])){
-                $params['cfg_pid'] = $extension_last_config['menus'][$params['cfg_comment']]['cfg_pid'];
-                $params['cfg_order'] = $extension_last_config['menus'][$params['cfg_comment']]['cfg_order'];
-            }
-
             if(empty($params['cfg_value']) || empty($params['cfg_comment']))continue;
             //检查cfg_value是否为数组,并且有url,icon(可选)
             if(is_array($params['cfg_value']) && isset($params['cfg_value']['url'])){
@@ -441,12 +445,12 @@ class ExtensionManager
                 continue;//不满条件,就继续foreach
             }
             //写入system_config表
-            $lastPuginConfigId = SystemConfig::Set(SystemConfig::MENU_KEY,$params);
+            $lastPuginConfigId = SystemConfig::Set($key,$params);
             static::RecordExtensionConfigId($packageName,$lastPuginConfigId);
 
             //检查是否有子菜单
             if(isset($menu['items']) && is_array($menu['items'])){
-                static::_ExtensionInjectMenu($packageName,$lastPuginConfigId,$menu['items']);
+                static::_ExtensionInjectMenu($packageName,$lastPuginConfigId,$key,$menu['items']);
             }
         }
 
@@ -522,7 +526,7 @@ class ExtensionManager
     {
         $menus = $package->get("menus");
         if($menus && is_array($menus)){
-            static::_ExtensionInjectMenu($package->getName(),0,$menus);
+            static::_ExtensionInjectMenuWithKeys($package->getName(),0,$menus);
         }
     }
 
@@ -579,10 +583,6 @@ class ExtensionManager
                 $value = Json::decode($extension['cfg_value']);
                 $config_ids = isset($value[static::EXTENSION_CONFIG_ID_RECORD_KEY]) ? $value[static::EXTENSION_CONFIG_ID_RECORD_KEY] : [];
                 if(is_array($config_ids) && !empty($config_ids))foreach ($config_ids as $id){
-                    $configRaw = SystemConfig::GetById($id);
-                    if($configRaw && in_array($configRaw['cfg_name'],[SystemConfig::MENU_KEY,SystemConfig::HOMEMENU_KEY])){
-                        static::ExtensionSaveOldConfig($packageName,$configRaw);
-                    }
                     SystemConfig::Remove($id);
                 }
             }catch (InvalidArgumentException $e){
@@ -592,66 +592,6 @@ class ExtensionManager
             SystemConfig::Remove($extension['id']);
         }
         return false;
-    }
-
-    /**
-     * 卸载前 把扩展的配置保存,以便下次安装的时候可以使用之前配置好的参数
-     * @param $packageName
-     * @param $config
-     */
-    static public function ExtensionSaveOldConfig($packageName,$config)
-    {
-        static::showMsg('<br/>保存扩展配置信息到扩展目录...');
-        $Dir = static::GetExtensionPath($packageName).'unsetup/';
-        if(!is_dir($Dir)){
-            @mkdir($Dir,0777);
-        }
-        $old_config_path = $Dir.'unsetup_save_config.php';
-        if(!is_file($old_config_path)){
-            @file_put_contents($old_config_path,'');
-        }
-        if(is_writable($Dir) && is_writable($old_config_path)){
-            $content = file_get_contents($old_config_path);
-            $save_config = [];
-            if($content){
-                try{
-                    $save_config = Json::decode($content,true);
-                }catch (InvalidArgumentException $e){
-                }
-            }
-            if( is_array($save_config) ){
-                if(!isset($save_config["menus"])){
-                    $save_config["menus"] = [];
-                }
-            }else{
-                $save_config = [];
-                $save_config["menus"] = [];
-            }
-            $save_config["menus"][$config['cfg_comment']] = $config;
-            file_put_contents($old_config_path,Json::encode($save_config));
-            static::showMsg("配置路径:$old_config_path ... 保存完成!");
-        }else{
-            static::showMsg("配置路径:$old_config_path ... 不可写, 跳过!");
-        }
-    }
-
-    /**
-     * 获取扩展之前保存的配置信息
-     * @param $packageName
-     * @return array|mixed
-     */
-    static public function ExtensionLastSavedConfig($packageName)
-    {
-        $path = static::GetExtensionPath($packageName).'unsetup/unsetup_save_config.php';
-        $save_config = [];
-        if(is_file($path)){
-            $content = file_get_contents( $path );
-            try{
-                $save_config = Json::decode($content,true);
-            }catch (InvalidArgumentException $e){
-            }
-        }
-        return $save_config;
     }
 
     static public function RefreshExtensionsConfig($package,$action = 'setup')

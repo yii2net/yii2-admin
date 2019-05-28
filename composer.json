@@ -4,7 +4,7 @@
     "type": "yii2-extension",
     "keywords": ["yii2","extension","admin","openadmin","openadm"],
     "license": "LGPL-3.0+",
-    "version": "v0.9.0",
+    "version": "v0.9.3",
     "authors": [
         {
             "name": "xiongchuan86",
@@ -12,14 +12,17 @@
         }
     ],
     "require": {
-        "yiisoft/yii2": "~2.0.10",
+        "yiisoft/yii2": "^2.0.10",
+        "yiisoft/yii2-bootstrap": "~2.0.6",
+        "yiisoft/yii2-swiftmailer": "~2.0.6",
+        "openadm/yii2-extension": "*",
         "yiisoft/yii2-jui": "^2.0.6",
         "bizley/migration": "^3.2",
         "yii2mod/yii2-rbac": "*",
         "kartik-v/yii2-dynagrid": "^1.5.1",
-        "kartik-v/yii2-validators": "@dev",
-        "borales/yii2-phone-input": "*",
-        "amnah/yii2-user": "*",
+        "borales/yii2-phone-input": "0.1.2",
+        "daixianceng/yii2-smser": "*",
+        "amnah/yii2-user": "~5.0.8",
         "bower-asset/noty": "^2.3",
         "bower-asset/bootstrap3-dialog": "^1.35.4",
         "bower-asset/jquery-fullscreen": "^1.1.4",
@@ -28,8 +31,8 @@
         "creocoder/yii2-flysystem": "0.8.*",
         "nirvana-msu/yii2-showloading": "^1.0@dev",
         "symfony/process": "*",
-        "openadm/yii2-extension": "dev-master",
-        "kassko/util-reflection": "dev-master"
+        "yiisoft/yii2-authclient": "~2.2.2",
+        "kassko/util-reflection": "*"
     },
     "autoload": {
         "psr-4": {

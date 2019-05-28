@@ -11,10 +11,6 @@ use yii;
 class SystemConfig 
 {
 	static private $_tableName = "%system_config";
-    //后台菜单
-    const MENU_KEY             = "MENU";
-    //前台菜单
-    const HOMEMENU_KEY         = "HOMEMENU";
 
     const CONFIG_TYPE_USER     = "USER";
     const CONFIG_TYPE_SYSTEM   = "SYSTEM";

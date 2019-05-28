@@ -11,6 +11,7 @@ return [
     ],
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
+        '@vendor/bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
     ],
     'components' => [

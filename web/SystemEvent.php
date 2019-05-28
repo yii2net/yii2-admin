@@ -94,7 +94,7 @@ class SystemEvent extends Component
     //获取Admin菜单
     static public function GetAdminMenu(){
         //默认获取全部的菜单
-        $menus  = static::GetCanAccessMenu(SystemConfig::MENU_KEY,'');
+        $menus  = static::GetCanAccessMenu('MENU','');
 
         return  static::FortmatMenus($menus);
     }
