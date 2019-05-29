@@ -12,15 +12,16 @@ class SystemEvent extends Component
 
     static public function beforeRequest()
     {
+        $pathInfo = Yii::$app->request->pathInfo;
         //去掉pathInfo最后面的斜线:blog/=> blog,有斜线,urlRule无法正常匹配
-        $length = strlen(Yii::$app->request->pathInfo);
+        $length = strlen($pathInfo);
         if($length>0){
-            if('/' === Yii::$app->request->pathInfo[$length-1]){
-                $pathInfo = substr(Yii::$app->request->pathInfo,0,$length-1);
-                Yii::$app->request->pathInfo = $pathInfo;
+            if('/' === $pathInfo[$length-1]){
+                $pathInfo = substr($pathInfo,0,$length-1);
             }
-
         }
+        $pathInfo = str_replace("//","/",$pathInfo);
+        Yii::$app->request->pathInfo = $pathInfo;
         //=====
         static::AddUrlRules();
     }

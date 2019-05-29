@@ -185,11 +185,10 @@ class SystemConfig
 	 */
 	static private function _Get($name,$pid,$type){
 		$where = " 1 ";
-		$pid   = intval($pid);
 		if($name){
 			$where .= " AND cfg_name=:name ";
 		}
-		if($pid && $pid>0){
+		if(is_numeric($pid)){
 			$where .= " AND cfg_pid=:pid ";
 		}
 		if($type){
@@ -200,7 +199,7 @@ class SystemConfig
 		if($name){
 		    $cmd->bindvalue(":name",$name);
         }
-		if($pid && $pid>0){
+        if(is_numeric($pid)){
 		    $cmd->bindValue(":pid",$pid);
         }
 		if($type){
