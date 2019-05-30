@@ -48,7 +48,8 @@ class ExtensionManager
             $admin = Yii::$app->getModule('admin');
             static::$ExtensionLoader = new ExtensionLoader([
                 'packagePathSymLink' => true,
-                'logLevel'=>'info',
+                'logLevel'=>'debug',
+                'shellEnv'=>['http_proxy'=>'10.0.8.107:3128'],
                 'composerPath'=>$admin->composerPath,
                 'vendorPath'=>Yii::getAlias('@vendor'),
                 'rootProjectPath'=>Yii::getAlias($admin->rootProjectPath),
@@ -474,8 +475,13 @@ class ExtensionManager
         }else{
             $migrationDirName = static::MIGRATION_DEFAULT_DIRNAME;
         }
-        //检查是否需要migrate操作,原则是看是否有migrations目录
-        $migrationPath = $package->getInstalledPath().DIRECTORY_SEPARATOR.$migrationDirName;
+        //先检测是否为@开头的
+        if(substr($migrationDirName,0,1) == '@'){
+            $migrationPath = Yii::getAlias($migrationDirName);
+        }else{
+            //检查是否需要migrate操作,原则是看是否有migrations目录
+            $migrationPath = $package->getInstalledPath().DIRECTORY_SEPARATOR.$migrationDirName;
+        }
         if(is_dir($migrationPath)){
             static::showMsg("需要",1,'success');
             static::showMsg("开始执行Migrate操作...");
@@ -511,8 +517,7 @@ class ExtensionManager
                 static::showMsg($output,1,'','cmd_box');
             }
             pclose($handler);
-
-            static::showMsg("</p>",0);
+            static::showMsg("</p>",1);
         }else{
             static::showMsg("不需要",1,'success');
         }
