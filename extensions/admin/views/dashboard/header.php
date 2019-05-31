@@ -26,7 +26,7 @@ use yii\helpers\Url;
                 <ul class="nav navbar-nav">
                     <!-- User Account: style can be found in dropdown.less -->
                     <li class="tasks-menu">
-                        <a href="<?php echo Yii::$app->request->getBaseUrl();?>" title="首页" target="_blank">
+                        <a href="/" title="首页" target="_blank">
                             <i class="glyphicon glyphicon-home"></i>
                         </a>
                     </li>

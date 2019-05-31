@@ -22,8 +22,8 @@ return [
         ],
         'assetManager' => [
             'class' => 'yii\web\AssetManager',
-            'basePath' => '@webroot/static/assets',
-            'baseUrl'  => '@web/static/assets',
+            'basePath' => '@webroot/assets',
+            'baseUrl'  => '@web/assets',
             'linkAssets'=>true,
             'bundles' => require(\yii::getAlias('@config') . '/' . (YII_ENV_PROD ? 'assets-prod.php' : 'assets-dev.php')),
         ],

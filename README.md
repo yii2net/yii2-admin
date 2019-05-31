@@ -1,6 +1,6 @@
-openadmin
+yii2-admin
 =========
-open admin
+基于yii2-extension包管理和adminlte2主题构建的admin项目，包括了基础的用户管理，RBAC管理，扩展管理等核心功能。
 
 Installation
 ------------
@@ -28,4 +28,5 @@ Usage
 Once the extension is installed, simply use it in your code by  :
 
 ```php
+
 ```

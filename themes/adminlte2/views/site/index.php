@@ -1,7 +1,7 @@
 <div class="jumbotron">
     <div class="container">
         <h1>OpenADM</h1>
-        <p>基于Yii2最好用(可能是)的快速开发框架,让开发更简单,让创业更容易!</p>
+        <p>基于Yii2最好用(可能是)的快速开发框架，追求品质的选择!</p>
         <br /><br />
         <p>
             <a class="btn btn-success btn-sm" href="http://openadm.com/" target="_blank">官方网站</a>
@@ -21,11 +21,11 @@
     <div class="row">
         <div class="col-md-4">
             <h2><i class="fa fa-cogs"></i> 框架成熟</h2>
-            <p>OpenADM是一个基于Yii2的快速开发框架,不是重复造轮子。集成RBAC,用户管理和插件化系统。</p>
+            <p>OpenADM是一个基于Yii2的快速开发框架,不是重复造轮子。集成RBAC,用户管理和扩展化系统。</p>
         </div>
         <div class="col-md-4">
             <h2><i class="fa fa-users"></i> 协同开发</h2>
-            <p>遵循插件体系,大项目的各个大小功能都可以是独立存在的插件,即可互不影响,亦可相互协作,团队配合轻松自如。</p>
+            <p>遵循扩展体系,大项目的各个大小功能都可以是独立存在的扩展,即可互不影响,亦可相互协作,团队配合轻松自如。</p>
         </div>
         <div class="col-md-4">
             <h2><i class="fa fa-window-restore"></i> 模板主题</h2>
@@ -43,7 +43,7 @@
         </div>
         <div class="col-md-4">
             <h2><i class="fa fa-cloud"></i> 云市场</h2>
-            <p>OpenADM除了提供基础的开发框架,其他所有的一切都是插件或者模块的扩展。Yii2社区,Github无法满足时,来OpenADM云市场,或许有惊喜。</p>
+            <p>OpenADM除了提供基础的开发框架,其他所有的一切都是扩展或者模块的扩展。Yii2社区,Github无法满足时,来OpenADM云市场,或许有惊喜。</p>
         </div>
     </div>
 </div>

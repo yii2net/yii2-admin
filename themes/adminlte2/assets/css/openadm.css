@@ -318,7 +318,10 @@ li.upload-kit-item.done.image img{
     margin-top: 8px;
     margin-right: 5px;
 }
-.modal-header .close{
+.modal-dialog .modal-header{
+    padding: 10px 15px;
+}
+.modal-dialog .modal-header .close{
     margin-top: 6px;
     margin-right: 5px;
 }

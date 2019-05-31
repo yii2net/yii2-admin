@@ -10,7 +10,6 @@ use kartik\grid\GridView;
 use yii\bootstrap\Button;
 use yii\bootstrap\ButtonGroup;
 use yii\bootstrap\Modal;
-use openadm\kartikcrud\BulkButtonWidget;
 
 /**
  * @var yii\web\View $this
@@ -41,17 +40,15 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php  $btns .= ' '.Html::a('取消激活', "javascript:void(0);", ['class' => 'btn btn-primary batch-inactive']) ?>
         <?php  $btns .= ' '.Html::a('封号', "javascript:void(0);", ['class' => 'btn btn-info batch-banned']) ?>
         <?php  $btns .= ' '.Html::a('取消封号', "javascript:void(0);", ['class' => 'btn btn-info batch-unbanned']) ?>
-        <?php  $btns .= ' '.BulkButtonWidget::widget([
-                'buttons'=>Html::a('删除', ["deletes"] ,
-                    [
-                        "class"=>"btn btn-danger",
-                        'role'=>'modal-remote-bulk',
-                        'data-confirm'=>false, 'data-method'=>false,// for overide yii data api
-                        'data-request-method'=>'post',
-                        'data-confirm-title'=>'确认操作',
-                        'data-confirm-message'=>'你确定要执行删除操作吗？'
-                    ]),
-            ]); ?>
+        <?php  $btns .= ' '.Html::a('删除', ["deletes"] ,
+                [
+                    "class"=>"btn btn-danger",
+                    'role'=>'modal-remote-bulk',
+                    'data-confirm'=>false, 'data-method'=>false,// for overide yii data api
+                    'data-request-method'=>'post',
+                    'data-confirm-title'=>'确认操作',
+                    'data-confirm-message'=>'你确定要执行删除操作吗？'
+                ]); ?>
         <?php
 
 $before = $btns;
@@ -96,13 +93,13 @@ HTML;
                 ],
                 [
                     'attribute'=>'email',
-                    'options'=>['style'=>'width:120px']
+                    'options'=>['style'=>'width:100px']
                 ],
                 //'profile.full_name',
                 //'profile.timezone',
                 [
                     'attribute'=>'created_at',
-                    'options'=>['style'=>'width:130px']
+                    'options'=>['style'=>'width:100px']
                 ],
                 [
                     'class' => EditableColumn::class,
@@ -143,7 +140,7 @@ HTML;
                         $statusDropdown = $user::statusDropdown();
                         return $statusDropdown[$model->status];
                     },
-                    'options'=>['style'=>'width:100px']
+                    'options'=>['style'=>'width:120px']
                 ],
 //                [
 //                    'label'=>'封号',
@@ -199,7 +196,7 @@ HTML;
                     },
 
                     //动作栏按钮设定（默认为：查看，禁用，删除）
-                    'template' => \openadm\kartikcrud\Helper::filterActionColumn(['view','update', 'delete']),
+                    'template' => '{view} {update} {delete}',
                     'buttons' => [
                         'activate' => function($url, $model) {
                             if ($model->status == 1) {

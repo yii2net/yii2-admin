@@ -20,6 +20,8 @@
         "bizley/migration": "^3.2",
         "yii2mod/yii2-rbac": "*",
         "kartik-v/yii2-dynagrid": "^1.5.1",
+        "kartik-v/yii2-detail-view": "^1.8.2",
+        "kartik-v/yii2-checkbox-x": "^1.0.4",
         "borales/yii2-phone-input": "0.1.2",
         "daixianceng/yii2-smser": "*",
         "amnah/yii2-user": "~5.0.8",
